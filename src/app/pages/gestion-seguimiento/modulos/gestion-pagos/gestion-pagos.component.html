@@ -1,0 +1,48 @@
+<div class="flex flex-col gap-4">
+  <div class="flex items-center justify-between">
+    <h4 class="text-sm font-semibold text-black/80">{{ 'MODULOS.GESTION_PAGOS' | translate }}</h4>
+    <div class="flex gap-4 text-xs text-black/60">
+      <span>{{ 'PAGOS.TOTAL_PROGRAMADO' | translate }}: <strong class="text-black/80">{{ formatMoney(totalProgramado) }}</strong></span>
+      <span>{{ 'PAGOS.TOTAL_PAGADO' | translate }}: <strong class="text-green-700">{{ formatMoney(totalPagado) }}</strong></span>
+    </div>
+  </div>
+
+  <div class="rounded-xl border-2 border-sga overflow-hidden bg-white doc-table">
+    <div class="h-2 bg-gradient-to-r from-sga to-sga/60" aria-hidden="true"></div>
+
+    <table mat-table [dataSource]="pagos" class="w-full bg-white">
+
+      <ng-container matColumnDef="concepto">
+        <th mat-header-cell *matHeaderCellDef class="doc-th text-sga font-semibold">{{ 'PAGOS.CONCEPTO' | translate }}</th>
+        <td mat-cell *matCellDef="let p" class="doc-td text-black/75 text-sm">{{ p.concepto }}</td>
+      </ng-container>
+
+      <ng-container matColumnDef="monto">
+        <th mat-header-cell *matHeaderCellDef class="doc-th text-sga font-semibold">{{ 'PAGOS.MONTO' | translate }}</th>
+        <td mat-cell *matCellDef="let p" class="doc-td text-black/75 text-sm font-medium">{{ formatMoney(p.monto) }}</td>
+      </ng-container>
+
+      <ng-container matColumnDef="fechaProgramada">
+        <th mat-header-cell *matHeaderCellDef class="doc-th text-sga font-semibold">{{ 'PAGOS.FECHA_PROGRAMADA' | translate }}</th>
+        <td mat-cell *matCellDef="let p" class="doc-td text-black/75 text-sm">{{ p.fechaProgramada }}</td>
+      </ng-container>
+
+      <ng-container matColumnDef="fechaPago">
+        <th mat-header-cell *matHeaderCellDef class="doc-th text-sga font-semibold">{{ 'PAGOS.FECHA_PAGO' | translate }}</th>
+        <td mat-cell *matCellDef="let p" class="doc-td text-black/75 text-sm">{{ p.fechaPago || '-' }}</td>
+      </ng-container>
+
+      <ng-container matColumnDef="estado">
+        <th mat-header-cell *matHeaderCellDef class="doc-th text-sga font-semibold">{{ 'TABLE.ESTADO' | translate }}</th>
+        <td mat-cell *matCellDef="let p" class="doc-td">
+          <span class="sga-chip" [ngClass]="getEstadoClass(p)">
+            {{ 'ESTADOS_PAGO.' + p.estado | translate }}
+          </span>
+        </td>
+      </ng-container>
+
+      <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+      <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+    </table>
+  </div>
+</div>

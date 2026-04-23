@@ -1,0 +1,48 @@
+// ============================================================
+// SGA Variables Globales
+// Centraliza colores, opacidades y tokens reutilizables.
+// ============================================================
+
+:root {
+  // --- Primario SGA ---
+  --sga-primary: #03678f;
+  --sga-primary-rgb: 3, 103, 143;
+  --sga-primary-100: rgba(var(--sga-primary-rgb), 0.10);
+  --sga-primary-060: rgba(var(--sga-primary-rgb), 0.06);
+  --sga-primary-040: rgba(var(--sga-primary-rgb), 0.04);
+
+  // --- Estados de comision (seguimiento) ---
+  // Gris: pendiente / sin iniciar
+  --st-pendiente-bg: #e0e0e0;
+  --st-pendiente-text: #424242;
+  // Azul: en ejecucion
+  --st-ejecucion-bg: #bbdefb;
+  --st-ejecucion-text: #0d47a1;
+  // Amarillo: en revision / seguimiento
+  --st-revision-bg: #fff9c4;
+  --st-revision-text: #f57f17;
+  // Naranja: requiere atencion / subsanacion
+  --st-atencion-bg: #ffe0b2;
+  --st-atencion-text: #e65100;
+  // Verde: finalizada / cumplida
+  --st-finalizada-bg: #c8e6c9;
+  --st-finalizada-text: #1b5e20;
+  // Rojo: cancelada / incumplida
+  --st-cancelada-bg: #ffcdd2;
+  --st-cancelada-text: #b71c1c;
+  // Morado: prorroga
+  --st-prorroga-bg: #e1bee7;
+  --st-prorroga-text: #4a148c;
+
+  // --- Estados de documento ---
+  --doc-pendiente-bg: #e0e0e0;
+  --doc-pendiente-text: #424242;
+  --doc-carg-bg: #bbdefb;
+  --doc-carg-text: #0d47a1;
+  --doc-aprob-bg: #c8e6c9;
+  --doc-aprob-text: #1b5e20;
+  --doc-corr-bg: #ffe0b2;
+  --doc-corr-text: #e65100;
+  --doc-no-aprob-bg: #ffcdd2;
+  --doc-no-aprob-text: #b71c1c;
+}

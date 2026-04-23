@@ -1,0 +1,83 @@
+<div class="flex flex-col gap-5">
+  <div class="flex items-center justify-between">
+    <h4 class="text-sm font-semibold text-black/80">{{ 'MODULOS.PRORROGA_CIERRE' | translate }}</h4>
+    <span class="sga-chip" [ngClass]="prorrogaClass">
+      {{ 'ESTADOS_PRORROGA.' + comision.estadoProrroga | translate }}
+    </span>
+  </div>
+
+  <!-- Info de fechas -->
+  <div class="grid grid-cols-1 sm:grid-cols-3 gap-4 p-4 rounded-lg bg-black/[0.02] border border-black/8">
+    <div class="flex flex-col">
+      <span class="text-xs text-black/50 font-medium">{{ 'TABLE.FECHA_INICIO' | translate }}</span>
+      <span class="text-sm text-black/80">{{ comision.fechaInicio }}</span>
+    </div>
+    <div class="flex flex-col">
+      <span class="text-xs text-black/50 font-medium">{{ 'TABLE.FECHA_FIN' | translate }}</span>
+      <span class="text-sm text-black/80">{{ comision.fechaFin }}</span>
+    </div>
+    <div class="flex flex-col">
+      <span class="text-xs text-black/50 font-medium">{{ 'DETALLE.DURACION' | translate }}</span>
+      <span class="text-sm text-black/80">{{ comision.duracionMeses }} {{ 'DETALLE.MESES' | translate }}</span>
+    </div>
+  </div>
+
+  <!-- Solicitar prórroga (docente) -->
+  <div *ngIf="canSolicitarProrroga" class="flex flex-col gap-3 p-4 rounded-lg border border-sga/20 bg-sga/[0.02]">
+    <h5 class="text-sm font-medium text-sga">{{ 'PRORROGA.SOLICITAR' | translate }}</h5>
+
+    <mat-form-field appearance="outline" class="sga-no-notch">
+      <mat-label>{{ 'PRORROGA.NUEVA_FECHA_FIN' | translate }}</mat-label>
+      <input matInput type="date" [(ngModel)]="fechaNuevaFin">
+    </mat-form-field>
+
+    <mat-form-field appearance="outline" class="sga-no-notch-textarea">
+      <mat-label>{{ 'PRORROGA.JUSTIFICACION' | translate }}</mat-label>
+      <textarea matInput [(ngModel)]="justificacion" rows="3"></textarea>
+    </mat-form-field>
+
+    <div class="flex justify-end">
+      <button mat-flat-button color="primary" class="rounded-lg"
+              [disabled]="!fechaNuevaFin || !justificacion.trim()">
+        {{ 'PRORROGA.ENVIAR_SOLICITUD' | translate }}
+      </button>
+    </div>
+  </div>
+
+  <!-- Panel de revisión (Secretaría General) -->
+  <div *ngIf="isSecretariaGeneral && !readOnly" class="flex flex-col gap-3 p-4 rounded-lg border border-sga/20 bg-sga/[0.02]">
+    <h5 class="text-sm font-medium text-sga">{{ 'PRORROGA.REVISION' | translate }}</h5>
+
+    <!-- Soportes placeholder -->
+    <div class="text-sm text-black/60 p-3 rounded-lg bg-white border border-black/8">
+      {{ 'PRORROGA.SOPORTES_PLACEHOLDER' | translate }}
+    </div>
+
+    <!-- Observaciones -->
+    <mat-form-field appearance="outline" class="sga-no-notch-textarea">
+      <mat-label>{{ 'PRORROGA.OBSERVACIONES_REVISOR' | translate }}</mat-label>
+      <textarea matInput rows="3"></textarea>
+    </mat-form-field>
+
+    <!-- Botones de acción -->
+    <div class="flex items-center justify-end gap-2 pt-2">
+      <button mat-stroked-button class="h-10 rounded-lg border-black/20"
+              (click)="retornar.emit()">
+        {{ 'ACTIONS.RETORNAR' | translate }}
+      </button>
+      <button mat-stroked-button class="h-10 rounded-lg border-red-300 text-red-700"
+              (click)="rechazar.emit()">
+        {{ 'ACTIONS.RECHAZAR' | translate }}
+      </button>
+      <button mat-flat-button color="primary" class="h-10 rounded-lg"
+              (click)="enviar.emit()">
+        {{ 'ACTIONS.ENVIAR' | translate }}
+      </button>
+    </div>
+  </div>
+
+  <!-- Info para supervisor -->
+  <div *ngIf="rolActual === 'SUPERVISOR'" class="text-sm text-black/60 p-4 rounded-lg bg-black/[0.02] border border-black/8">
+    {{ 'PRORROGA.INFO_SUPERVISOR' | translate }}
+  </div>
+</div>

@@ -1,0 +1,85 @@
+<mat-card class="rounded-xl border border-black/10 bg-white" *ngIf="comision">
+  <mat-card-content class="p-5">
+    <div class="flex items-center justify-between mb-4">
+      <h3 class="text-lg font-semibold text-sga">{{ 'DETALLE.INFO_GENERAL' | translate }}</h3>
+      <span class="sga-chip"
+            [ngClass]="comision.estado | estadoComisionPipe">
+        {{ 'ESTADOS.' + comision.estado | translate }}
+      </span>
+    </div>
+
+    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-x-6 gap-y-3">
+      <!-- Radicado -->
+      <div class="flex flex-col">
+        <span class="text-xs text-black/50 font-medium">{{ 'DETALLE.RADICADO' | translate }}</span>
+        <span class="text-sm text-black/80">{{ comision.radicado }}</span>
+      </div>
+
+      <!-- Docente -->
+      <div class="flex flex-col">
+        <span class="text-xs text-black/50 font-medium">{{ 'TABLE.DOCENTE' | translate }}</span>
+        <span class="text-sm text-black/80">{{ comision.docente }}</span>
+      </div>
+
+      <!-- Identificación -->
+      <div class="flex flex-col">
+        <span class="text-xs text-black/50 font-medium">{{ 'TABLE.ID_DOCENTE' | translate }}</span>
+        <span class="text-sm text-black/80">{{ comision.idDocente }}</span>
+      </div>
+
+      <!-- Programa -->
+      <div class="flex flex-col">
+        <span class="text-xs text-black/50 font-medium">{{ 'DETALLE.PROGRAMA' | translate }}</span>
+        <span class="text-sm text-black/80">{{ comision.programa }}</span>
+      </div>
+
+      <!-- Facultad -->
+      <div class="flex flex-col">
+        <span class="text-xs text-black/50 font-medium">{{ 'DETALLE.FACULTAD' | translate }}</span>
+        <span class="text-sm text-black/80">{{ comision.facultad }}</span>
+      </div>
+
+      <!-- Tipo estudio -->
+      <div class="flex flex-col">
+        <span class="text-xs text-black/50 font-medium">{{ 'DETALLE.TIPO_ESTUDIO' | translate }}</span>
+        <span class="text-sm text-black/80">{{ comision.tipoEstudio }}</span>
+      </div>
+
+      <!-- Universidad destino -->
+      <div class="flex flex-col">
+        <span class="text-xs text-black/50 font-medium">{{ 'DETALLE.UNIVERSIDAD_DESTINO' | translate }}</span>
+        <span class="text-sm text-black/80">{{ comision.universidadDestino }}</span>
+      </div>
+
+      <!-- País / Ciudad -->
+      <div class="flex flex-col">
+        <span class="text-xs text-black/50 font-medium">{{ 'DETALLE.DESTINO' | translate }}</span>
+        <span class="text-sm text-black/80">{{ comision.ciudadDestino }}, {{ comision.paisDestino }}</span>
+      </div>
+
+      <!-- Duración -->
+      <div class="flex flex-col">
+        <span class="text-xs text-black/50 font-medium">{{ 'DETALLE.DURACION' | translate }}</span>
+        <span class="text-sm text-black/80">{{ comision.duracionMeses }} {{ 'DETALLE.MESES' | translate }}</span>
+      </div>
+
+      <!-- Fecha inicio -->
+      <div class="flex flex-col">
+        <span class="text-xs text-black/50 font-medium">{{ 'TABLE.FECHA_INICIO' | translate }}</span>
+        <span class="text-sm text-black/80">{{ comision.fechaInicio }}</span>
+      </div>
+
+      <!-- Fecha fin -->
+      <div class="flex flex-col">
+        <span class="text-xs text-black/50 font-medium">{{ 'TABLE.FECHA_FIN' | translate }}</span>
+        <span class="text-sm text-black/80">{{ comision.fechaFin }}</span>
+      </div>
+
+      <!-- Supervisor -->
+      <div class="flex flex-col">
+        <span class="text-xs text-black/50 font-medium">{{ 'DETALLE.SUPERVISOR' | translate }}</span>
+        <span class="text-sm text-black/80">{{ comision.supervisorNombre }}</span>
+      </div>
+    </div>
+  </mat-card-content>
+</mat-card>

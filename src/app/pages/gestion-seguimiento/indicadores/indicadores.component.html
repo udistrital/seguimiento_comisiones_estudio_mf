@@ -1,0 +1,51 @@
+<div class="flex flex-col gap-5 p-4 md:p-6 max-w-screen-xl mx-auto">
+
+  <div>
+    <h1 class="text-xl font-semibold text-sga">{{ 'INDICADORES.TITULO' | translate }}</h1>
+    <p class="text-sm text-black/50 mt-0.5">{{ 'INDICADORES.SUBTITULO' | translate }}</p>
+  </div>
+
+  <!-- Cards de indicadores -->
+  <div class="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-6 gap-3">
+
+    <mat-card class="rounded-xl border border-black/10 bg-white p-4 text-center">
+      <span class="text-3xl font-bold text-sga">{{ stats.total }}</span>
+      <p class="text-xs text-black/60 mt-1">{{ 'INDICADORES.TOTAL' | translate }}</p>
+    </mat-card>
+
+    <mat-card class="rounded-xl border border-blue-200 bg-blue-50 p-4 text-center">
+      <span class="text-3xl font-bold text-blue-700">{{ stats.enEjecucion }}</span>
+      <p class="text-xs text-blue-600 mt-1">{{ 'INDICADORES.EN_EJECUCION' | translate }}</p>
+    </mat-card>
+
+    <mat-card class="rounded-xl border border-yellow-200 bg-yellow-50 p-4 text-center">
+      <span class="text-3xl font-bold text-yellow-700">{{ stats.enRevision }}</span>
+      <p class="text-xs text-yellow-600 mt-1">{{ 'INDICADORES.EN_REVISION' | translate }}</p>
+    </mat-card>
+
+    <mat-card class="rounded-xl border border-green-200 bg-green-50 p-4 text-center">
+      <span class="text-3xl font-bold text-green-700">{{ stats.finalizadas }}</span>
+      <p class="text-xs text-green-600 mt-1">{{ 'INDICADORES.FINALIZADAS' | translate }}</p>
+    </mat-card>
+
+    <mat-card class="rounded-xl border border-red-200 bg-red-50 p-4 text-center">
+      <span class="text-3xl font-bold text-red-700">{{ stats.canceladas }}</span>
+      <p class="text-xs text-red-600 mt-1">{{ 'INDICADORES.CANCELADAS' | translate }}</p>
+    </mat-card>
+
+    <mat-card class="rounded-xl border border-purple-200 bg-purple-50 p-4 text-center">
+      <span class="text-3xl font-bold text-purple-700">{{ stats.conProrroga }}</span>
+      <p class="text-xs text-purple-600 mt-1">{{ 'INDICADORES.CON_PRORROGA' | translate }}</p>
+    </mat-card>
+
+  </div>
+
+  <!-- Placeholder para gráficos futuros -->
+  <mat-card class="rounded-xl border border-black/10 bg-white p-8">
+    <div class="flex flex-col items-center gap-3 text-center py-8">
+      <mat-icon class="text-black/15 text-6xl w-16 h-16">bar_chart</mat-icon>
+      <p class="text-sm text-black/40">{{ 'INDICADORES.GRAFICOS_PLACEHOLDER' | translate }}</p>
+    </div>
+  </mat-card>
+
+</div>

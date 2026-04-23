@@ -1,0 +1,11 @@
+<div class="modulo-card" (click)="onClick()" tabindex="0" role="button"
+     [attr.aria-label]="modulo.titleKey | translate"
+     (keydown.enter)="onClick()" (keydown.space)="onClick()">
+  <mat-icon class="modulo-card__icon">{{ modulo.icon }}</mat-icon>
+  <span class="modulo-card__title">{{ modulo.titleKey | translate }}</span>
+  <span *ngIf="modulo.badge !== undefined && modulo.badge > 0"
+        class="modulo-card__badge"
+        [ngClass]="modulo.badgeClass || 'bg-sga/10 text-sga'">
+    {{ modulo.badge }}
+  </span>
+</div>

@@ -1,0 +1,12 @@
+.col-id         { width: 10%; }
+.col-fecha      { width: 12%; }
+.col-docente    { width: 16%; }
+.col-idDocente  { width: 10%; }
+.col-estado     { width: 16%; }
+.col-estadoProrrogaCierre { width: 14%; }
+.col-acciones   { width: 12%; }
+
+::ng-deep .mat-mdc-paginator {
+  border-top: 1px solid rgba(3, 103, 143, 0.3);
+  background: transparent;
+}

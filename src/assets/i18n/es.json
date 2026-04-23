@@ -1,0 +1,178 @@
+{
+  "GLOBAL": {
+    "acceso_denegado": "No tiene permisos para acceder a esta funcionalidad."
+  },
+
+  "BANDEJA": {
+    "TITULO": "Seguimiento de Comisiones",
+    "SUBTITULO": "Comisiones en ejecución y desarrollo",
+    "CARGANDO": "Cargando comisiones...",
+    "ERROR_CARGA": "Error al cargar las comisiones",
+    "ERROR_CARGA_DETALLE": "No se pudieron obtener los datos. Intente de nuevo más tarde.",
+    "SIN_COMISIONES": "No se encontraron comisiones para su perfil."
+  },
+
+  "ROLES": {
+    "DOCENTE": "Docente",
+    "SUPERVISOR": "Supervisor",
+    "SECRETARIA_GENERAL": "Secretaría General"
+  },
+
+  "TABLE": {
+    "ID_COMISION": "ID Comisión",
+    "FECHA_SOLICITUD": "Fecha solicitud",
+    "FECHA_INICIO": "Fecha inicio",
+    "FECHA_FIN": "Fecha fin",
+    "ESTADO": "Estado",
+    "DOCENTE": "Docente",
+    "ID_DOCENTE": "ID Docente",
+    "ESTADO_PRORROGA_CIERRE": "Prórroga / Cierre",
+    "GESTION": "Gestión",
+    "FILTER_PLACEHOLDER": "Filtrar..."
+  },
+
+  "ACTIONS": {
+    "VER": "Ver",
+    "GESTIONAR": "Gestionar",
+    "REGRESAR": "Regresar",
+    "ENVIAR": "Enviar",
+    "RETORNAR": "Retornar solicitud",
+    "RECHAZAR": "Rechazar",
+    "ADJUNTAR": "Adjuntar documento",
+    "CARGAR": "Cargar",
+    "CANCELAR": "Cancelar",
+    "GUARDAR": "Guardar"
+  },
+
+  "TOOLTIPS": {
+    "VER_DETALLE": "Ver detalle de la comisión",
+    "GESTIONAR": "Gestionar comisión"
+  },
+
+  "DETALLE": {
+    "TITULO": "Seguimiento de comisión",
+    "CARGANDO": "Cargando detalle...",
+    "RADICADO": "Radicado",
+    "SOLO_LECTURA": "Solo lectura",
+    "INFO_GENERAL": "Información general",
+    "PROGRAMA": "Programa",
+    "FACULTAD": "Facultad",
+    "TIPO_ESTUDIO": "Tipo de estudio",
+    "UNIVERSIDAD_DESTINO": "Universidad destino",
+    "DESTINO": "Destino",
+    "DURACION": "Duración",
+    "MESES": "meses",
+    "SUPERVISOR": "Supervisor",
+    "MODULOS_GESTION": "Módulos de gestión",
+    "OBSERVACIONES": "Observaciones",
+    "SIN_OBSERVACIONES": "No hay observaciones registradas.",
+    "ESCRIBIR_OBSERVACION": "Escribir observación...",
+    "DOCUMENTOS": "Documentos",
+    "DOCUMENTO_NOMBRE": "Documento",
+    "AUTOR_SOPORTE": "Autor del soporte",
+    "VISOR_DOCUMENTO": "Visor de documento"
+  },
+
+  "MODULOS": {
+    "DOCS_SOLICITUD": "Documentos adjuntos solicitud inicial",
+    "DOCS_DESARROLLO": "Documentos adjuntos desarrollo comisión",
+    "GESTION_PAGOS": "Gestión de pagos",
+    "CUMPLIMIENTO": "Cumplimiento",
+    "PRORROGA_CIERRE": "Gestión de prórroga y cierre"
+  },
+
+  "ESTADOS": {
+    "PENDIENTE": "Pendiente",
+    "EN_EJECUCION": "En ejecución",
+    "EN_REVISION": "En revisión",
+    "PRORROGA_SOLICITADA": "Prórroga solicitada",
+    "PRORROGA_APROBADA": "Prórroga aprobada",
+    "FINALIZADA": "Finalizada",
+    "CANCELADA": "Cancelada",
+    "INCUMPLIDA": "Incumplida"
+  },
+
+  "ESTADOS_PRORROGA": {
+    "NO_APLICA": "No aplica",
+    "SOLICITADA": "Solicitada",
+    "EN_REVISION": "En revisión",
+    "APROBADA": "Aprobada",
+    "RECHAZADA": "Rechazada"
+  },
+
+  "ESTADOS_PAGO": {
+    "PENDIENTE": "Pendiente",
+    "EN_TRAMITE": "En trámite",
+    "PAGADO": "Pagado",
+    "RECHAZADO": "Rechazado"
+  },
+
+  "DOC_ESTADOS": {
+    "PENDIENTE": "Pendiente",
+    "CARGADO": "Cargado",
+    "APROBADO": "Aprobado",
+    "RECHAZADO": "Rechazado",
+    "POR_CORREGIR": "Por corregir"
+  },
+
+  "PAGOS": {
+    "CONCEPTO": "Concepto",
+    "MONTO": "Monto",
+    "FECHA_PROGRAMADA": "Fecha programada",
+    "FECHA_PAGO": "Fecha de pago",
+    "TOTAL_PROGRAMADO": "Total programado",
+    "TOTAL_PAGADO": "Total pagado"
+  },
+
+  "CUMPLIMIENTO": {
+    "DESCRIPCION": "Descripción",
+    "FECHA_LIMITE": "Fecha límite",
+    "ESTADO": "Estado",
+    "CUMPLIDO": "Cumplido",
+    "PENDIENTE": "Pendiente"
+  },
+
+  "PRORROGA": {
+    "SOLICITAR": "Solicitar prórroga",
+    "NUEVA_FECHA_FIN": "Nueva fecha de finalización",
+    "JUSTIFICACION": "Justificación",
+    "ENVIAR_SOLICITUD": "Enviar solicitud de prórroga",
+    "REVISION": "Revisión de prórroga / cierre",
+    "SOPORTES_PLACEHOLDER": "Sección de soportes documentales asociados a la prórroga o cierre. Se habilitará cuando se integre con el gestor documental.",
+    "OBSERVACIONES_REVISOR": "Observaciones del revisor",
+    "INFO_SUPERVISOR": "Como supervisor puede revisar la documentación de prórroga y cierre, y registrar observaciones para el seguimiento del proceso."
+  },
+
+  "INDICADORES": {
+    "TITULO": "Indicadores de seguimiento",
+    "SUBTITULO": "Resumen del estado de las comisiones en seguimiento",
+    "TOTAL": "Total comisiones",
+    "EN_EJECUCION": "En ejecución",
+    "EN_REVISION": "En revisión",
+    "FINALIZADAS": "Finalizadas",
+    "CANCELADAS": "Canceladas",
+    "CON_PRORROGA": "Con prórroga",
+    "GRAFICOS_PLACEHOLDER": "Aquí se mostrarán gráficos de seguimiento cuando se integren los datos reales del sistema."
+  },
+
+  "POPUPS": {
+    "CONFIRMAR_OBSERVACION": "¿Desea registrar esta observación?",
+    "OBSERVACION_GUARDADA": "Observación registrada correctamente.",
+    "VER_DOCUMENTO": "Visualizando documento",
+    "CARGAR_DOCUMENTO_PLACEHOLDER": "La funcionalidad de carga documental se habilitará cuando se integre con el gestor documental (Nuxeo).",
+    "CONFIRMAR_RETORNAR": "¿Está seguro de retornar esta solicitud para corrección?",
+    "SOLICITUD_RETORNADA": "Solicitud retornada correctamente.",
+    "CONFIRMAR_RECHAZAR": "¿Está seguro de rechazar esta solicitud? Esta acción no se puede deshacer.",
+    "SOLICITUD_RECHAZADA": "Solicitud rechazada.",
+    "CONFIRMAR_ENVIAR": "¿Está seguro de enviar esta solicitud a la siguiente instancia?",
+    "SOLICITUD_ENVIADA": "Solicitud enviada correctamente."
+  },
+
+  "PAGINATOR": {
+    "ITEMS_PER_PAGE": "Elementos por página:",
+    "NEXT_PAGE": "Página siguiente",
+    "PREV_PAGE": "Página anterior",
+    "FIRST_PAGE": "Primera página",
+    "LAST_PAGE": "Última página"
+  }
+}

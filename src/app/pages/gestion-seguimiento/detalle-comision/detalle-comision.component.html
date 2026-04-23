@@ -1,0 +1,109 @@
+<div class="flex flex-col gap-5 p-4 md:p-6 max-w-screen-xl mx-auto">
+
+  <!-- Loading -->
+  <div *ngIf="cargando" class="flex items-center justify-center py-16">
+    <div class="flex flex-col items-center gap-3">
+      <div class="w-8 h-8 border-2 border-sga/30 border-t-sga rounded-full animate-spin"></div>
+      <span class="text-sm text-black/50">{{ 'DETALLE.CARGANDO' | translate }}</span>
+    </div>
+  </div>
+
+  <ng-container *ngIf="!cargando && comision">
+
+    <!-- Header -->
+    <div class="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-3">
+      <div>
+        <button mat-stroked-button class="h-9 rounded-lg border-black/20 text-sm mb-2" (click)="volver()">
+          <mat-icon class="text-[18px] mr-1">arrow_back</mat-icon>
+          {{ 'ACTIONS.REGRESAR' | translate }}
+        </button>
+        <h1 class="text-xl font-semibold text-sga">
+          {{ 'DETALLE.TITULO' | translate }} #{{ comision.id }}
+        </h1>
+        <p class="text-sm text-black/50 mt-0.5">
+          {{ 'DETALLE.RADICADO' | translate }}: {{ comision.radicado }} —
+          <span class="font-medium text-sga/80">{{ 'ROLES.' + rolActual | translate }}</span>
+          <span *ngIf="isReadOnly" class="ml-2 text-xs text-black/40">({{ 'DETALLE.SOLO_LECTURA' | translate }})</span>
+        </p>
+      </div>
+
+      <span class="sga-chip text-sm h-6 px-4"
+            [ngClass]="comision.estado | estadoComisionPipe">
+        {{ 'ESTADOS.' + comision.estado | translate }}
+      </span>
+    </div>
+
+    <!-- Información General -->
+    <app-info-general [comision]="comision"></app-info-general>
+
+    <!-- Módulos de gestión (cards) -->
+    <div>
+      <h2 class="text-base font-semibold text-black/80 mb-3">{{ 'DETALLE.MODULOS_GESTION' | translate }}</h2>
+      <div class="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-5 gap-3">
+        <app-card-modulo
+          *ngFor="let mod of modulos"
+          [modulo]="mod"
+          (moduloClick)="onModuloClick($event)">
+        </app-card-modulo>
+      </div>
+    </div>
+
+    <!-- Panel del módulo activo -->
+    <ng-container [ngSwitch]="moduloActivo">
+
+      <!-- Documentos solicitud -->
+      <mat-card *ngSwitchCase="'docs-solicitud'" class="rounded-xl border border-black/10 bg-white p-5">
+        <app-panel-documentos
+          [documentos]="documentosSolicitud"
+          [titulo]="'MODULOS.DOCS_SOLICITUD'"
+          [permitirCarga]="false"
+          (verDocumento)="onVerDocumento($event)">
+        </app-panel-documentos>
+      </mat-card>
+
+      <!-- Documentos desarrollo -->
+      <mat-card *ngSwitchCase="'docs-desarrollo'" class="rounded-xl border border-black/10 bg-white p-5">
+        <app-panel-documentos
+          [documentos]="documentosDesarrollo"
+          [titulo]="'MODULOS.DOCS_DESARROLLO'"
+          [permitirCarga]="canUploadDocs"
+          (verDocumento)="onVerDocumento($event)"
+          (cargarDocumento)="onCargarDocumento($event)">
+        </app-panel-documentos>
+      </mat-card>
+
+      <!-- Gestión de pagos -->
+      <mat-card *ngSwitchCase="'pagos'" class="rounded-xl border border-black/10 bg-white p-5">
+        <app-gestion-pagos [pagos]="pagos" [readOnly]="isReadOnly"></app-gestion-pagos>
+      </mat-card>
+
+      <!-- Cumplimiento -->
+      <mat-card *ngSwitchCase="'cumplimiento'" class="rounded-xl border border-black/10 bg-white p-5">
+        <app-cumplimiento [items]="cumplimiento" [readOnly]="isReadOnly"></app-cumplimiento>
+      </mat-card>
+
+      <!-- Prórroga y cierre -->
+      <mat-card *ngSwitchCase="'prorroga-cierre'" class="rounded-xl border border-black/10 bg-white p-5">
+        <app-prorroga-cierre
+          [comision]="comision"
+          [readOnly]="isReadOnly"
+          [rolActual]="rolActual"
+          (retornar)="onRetornar()"
+          (rechazar)="onRechazar()"
+          (enviar)="onEnviar()">
+        </app-prorroga-cierre>
+      </mat-card>
+
+    </ng-container>
+
+    <!-- Observaciones (siempre visible debajo del módulo activo) -->
+    <mat-card class="rounded-xl border border-black/10 bg-white p-5">
+      <app-panel-observaciones
+        [observaciones]="observaciones"
+        [readOnly]="isReadOnly"
+        (nuevaObservacion)="onNuevaObservacion($event)">
+      </app-panel-observaciones>
+    </mat-card>
+
+  </ng-container>
+</div>

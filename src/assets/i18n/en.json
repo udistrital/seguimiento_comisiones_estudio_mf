@@ -1,0 +1,178 @@
+{
+  "GLOBAL": {
+    "acceso_denegado": "You do not have permission to access this feature."
+  },
+
+  "BANDEJA": {
+    "TITULO": "Commission Tracking",
+    "SUBTITULO": "Commissions in execution and development",
+    "CARGANDO": "Loading commissions...",
+    "ERROR_CARGA": "Error loading commissions",
+    "ERROR_CARGA_DETALLE": "Data could not be retrieved. Please try again later.",
+    "SIN_COMISIONES": "No commissions found for your profile."
+  },
+
+  "ROLES": {
+    "DOCENTE": "Teacher",
+    "SUPERVISOR": "Supervisor",
+    "SECRETARIA_GENERAL": "General Secretariat"
+  },
+
+  "TABLE": {
+    "ID_COMISION": "Commission ID",
+    "FECHA_SOLICITUD": "Request date",
+    "FECHA_INICIO": "Start date",
+    "FECHA_FIN": "End date",
+    "ESTADO": "Status",
+    "DOCENTE": "Teacher",
+    "ID_DOCENTE": "Teacher ID",
+    "ESTADO_PRORROGA_CIERRE": "Extension / Closure",
+    "GESTION": "Actions",
+    "FILTER_PLACEHOLDER": "Filter..."
+  },
+
+  "ACTIONS": {
+    "VER": "View",
+    "GESTIONAR": "Manage",
+    "REGRESAR": "Go back",
+    "ENVIAR": "Send",
+    "RETORNAR": "Return request",
+    "RECHAZAR": "Reject",
+    "ADJUNTAR": "Attach document",
+    "CARGAR": "Upload",
+    "CANCELAR": "Cancel",
+    "GUARDAR": "Save"
+  },
+
+  "TOOLTIPS": {
+    "VER_DETALLE": "View commission details",
+    "GESTIONAR": "Manage commission"
+  },
+
+  "DETALLE": {
+    "TITULO": "Commission tracking",
+    "CARGANDO": "Loading details...",
+    "RADICADO": "Filing number",
+    "SOLO_LECTURA": "Read only",
+    "INFO_GENERAL": "General information",
+    "PROGRAMA": "Program",
+    "FACULTAD": "Faculty",
+    "TIPO_ESTUDIO": "Study type",
+    "UNIVERSIDAD_DESTINO": "Destination university",
+    "DESTINO": "Destination",
+    "DURACION": "Duration",
+    "MESES": "months",
+    "SUPERVISOR": "Supervisor",
+    "MODULOS_GESTION": "Management modules",
+    "OBSERVACIONES": "Observations",
+    "SIN_OBSERVACIONES": "No observations registered.",
+    "ESCRIBIR_OBSERVACION": "Write observation...",
+    "DOCUMENTOS": "Documents",
+    "DOCUMENTO_NOMBRE": "Document",
+    "AUTOR_SOPORTE": "Support author",
+    "VISOR_DOCUMENTO": "Document viewer"
+  },
+
+  "MODULOS": {
+    "DOCS_SOLICITUD": "Initial request attached documents",
+    "DOCS_DESARROLLO": "Commission development attached documents",
+    "GESTION_PAGOS": "Payment management",
+    "CUMPLIMIENTO": "Compliance",
+    "PRORROGA_CIERRE": "Extension and closure management"
+  },
+
+  "ESTADOS": {
+    "PENDIENTE": "Pending",
+    "EN_EJECUCION": "In execution",
+    "EN_REVISION": "Under review",
+    "PRORROGA_SOLICITADA": "Extension requested",
+    "PRORROGA_APROBADA": "Extension approved",
+    "FINALIZADA": "Completed",
+    "CANCELADA": "Cancelled",
+    "INCUMPLIDA": "Non-compliant"
+  },
+
+  "ESTADOS_PRORROGA": {
+    "NO_APLICA": "Not applicable",
+    "SOLICITADA": "Requested",
+    "EN_REVISION": "Under review",
+    "APROBADA": "Approved",
+    "RECHAZADA": "Rejected"
+  },
+
+  "ESTADOS_PAGO": {
+    "PENDIENTE": "Pending",
+    "EN_TRAMITE": "In process",
+    "PAGADO": "Paid",
+    "RECHAZADO": "Rejected"
+  },
+
+  "DOC_ESTADOS": {
+    "PENDIENTE": "Pending",
+    "CARGADO": "Uploaded",
+    "APROBADO": "Approved",
+    "RECHAZADO": "Rejected",
+    "POR_CORREGIR": "Needs correction"
+  },
+
+  "PAGOS": {
+    "CONCEPTO": "Concept",
+    "MONTO": "Amount",
+    "FECHA_PROGRAMADA": "Scheduled date",
+    "FECHA_PAGO": "Payment date",
+    "TOTAL_PROGRAMADO": "Total scheduled",
+    "TOTAL_PAGADO": "Total paid"
+  },
+
+  "CUMPLIMIENTO": {
+    "DESCRIPCION": "Description",
+    "FECHA_LIMITE": "Deadline",
+    "ESTADO": "Status",
+    "CUMPLIDO": "Completed",
+    "PENDIENTE": "Pending"
+  },
+
+  "PRORROGA": {
+    "SOLICITAR": "Request extension",
+    "NUEVA_FECHA_FIN": "New end date",
+    "JUSTIFICACION": "Justification",
+    "ENVIAR_SOLICITUD": "Submit extension request",
+    "REVISION": "Extension / closure review",
+    "SOPORTES_PLACEHOLDER": "Document support section associated with the extension or closure. It will be enabled when integrated with the document manager.",
+    "OBSERVACIONES_REVISOR": "Reviewer observations",
+    "INFO_SUPERVISOR": "As a supervisor you can review extension and closure documentation, and register observations for process tracking."
+  },
+
+  "INDICADORES": {
+    "TITULO": "Tracking indicators",
+    "SUBTITULO": "Summary of commission tracking status",
+    "TOTAL": "Total commissions",
+    "EN_EJECUCION": "In execution",
+    "EN_REVISION": "Under review",
+    "FINALIZADAS": "Completed",
+    "CANCELADAS": "Cancelled",
+    "CON_PRORROGA": "With extension",
+    "GRAFICOS_PLACEHOLDER": "Tracking charts will be displayed here when real system data is integrated."
+  },
+
+  "POPUPS": {
+    "CONFIRMAR_OBSERVACION": "Do you want to register this observation?",
+    "OBSERVACION_GUARDADA": "Observation registered successfully.",
+    "VER_DOCUMENTO": "Viewing document",
+    "CARGAR_DOCUMENTO_PLACEHOLDER": "Document upload functionality will be enabled when integrated with the document manager (Nuxeo).",
+    "CONFIRMAR_RETORNAR": "Are you sure you want to return this request for correction?",
+    "SOLICITUD_RETORNADA": "Request returned successfully.",
+    "CONFIRMAR_RECHAZAR": "Are you sure you want to reject this request? This action cannot be undone.",
+    "SOLICITUD_RECHAZADA": "Request rejected.",
+    "CONFIRMAR_ENVIAR": "Are you sure you want to send this request to the next instance?",
+    "SOLICITUD_ENVIADA": "Request sent successfully."
+  },
+
+  "PAGINATOR": {
+    "ITEMS_PER_PAGE": "Items per page:",
+    "NEXT_PAGE": "Next page",
+    "PREV_PAGE": "Previous page",
+    "FIRST_PAGE": "First page",
+    "LAST_PAGE": "Last page"
+  }
+}

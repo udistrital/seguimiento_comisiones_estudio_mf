@@ -1,0 +1,55 @@
+<div class="flex flex-col gap-5 p-4 md:p-6 max-w-screen-xl mx-auto">
+
+  <!-- Header -->
+  <div class="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-3">
+    <div>
+      <h1 class="text-xl font-semibold text-sga">{{ 'BANDEJA.TITULO' | translate }}</h1>
+      <p class="text-sm text-black/50 mt-0.5">
+        {{ 'BANDEJA.SUBTITULO' | translate }} —
+        <span class="font-medium text-sga/80">{{ rolLabel }}</span>
+      </p>
+    </div>
+  </div>
+
+  <!-- Loading -->
+  <div *ngIf="cargando" class="flex items-center justify-center py-16">
+    <div class="flex flex-col items-center gap-3">
+      <div class="w-8 h-8 border-2 border-sga/30 border-t-sga rounded-full animate-spin"></div>
+      <span class="text-sm text-black/50">{{ 'BANDEJA.CARGANDO' | translate }}</span>
+    </div>
+  </div>
+
+  <!-- Error -->
+  <mat-card *ngIf="!cargando && errorCarga" class="rounded-xl border border-red-200 bg-red-50 p-6">
+    <div class="flex items-center gap-3">
+      <mat-icon class="text-red-500">error_outline</mat-icon>
+      <div>
+        <p class="text-sm font-medium text-red-800">{{ 'BANDEJA.ERROR_CARGA' | translate }}</p>
+        <p class="text-xs text-red-600 mt-1">{{ 'BANDEJA.ERROR_CARGA_DETALLE' | translate }}</p>
+      </div>
+    </div>
+  </mat-card>
+
+  <!-- Tabla de comisiones -->
+  <div *ngIf="!cargando && !errorCarga">
+    <!-- Sin resultados -->
+    <mat-card *ngIf="comisiones.length === 0" class="rounded-xl border border-black/10 bg-white p-8">
+      <div class="flex flex-col items-center gap-3 text-center">
+        <mat-icon class="text-black/20 text-5xl w-12 h-12">inbox</mat-icon>
+        <p class="text-sm text-black/50">{{ 'BANDEJA.SIN_COMISIONES' | translate }}</p>
+      </div>
+    </mat-card>
+
+    <!-- Tabla dinámica -->
+    <app-dynamic-table
+      *ngIf="comisiones.length > 0"
+      [rows]="comisiones"
+      [columns]="columns"
+      [actions]="actions"
+      [enableColumnFilters]="enableFilters"
+      [pageSize]="10"
+      (actionClick)="onAction($event)">
+    </app-dynamic-table>
+  </div>
+
+</div>
