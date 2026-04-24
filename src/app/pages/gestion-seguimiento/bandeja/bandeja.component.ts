@@ -70,8 +70,8 @@ export class BandejaComponent implements OnInit {
             }
             break;
 
-          case 'SUPERVISOR':
-            // Supervisor ve comisiones asignadas
+          case 'DECANO':
+            // Decano ve comisiones asignadas
             this.comisiones = MOCK_COMISIONES.filter(c =>
               c.estado !== 'CANCELADA'
             );
@@ -101,13 +101,13 @@ export class BandejaComponent implements OnInit {
     switch (key) {
       case 'VER':
         this.router.navigate(['/seguimiento', comision.id], {
-          queryParams: { role: this.rolActual, mode: 'VER' },
+          queryParams: { mode: 'VER' },
         });
         break;
 
       case 'GESTIONAR':
         this.router.navigate(['/seguimiento', comision.id], {
-          queryParams: { role: this.rolActual, mode: 'GESTIONAR' },
+          queryParams: { mode: 'GESTIONAR' },
         });
         break;
 

@@ -82,9 +82,6 @@ export class DetalleComisionComponent implements OnInit {
     const rolesUsuario = getRolesUsuario();
     this.rolActual = resolverRolEfectivo(rolesUsuario) || 'DOCENTE';
 
-    const paramRole = this.route.snapshot.queryParamMap.get('role') as Role | null;
-    if (paramRole) this.rolActual = paramRole;
-
     const paramMode = this.route.snapshot.queryParamMap.get('mode');
     if (paramMode === 'GESTIONAR' || paramMode === 'VER') {
       this.mode = paramMode;
@@ -103,8 +100,8 @@ export class DetalleComisionComponent implements OnInit {
     return this.rolActual === 'DOCENTE';
   }
 
-  get isSupervisor(): boolean {
-    return this.rolActual === 'SUPERVISOR';
+  get isDecano(): boolean {
+    return this.rolActual === 'DECANO';
   }
 
   get isSecretariaGeneral(): boolean {
@@ -112,7 +109,7 @@ export class DetalleComisionComponent implements OnInit {
   }
 
   get canUploadDocs(): boolean {
-    return !this.isReadOnly && (this.isDocente || this.isSupervisor);
+    return !this.isReadOnly && (this.isDocente || this.isDecano);
   }
 
   private cargarDetalle(): void {

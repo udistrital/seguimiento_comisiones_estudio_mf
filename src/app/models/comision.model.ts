@@ -33,7 +33,7 @@ export interface ComisionDetalle {
   duracionMeses: number;
   estado: EstadoComision;
   estadoProrroga: EstadoProrroga;
-  supervisorNombre: string;
-  supervisorId: string;
+  decanoNombre: string;
+  decanoId: string;
   radicado: string;
 }

@@ -14,7 +14,7 @@
 
   "ROLES": {
     "DOCENTE": "Teacher",
-    "SUPERVISOR": "Supervisor",
+    "DECANO": "Dean",
     "SECRETARIA_GENERAL": "General Secretariat"
   },
 
@@ -62,7 +62,7 @@
     "DESTINO": "Destination",
     "DURACION": "Duration",
     "MESES": "months",
-    "SUPERVISOR": "Supervisor",
+    "DECANO": "Dean",
     "MODULOS_GESTION": "Management modules",
     "OBSERVACIONES": "Observations",
     "SIN_OBSERVACIONES": "No observations registered.",
@@ -140,7 +140,7 @@
     "REVISION": "Extension / closure review",
     "SOPORTES_PLACEHOLDER": "Document support section associated with the extension or closure. It will be enabled when integrated with the document manager.",
     "OBSERVACIONES_REVISOR": "Reviewer observations",
-    "INFO_SUPERVISOR": "As a supervisor you can review extension and closure documentation, and register observations for process tracking."
+    "INFO_DECANO": "As a dean you can review extension and closure documentation, and register observations for process tracking."
   },
 
   "INDICADORES": {
