@@ -4,7 +4,7 @@
 export type EstadoComision =
   | 'PENDIENTE'          // Pendiente de inicio
   | 'EN_EJECUCION'       // En ejecución
-  | 'EN_REVISION'        // En revisión por supervisor
+  | 'EN_REVISION'        // En revisión por decano
   | 'PRORROGA_SOLICITADA' // Prórroga solicitada
   | 'PRORROGA_APROBADA'  // Prórroga aprobada
   | 'FINALIZADA'         // Comisión finalizada

@@ -27,8 +27,8 @@ export class SeguimientoService {
     return this.apiMid.get<any>(`v1/seguimiento/comisiones_docente/${cedula}`);
   }
 
-  listarComisionesSupervisor(cedula: string) {
-    return this.apiMid.get<any>(`v1/seguimiento/comisiones_supervisor/${cedula}`);
+  listarComisionesDecano(cedula: string) {
+    return this.apiMid.get<any>(`v1/seguimiento/comisiones_decano/${cedula}`);
   }
 
   listarComisionesSecretariaGeneral() {

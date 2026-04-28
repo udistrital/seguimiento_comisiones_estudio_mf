@@ -65,7 +65,7 @@ const COLUMNS_DOCENTE: ColumnDef<ComisionRow>[] = [
   COL_ID, COL_FECHA_SOLICITUD, COL_FECHA_INICIO, COL_FECHA_FIN, COL_ESTADO,
 ];
 
-const COLUMNS_SUPERVISOR: ColumnDef<ComisionRow>[] = [
+const COLUMNS_DECANO: ColumnDef<ComisionRow>[] = [
   COL_ID, COL_FECHA_SOLICITUD, COL_ESTADO, COL_DOCENTE, COL_ID_DOCENTE,
 ];
 
@@ -76,7 +76,7 @@ const COLUMNS_SECRETARIA: ColumnDef<ComisionRow>[] = [
 export function getColumnsByRole(role: Role): ColumnDef<ComisionRow>[] {
   switch (role) {
     case 'DOCENTE':             return COLUMNS_DOCENTE;
-    case 'SUPERVISOR':          return COLUMNS_SUPERVISOR;
+    case 'DECANO':              return COLUMNS_DECANO;
     case 'SECRETARIA_GENERAL':  return COLUMNS_SECRETARIA;
     default:                    return COLUMNS_DOCENTE;
   }
@@ -112,7 +112,7 @@ export function getActionsByRole(role: Role): TableAction<ComisionRow>[] {
         { ...ACTION_GESTIONAR, visible: (r) => r.estado === 'EN_EJECUCION' || r.estado === 'PENDIENTE' || r.estado === 'PRORROGA_APROBADA' },
         { ...ACTION_VER, visible: (r) => r.estado === 'FINALIZADA' || r.estado === 'CANCELADA' || r.estado === 'EN_REVISION' },
       ];
-    case 'SUPERVISOR':
+    case 'DECANO':
       return [ACTION_GESTIONAR, ACTION_VER];
     case 'SECRETARIA_GENERAL':
       return [ACTION_VER, ACTION_GESTIONAR];

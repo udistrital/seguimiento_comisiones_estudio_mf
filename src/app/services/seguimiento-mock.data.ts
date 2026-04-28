@@ -103,8 +103,8 @@ export const MOCK_DETALLE: ComisionDetalle = {
   duracionMeses: 6,
   estado: 'EN_EJECUCION',
   estadoProrroga: 'NO_APLICA',
-  supervisorNombre: 'Pedro Ramírez Ortiz',
-  supervisorId: '1012345678',
+  decanoNombre: 'Pedro Ramírez Ortiz',
+  decanoId: '1012345678',
   radicado: 'RAD-2026-0101',
 };
 
@@ -154,7 +154,7 @@ export const MOCK_DOCUMENTOS_DESARROLLO: DocumentoSoporte[] = [
   },
   {
     id: 6,
-    nombre: 'Informe del supervisor',
+    nombre: 'Informe del decano',
     tipo: 'DESARROLLO',
     estado: 'PENDIENTE',
     autorSoporte: '',
@@ -247,7 +247,7 @@ export const MOCK_OBSERVACIONES: Observacion[] = [
     id: 1,
     comisionId: 1,
     autor: 'Pedro Ramírez Ortiz',
-    rolAutor: 'SUPERVISOR',
+    rolAutor: 'DECANO',
     fecha: '2026-04-15',
     texto: 'El docente presenta avance satisfactorio en el programa de doctorado. Se recomienda continuar con el seguimiento trimestral.',
     modulo: 'cumplimiento',

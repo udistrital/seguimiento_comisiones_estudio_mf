@@ -14,7 +14,7 @@
 
   "ROLES": {
     "DOCENTE": "Docente",
-    "SUPERVISOR": "Supervisor",
+    "DECANO": "Decano",
     "SECRETARIA_GENERAL": "Secretaría General"
   },
 
@@ -62,7 +62,7 @@
     "DESTINO": "Destino",
     "DURACION": "Duración",
     "MESES": "meses",
-    "SUPERVISOR": "Supervisor",
+    "DECANO": "Decano",
     "MODULOS_GESTION": "Módulos de gestión",
     "OBSERVACIONES": "Observaciones",
     "SIN_OBSERVACIONES": "No hay observaciones registradas.",
@@ -140,7 +140,7 @@
     "REVISION": "Revisión de prórroga / cierre",
     "SOPORTES_PLACEHOLDER": "Sección de soportes documentales asociados a la prórroga o cierre. Se habilitará cuando se integre con el gestor documental.",
     "OBSERVACIONES_REVISOR": "Observaciones del revisor",
-    "INFO_SUPERVISOR": "Como supervisor puede revisar la documentación de prórroga y cierre, y registrar observaciones para el seguimiento del proceso."
+    "INFO_DECANO": "Como decano puede revisar la documentación de prórroga y cierre, y registrar observaciones para el seguimiento del proceso."
   },
 
   "INDICADORES": {
