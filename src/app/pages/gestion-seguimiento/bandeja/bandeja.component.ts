@@ -4,11 +4,12 @@ import { TranslateService } from '@ngx-translate/core';
 
 import { Role, resolverRolEfectivo } from '../../../models/roles.model';
 import { ComisionRow } from '../../../models/comision.model';
+import { EstadoComision, EstadoProrroga } from '../../../models/estados.model';
 import { ColumnDef, TableAction } from '../../../shared/dynamic-table/dynamic-table.types';
 import { getColumnsByRole, getActionsByRole, BandejaActionKey } from './bandeja.table-config';
 import { getRolesUsuario, getDocumento } from '../../../utils/auth.util';
 import { PopUpManager } from '../../../managers/popup.manager';
-import { MOCK_COMISIONES } from '../../../services/seguimiento-mock.data';
+import { SeguimientoService } from '../../../services/seguimiento.service';
 
 @Component({
     selector: 'app-bandeja-seguimiento',
@@ -31,6 +32,7 @@ export class BandejaComponent implements OnInit {
     private readonly router: Router,
     private readonly translate: TranslateService,
     private readonly popup: PopUpManager,
+    private readonly seguimientoService: SeguimientoService,
   ) {}
 
   ngOnInit(): void {
@@ -54,44 +56,59 @@ export class BandejaComponent implements OnInit {
     this.cargando = true;
     this.errorCarga = false;
 
-    // TODO: Reemplazar por llamada real al servicio cuando los endpoints existan.
-    // Por ahora se usan datos mock filtrados por rol.
-    setTimeout(() => {
-      try {
-        switch (this.rolActual) {
-          case 'DOCENTE':
-            // Docente solo ve sus propias comisiones
-            this.comisiones = MOCK_COMISIONES.filter(c =>
-              c.idDocente === (getDocumento() || '1032456789')
-            );
-            // Si no hay match con documento real, mostrar todas las mock
-            if (this.comisiones.length === 0) {
-              this.comisiones = MOCK_COMISIONES.slice(0, 3);
-            }
-            break;
+    const cedula = getDocumento() ?? '';
+    let llamada$;
 
-          case 'DECANO':
-            // Decano ve comisiones asignadas
-            this.comisiones = MOCK_COMISIONES.filter(c =>
-              c.estado !== 'CANCELADA'
-            );
-            break;
-
-          case 'SECRETARIA_GENERAL':
-            // Secretaría General ve todas
-            this.comisiones = [...MOCK_COMISIONES];
-            break;
-
-          default:
-            this.comisiones = [];
-        }
-
+    switch (this.rolActual) {
+      case 'DOCENTE':
+        llamada$ = this.seguimientoService.listarComisionesDocente(cedula);
+        break;
+      case 'DECANO':
+        llamada$ = this.seguimientoService.listarComisionesDecano(cedula);
+        break;
+      case 'SECRETARIA_GENERAL':
+      case 'SECRETARIA_ACADEMICA':
+        llamada$ = this.seguimientoService.listarComisionesSecretariaGeneral();
+        break;
+      default:
+        this.comisiones = [];
         this.cargando = false;
-      } catch {
+        return;
+    }
+
+    llamada$.subscribe({
+      next: (resp: any) => {
+        const items: any[] = Array.isArray(resp?.Data) ? resp.Data : [];
+        this.comisiones = this.mapearRespuesta(items);
+        this.cargando = false;
+      },
+      error: () => {
         this.errorCarga = true;
         this.cargando = false;
-      }
-    }, 600);
+      },
+    });
+  }
+
+  private mapearRespuesta(items: any[]): ComisionRow[] {
+    return items.map(item => ({
+      id: item.comision_id ?? 0,
+      solicitudId: item.solicitud_id ?? 0,
+      docente: item.docente ?? '',
+      idDocente: item.id_docente ?? '',
+      programa: item.programa ?? '',
+      fechaSolicitud: this.extraerFecha(item.fecha_solicitud),
+      fechaInicio: this.extraerFecha(item.fecha_inicio),
+      fechaFin: this.extraerFecha(item.fecha_fin),
+      estado: (item.estado_comision || 'PENDIENTE') as EstadoComision,
+      estadoProrroga: 'NO_APLICA' as EstadoProrroga,
+    }));
+  }
+
+  private extraerFecha(valor: string | null | undefined): string {
+    if (!valor) return '';
+    // Los timestamps de Go vienen como "2026-01-15T00:00:00Z" — extraer solo la fecha
+    const partes = valor.split('T');
+    return partes[0] ?? valor;
   }
 
   onAction(event: { action: string; row: ComisionRow }): void {

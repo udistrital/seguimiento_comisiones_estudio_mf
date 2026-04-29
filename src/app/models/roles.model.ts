@@ -1,19 +1,22 @@
 export type Role =
   | 'DOCENTE'
   | 'DECANO'
-  | 'SECRETARIA_GENERAL';
+  | 'SECRETARIA_GENERAL'
+  | 'SECRETARIA_ACADEMICA';
 
 /** Roles válidos del sistema de seguimiento, en orden de prioridad ascendente */
 export const VALID_ROLES: Role[] = [
   'DOCENTE',
   'DECANO',
   'SECRETARIA_GENERAL',
+  'SECRETARIA_ACADEMICA',
 ];
 
 const ROLE_PRIORITY: Record<Role, number> = {
   DOCENTE: 1,
   DECANO: 2,
   SECRETARIA_GENERAL: 3,
+  SECRETARIA_ACADEMICA: 3,
 };
 
 /**
