@@ -77,8 +77,7 @@ export function getColumnsByRole(role: Role): ColumnDef<ComisionRow>[] {
   switch (role) {
     case 'DOCENTE':              return COLUMNS_DOCENTE;
     case 'DECANO':               return COLUMNS_DECANO;
-    case 'SECRETARIA_GENERAL':
-    case 'SECRETARIA_ACADEMICA': return COLUMNS_SECRETARIA;
+    case 'SECRETARIA_GENERAL': return COLUMNS_SECRETARIA;
     default:                     return COLUMNS_DOCENTE;
   }
 }
@@ -116,7 +115,6 @@ export function getActionsByRole(role: Role): TableAction<ComisionRow>[] {
     case 'DECANO':
       return [ACTION_GESTIONAR, ACTION_VER];
     case 'SECRETARIA_GENERAL':
-    case 'SECRETARIA_ACADEMICA':
       return [ACTION_VER, ACTION_GESTIONAR];
     default:
       return [ACTION_VER];

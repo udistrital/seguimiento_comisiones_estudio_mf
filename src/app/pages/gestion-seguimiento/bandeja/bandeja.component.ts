@@ -67,7 +67,6 @@ export class BandejaComponent implements OnInit {
         llamada$ = this.seguimientoService.listarComisionesDecano(cedula);
         break;
       case 'SECRETARIA_GENERAL':
-      case 'SECRETARIA_ACADEMICA':
         llamada$ = this.seguimientoService.listarComisionesSecretariaGeneral();
         break;
       default:
