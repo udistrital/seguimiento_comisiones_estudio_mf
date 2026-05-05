@@ -75,10 +75,10 @@ const COLUMNS_SECRETARIA: ColumnDef<ComisionRow>[] = [
 
 export function getColumnsByRole(role: Role): ColumnDef<ComisionRow>[] {
   switch (role) {
-    case 'DOCENTE':             return COLUMNS_DOCENTE;
-    case 'DECANO':              return COLUMNS_DECANO;
-    case 'SECRETARIA_GENERAL':  return COLUMNS_SECRETARIA;
-    default:                    return COLUMNS_DOCENTE;
+    case 'DOCENTE':              return COLUMNS_DOCENTE;
+    case 'DECANO':               return COLUMNS_DECANO;
+    case 'SECRETARIA_GENERAL': return COLUMNS_SECRETARIA;
+    default:                     return COLUMNS_DOCENTE;
   }
 }
 
