@@ -101,7 +101,7 @@ export class DetalleComisionComponent implements OnInit {
   }
 
   private cargarDocumentosSolicitud(): void {
-    this.comisionesCrud.get(`v1/solicitud?query=ComisionId.Id:${this.comisionId},Activo:true&limit=1`).subscribe({
+    this.comisionesCrud.get(`solicitud?query=ComisionId.Id:${this.comisionId},Activo:true&limit=1`).subscribe({
       next: (resp: any) => {
         const items: any[] = Array.isArray(resp?.Data) ? resp.Data : [];
         if (!items.length) return;
@@ -109,7 +109,7 @@ export class DetalleComisionComponent implements OnInit {
         const solicitudId = items[0]?.Id;
         if (!solicitudId) return;
 
-        this.seguimientoService.get(`v1/solicitud/detalles_solicitud/${solicitudId}`).subscribe({
+        this.seguimientoService.get(`solicitud/detalles_solicitud/${solicitudId}`).subscribe({
           next: (detResp: any) => {
             const docs: any[] = Array.isArray(detResp?.Data?.Documentos) ? detResp.Data.Documentos : [];
             const docsMapeados = docs.map((doc: any, i: number) => ({
@@ -205,7 +205,7 @@ export class DetalleComisionComponent implements OnInit {
     }
 
     doc.cargandoArchivo = true;
-    this.gestorDocumental.get(`v1/document/${encodeURIComponent(doc.enlace)}`).subscribe({
+    this.gestorDocumental.get(`document/${encodeURIComponent(doc.enlace)}`).subscribe({
       next: (resp: any) => {
         const base64 = resp?.Data?.file || resp?.file || null;
         doc.cargandoArchivo = false;
