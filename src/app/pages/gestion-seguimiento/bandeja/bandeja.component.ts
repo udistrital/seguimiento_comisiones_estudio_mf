@@ -61,13 +61,13 @@ export class BandejaComponent implements OnInit {
 
     switch (this.rolActual) {
       case 'DOCENTE':
-        llamada$ = this.seguimientoService.listarComisionesDocente(cedula);
+        llamada$ = this.seguimientoService.get(`v1/seguimiento/comisiones_docente/${cedula}`);
         break;
       case 'DECANO':
-        llamada$ = this.seguimientoService.listarComisionesDecano(cedula);
+        llamada$ = this.seguimientoService.get(`v1/seguimiento/comisiones_decano/${cedula}`);
         break;
       case 'SECRETARIA_GENERAL':
-        llamada$ = this.seguimientoService.listarComisionesSecretariaGeneral();
+        llamada$ = this.seguimientoService.get('v1/seguimiento/comisiones_secretaria_general');
         break;
       default:
         this.comisiones = [];
