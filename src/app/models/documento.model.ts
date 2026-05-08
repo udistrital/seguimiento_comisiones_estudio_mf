@@ -8,10 +8,12 @@ export interface DocumentoSoporte {
   estado: EstadoDocumento;
   autorSoporte: string;
   fechaCarga: string;
-  nuxeoId?: string;
-  contentUrl?: string;
-  fileName?: string;
+  enlace?: string;
+  base64?: string;
   mimeType?: string;
+  cargandoArchivo?: boolean;
+  isFR010?: boolean;
+  formData?: any;
 }
 
 /** Tipo de documento requerido */

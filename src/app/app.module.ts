@@ -28,6 +28,8 @@ import { CardModuloComponent } from './shared/card-modulo/card-modulo.component'
 import { PanelObservacionesComponent } from './shared/panel-observaciones/panel-observaciones.component';
 import { InfoGeneralComponent } from './shared/info-general/info-general.component';
 import { PanelDocumentosComponent } from './shared/panel-documentos/panel-documentos.component';
+import { VisorDocumentosComponent } from './shared/visor-documentos/visor-documentos.component';
+import { Fr010FormComponent } from './shared/fr010-form/fr010-form.component';
 import { EstadoComisionPipe } from './shared/pipes/estado-comision.pipe';
 
 // Forms
@@ -123,6 +125,8 @@ registerLocaleData(localeEs);
     PanelObservacionesComponent,
     InfoGeneralComponent,
     PanelDocumentosComponent,
+    VisorDocumentosComponent,
+    Fr010FormComponent,
     EstadoComisionPipe,
   ],
   imports: [

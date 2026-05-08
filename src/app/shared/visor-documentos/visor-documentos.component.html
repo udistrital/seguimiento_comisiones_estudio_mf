@@ -1,0 +1,62 @@
+<h2 mat-dialog-title class="m-0 pl-3 border-l-[6px] border-l-sga text-[20px] font-semibold">
+  {{ (isFR010 ? 'FR010.TITULO_VISOR' : 'VISOR.TITULO') | translate }}
+</h2>
+
+<div mat-dialog-content class="pt-2 grid gap-3">
+
+  <!-- Metadata del documento -->
+  <section class="border border-black/10 rounded-xl overflow-hidden bg-white">
+    <header class="px-3 py-2 border-b border-black/10 border-l-[6px] border-l-sga bg-sga/5 flex items-baseline justify-between gap-3">
+      <div class="font-semibold">{{ 'VISOR.INFO_DOC' | translate }}</div>
+    </header>
+    <div class="p-3 grid gap-2 text-black/80">
+      <div class="grid grid-cols-[90px_1fr] gap-2">
+        <span class="text-black/60">{{ 'VISOR.NOMBRE' | translate }}:</span>
+        <span class="break-words">{{ data.nombre }}</span>
+      </div>
+      <div class="grid grid-cols-[90px_1fr] gap-2">
+        <span class="text-black/60">{{ 'VISOR.AUTOR' | translate }}:</span>
+        <span class="break-words">{{ data.autor || '-' }}</span>
+      </div>
+      <div class="grid grid-cols-[90px_1fr] gap-2">
+        <span class="text-black/60">{{ 'VISOR.ESTADO' | translate }}:</span>
+        <span>{{ 'DOC_ESTADOS.' + data.estado | translate }}</span>
+      </div>
+    </div>
+  </section>
+
+  <!-- FR-010: formulario en solo lectura -->
+  <ng-container *ngIf="isFR010">
+    <app-fr010-form [datosIniciales]="data.formData"></app-fr010-form>
+  </ng-container>
+
+  <!-- Visor PDF (solo cuando no es FR010) -->
+  <ng-container *ngIf="!isFR010">
+    <section class="border border-black/10 rounded-xl overflow-hidden">
+      <header class="px-3 py-2 border-b border-black/10 border-l-[6px] border-l-sga bg-sga/5">
+        <div class="font-semibold">{{ 'VISOR.VISOR_LABEL' | translate }}</div>
+      </header>
+      <ng-container *ngIf="pdfUrl; else sinDocumento">
+        <iframe
+          [src]="pdfUrl"
+          width="100%"
+          height="650"
+          style="border: none; display: block;"
+          [title]="data.nombre">
+        </iframe>
+      </ng-container>
+      <ng-template #sinDocumento>
+        <div class="p-6 text-center text-black/50 text-sm">
+          {{ 'VISOR.SIN_DOCUMENTO' | translate }}
+        </div>
+      </ng-template>
+    </section>
+  </ng-container>
+
+</div>
+
+<div mat-dialog-actions class="pt-1 justify-center">
+  <button mat-flat-button color="primary" class="h-9 px-3.5 rounded-lg" mat-dialog-close>
+    {{ 'ACTIONS.CERRAR' | translate }}
+  </button>
+</div>
