@@ -102,20 +102,20 @@ const ACTION_GESTIONAR: TableAction<ComisionRow> = {
   icon: 'settings',
   tooltip: 'TOOLTIPS.GESTIONAR',
   color: 'primary',
-  visible: (r) => r.estado !== 'FINALIZADA' && r.estado !== 'CANCELADA',
+  visible: (r) => !['COM_FIN', 'COM_CANC'].includes(r.estado),
 };
 
 export function getActionsByRole(role: Role): TableAction<ComisionRow>[] {
   switch (role) {
     case 'DOCENTE':
       return [
-        { ...ACTION_GESTIONAR, visible: (r) => r.estado === 'EN_EJECUCION' || r.estado === 'PENDIENTE' || r.estado === 'PRORROGA_APROBADA' },
-        { ...ACTION_VER, visible: (r) => r.estado === 'FINALIZADA' || r.estado === 'CANCELADA' || r.estado === 'EN_REVISION' },
+        { ...ACTION_GESTIONAR, visible: (r) => ['COM_INI', 'DES_ACAD', 'PROR', 'TIT', 'INF_FIN', 'TRAM_PAZ_SAL'].includes(r.estado) },
+        { ...ACTION_VER,       visible: (r) => ['COM_FIN', 'COM_CANC'].includes(r.estado) },
       ];
     case 'DECANO':
-      return [ACTION_GESTIONAR, ACTION_VER];
+      return [ACTION_GESTIONAR];
     case 'SECRETARIA_GENERAL':
-      return [ACTION_VER, ACTION_GESTIONAR];
+      return [ACTION_GESTIONAR];
     default:
       return [ACTION_VER];
   }

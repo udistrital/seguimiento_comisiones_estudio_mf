@@ -1,15 +1,16 @@
 // ============================================================
 // Estados de comision en seguimiento — fase 2
+// Códigos reales de la tabla comision.estado_comision en BD
 // ============================================================
 export type EstadoComision =
-  | 'PENDIENTE'          // Pendiente de inicio
-  | 'EN_EJECUCION'       // En ejecución
-  | 'EN_REVISION'        // En revisión por decano
-  | 'PRORROGA_SOLICITADA' // Prórroga solicitada
-  | 'PRORROGA_APROBADA'  // Prórroga aprobada
-  | 'FINALIZADA'         // Comisión finalizada
-  | 'CANCELADA'          // Comisión cancelada
-  | 'INCUMPLIDA';        // Incumplimiento
+  | 'COM_INI'       // Comisión iniciada
+  | 'DES_ACAD'      // En desarrollo académico
+  | 'PROR'          // En prórroga
+  | 'TIT'           // En titulación
+  | 'INF_FIN'       // En informe final
+  | 'TRAM_PAZ_SAL'  // En trámite de paz y salvo
+  | 'COM_FIN'       // Comisión finalizada
+  | 'COM_CANC';     // Comisión cancelada
 
 // ============================================================
 // Estados de documento soporte

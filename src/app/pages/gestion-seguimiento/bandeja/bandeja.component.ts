@@ -98,16 +98,15 @@ export class BandejaComponent implements OnInit {
       fechaSolicitud: this.extraerFecha(item.fecha_solicitud),
       fechaInicio: this.extraerFecha(item.fecha_inicio),
       fechaFin: this.extraerFecha(item.fecha_fin),
-      estado: (item.estado_comision || 'PENDIENTE') as EstadoComision,
+      estado: (item.estado_comision || 'COM_INI') as EstadoComision,
       estadoProrroga: 'NO_APLICA' as EstadoProrroga,
     }));
   }
 
   private extraerFecha(valor: string | null | undefined): string {
     if (!valor) return '';
-    // Los timestamps de Go vienen como "2026-01-15T00:00:00Z" — extraer solo la fecha
-    const partes = valor.split('T');
-    return partes[0] ?? valor;
+    // Normaliza tanto "2026-01-15T00:00:00Z" como "2026-01-15 20:06:26.515418 +0000 +0000"
+    return valor.substring(0, 10);
   }
 
   onAction(event: { action: string; row: ComisionRow }): void {

@@ -82,14 +82,14 @@
   },
 
   "ESTADOS": {
-    "PENDIENTE": "Pendiente",
-    "EN_EJECUCION": "En ejecución",
-    "EN_REVISION": "En revisión",
-    "PRORROGA_SOLICITADA": "Prórroga solicitada",
-    "PRORROGA_APROBADA": "Prórroga aprobada",
-    "FINALIZADA": "Finalizada",
-    "CANCELADA": "Cancelada",
-    "INCUMPLIDA": "Incumplida"
+    "COM_INI": "Comisión iniciada",
+    "DES_ACAD": "En desarrollo académico",
+    "PROR": "En prórroga",
+    "TIT": "En titulación",
+    "INF_FIN": "En informe final",
+    "TRAM_PAZ_SAL": "En trámite de paz y salvo",
+    "COM_FIN": "Finalizada",
+    "COM_CANC": "Cancelada"
   },
 
   "ESTADOS_PRORROGA": {

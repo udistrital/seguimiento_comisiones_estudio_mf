@@ -82,14 +82,14 @@
   },
 
   "ESTADOS": {
-    "PENDIENTE": "Pending",
-    "EN_EJECUCION": "In execution",
-    "EN_REVISION": "Under review",
-    "PRORROGA_SOLICITADA": "Extension requested",
-    "PRORROGA_APROBADA": "Extension approved",
-    "FINALIZADA": "Completed",
-    "CANCELADA": "Cancelled",
-    "INCUMPLIDA": "Non-compliant"
+    "COM_INI": "Commission started",
+    "DES_ACAD": "In academic development",
+    "PROR": "In extension",
+    "TIT": "In titulation",
+    "INF_FIN": "Final report",
+    "TRAM_PAZ_SAL": "Peace and clearance process",
+    "COM_FIN": "Completed",
+    "COM_CANC": "Cancelled"
   },
 
   "ESTADOS_PRORROGA": {
