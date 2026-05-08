@@ -170,10 +170,12 @@ export class DetalleComisionComponent implements OnInit {
 
   private mapEstadoDocumento(codigo: string | undefined): EstadoDocumento {
     switch ((codigo ?? '').toUpperCase()) {
-      case 'CARG':                                       return 'CARGADO';
+      case 'CARG':           return 'CARGADO';
+      case 'APROB':
       case 'APROB_JEFE':
       case 'APROB_DEC':
       case 'APROB_SEC_GRAL': return 'APROBADO';
+      case 'REC':
       case 'REC_JEFE':
       case 'REC_DEC':
       case 'REC_SEC_GRAL':   return 'RECHAZADO';
