@@ -14,8 +14,14 @@
 
   "ROLES": {
     "DOCENTE": "Teacher",
+    "PROFE": "Teacher",
+    "PROFESOR": "Teacher",
     "DECANO": "Dean",
-    "SECRETARIA_GENERAL": "General Secretariat"
+    "DECANATURA": "Dean's Office",
+    "SECRETARIA_GENERAL": "General Secretariat",
+    "COORDINADOR": "Coordinator",
+    "SECRETARIA_ACADEMICA": "Academic Secretariat",
+    "ADMIN_SGA": "SGA Administrator"
   },
 
   "TABLE": {

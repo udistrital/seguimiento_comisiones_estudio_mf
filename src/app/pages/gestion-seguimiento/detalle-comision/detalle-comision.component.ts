@@ -22,7 +22,6 @@ import {
   MOCK_DOCUMENTOS_DESARROLLO,
   MOCK_PAGOS,
   MOCK_CUMPLIMIENTO,
-  MOCK_OBSERVACIONES,
 } from '../../../services/seguimiento-mock.data';
 
 @Component({
@@ -94,7 +93,7 @@ export class DetalleComisionComponent implements OnInit {
       this.documentosDesarrollo = [...MOCK_DOCUMENTOS_DESARROLLO];
       this.pagos = [...MOCK_PAGOS];
       this.cumplimiento = [...MOCK_CUMPLIMIENTO];
-      this.observaciones = [...MOCK_OBSERVACIONES];
+      this.observaciones = [];
       this.cargando = false;
     }, 500);
 
@@ -148,6 +147,19 @@ export class DetalleComisionComponent implements OnInit {
             } else {
               this.documentosSolicitud = docsMapeados;
             }
+
+            const obsRaw: any[] = Array.isArray(detResp?.Data?.Observaciones) ? detResp.Data.Observaciones : [];
+            this.observaciones = obsRaw
+              .filter((obs: any) => !!String(obs?.Descripcion || '').trim())
+              .map((obs: any, i: number) => ({
+                id: obs.Id ?? i,
+                comisionId: this.comisionId,
+                autor: this.formatRol(obs.Rol),
+                rolAutor: (obs.Rol || 'DOCENTE') as any,
+                fecha: '',
+                texto: String(obs.Descripcion || '').trim(),
+                modulo: 'solicitud',
+              }));
           },
           error: () => {},
         });
