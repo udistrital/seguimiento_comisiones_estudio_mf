@@ -59,6 +59,12 @@
           [permitirCarga]="false"
           (verDocumento)="onVerDocumento($event)">
         </app-panel-documentos>
+        <div class="border-t border-black/10 my-4"></div>
+        <app-panel-observaciones
+          [observaciones]="observacionesSolicitud"
+          [readOnly]="true"
+          [titulo]="'DETALLE.OBSERVACIONES_SOLICITUD'">
+        </app-panel-observaciones>
       </mat-card>
 
       <!-- Documentos desarrollo -->
@@ -70,16 +76,37 @@
           (verDocumento)="onVerDocumento($event)"
           (cargarDocumento)="onCargarDocumento($event)">
         </app-panel-documentos>
+        <div class="border-t border-black/10 my-4"></div>
+        <app-panel-observaciones
+          [observaciones]="observacionesPorPanel['docs-desarrollo'] || []"
+          [readOnly]="isReadOnly"
+          [titulo]="'DETALLE.COMENTARIOS'"
+          (nuevaObservacion)="onNuevaObservacion($event)">
+        </app-panel-observaciones>
       </mat-card>
 
       <!-- Gestión de pagos -->
       <mat-card *ngSwitchCase="'pagos'" class="rounded-xl border border-black/10 bg-white p-5">
         <app-gestion-pagos [pagos]="pagos" [readOnly]="isReadOnly"></app-gestion-pagos>
+        <div class="border-t border-black/10 my-4"></div>
+        <app-panel-observaciones
+          [observaciones]="observacionesPorPanel['pagos'] || []"
+          [readOnly]="isReadOnly"
+          [titulo]="'DETALLE.COMENTARIOS'"
+          (nuevaObservacion)="onNuevaObservacion($event)">
+        </app-panel-observaciones>
       </mat-card>
 
       <!-- Cumplimiento -->
       <mat-card *ngSwitchCase="'cumplimiento'" class="rounded-xl border border-black/10 bg-white p-5">
         <app-cumplimiento [items]="cumplimiento" [readOnly]="isReadOnly"></app-cumplimiento>
+        <div class="border-t border-black/10 my-4"></div>
+        <app-panel-observaciones
+          [observaciones]="observacionesPorPanel['cumplimiento'] || []"
+          [readOnly]="isReadOnly"
+          [titulo]="'DETALLE.COMENTARIOS'"
+          (nuevaObservacion)="onNuevaObservacion($event)">
+        </app-panel-observaciones>
       </mat-card>
 
       <!-- Prórroga y cierre -->
@@ -95,15 +122,6 @@
       </mat-card>
 
     </ng-container>
-
-    <!-- Observaciones (siempre visible debajo del módulo activo) -->
-    <mat-card class="rounded-xl border border-black/10 bg-white p-5">
-      <app-panel-observaciones
-        [observaciones]="observaciones"
-        [readOnly]="isReadOnly"
-        (nuevaObservacion)="onNuevaObservacion($event)">
-      </app-panel-observaciones>
-    </mat-card>
 
   </ng-container>
 </div>

@@ -82,6 +82,8 @@
     "DECANO": "Dean",
     "MODULOS_GESTION": "Management modules",
     "OBSERVACIONES": "Observations",
+    "OBSERVACIONES_SOLICITUD": "Request observations (read-only)",
+    "COMENTARIOS": "Comments",
     "SIN_OBSERVACIONES": "No observations registered.",
     "ESCRIBIR_OBSERVACION": "Write observation...",
     "DOCUMENTOS": "Documents",
@@ -175,6 +177,7 @@
   "POPUPS": {
     "CONFIRMAR_OBSERVACION": "Do you want to register this observation?",
     "OBSERVACION_GUARDADA": "Observation registered successfully.",
+    "ERROR_OBSERVACION": "Could not save the observation. Please try again.",
     "VER_DOCUMENTO": "Viewing document",
     "CARGAR_DOCUMENTO_PLACEHOLDER": "Document upload functionality will be enabled when integrated with the document manager (Nuxeo).",
     "CONFIRMAR_RETORNAR": "Are you sure you want to return this request for correction?",
