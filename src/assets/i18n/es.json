@@ -82,6 +82,8 @@
     "DECANO": "Decano",
     "MODULOS_GESTION": "Módulos de gestión",
     "OBSERVACIONES": "Observaciones",
+    "OBSERVACIONES_SOLICITUD": "Observaciones de la solicitud (solo lectura)",
+    "COMENTARIOS": "Comentarios",
     "SIN_OBSERVACIONES": "No hay observaciones registradas.",
     "ESCRIBIR_OBSERVACION": "Escribir observación...",
     "DOCUMENTOS": "Documentos",
@@ -175,6 +177,7 @@
   "POPUPS": {
     "CONFIRMAR_OBSERVACION": "¿Desea registrar esta observación?",
     "OBSERVACION_GUARDADA": "Observación registrada correctamente.",
+    "ERROR_OBSERVACION": "No se pudo guardar la observación. Intente de nuevo.",
     "VER_DOCUMENTO": "Visualizando documento",
     "CARGAR_DOCUMENTO_PLACEHOLDER": "La funcionalidad de carga documental se habilitará cuando se integre con el gestor documental (Nuxeo).",
     "DOC_NO_DISPONIBLE": "El documento no está disponible en este momento.",

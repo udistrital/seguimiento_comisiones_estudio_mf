@@ -43,7 +43,7 @@ export class BandejaComponent implements OnInit {
       this.rolActual = 'DOCENTE'; // fallback para desarrollo local
     }
 
-    this.rolLabel = this.translate.instant('ROLES.' + this.rolActual);
+    this.translate.get('ROLES.' + this.rolActual).subscribe(label => { this.rolLabel = label; });
     this.enableFilters = this.rolActual !== 'DOCENTE';
 
     this.columns = getColumnsByRole(this.rolActual);

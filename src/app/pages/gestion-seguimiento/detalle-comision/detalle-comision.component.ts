@@ -11,7 +11,7 @@ import { Observacion } from '../../../models/observacion.model';
 import { PagoComision } from '../../../models/pago.model';
 import { CumplimientoItem } from '../../../models/cumplimiento.model';
 import { ModuloGestion } from '../../../models/modulo-gestion.model';
-import { getRolesUsuario } from '../../../utils/auth.util';
+import { getRolesUsuario, getDocumento, getNombreUsuario } from '../../../utils/auth.util';
 import { PopUpManager } from '../../../managers/popup.manager';
 import { SeguimientoService } from '../../../services/seguimiento.service';
 import { ComisionesCrudService } from '../../../services/comisiones-crud.service';
@@ -41,9 +41,17 @@ export class DetalleComisionComponent implements OnInit {
   documentosDesarrollo: DocumentoSoporte[] = [];
   pagos: PagoComision[] = [];
   cumplimiento: CumplimientoItem[] = [];
-  observaciones: Observacion[] = [];
+  observacionesSolicitud: Observacion[] = [];
+  observacionesPorPanel: Record<string, Observacion[]> = {};
+  cargandoComentarios: Record<string, boolean> = {};
 
   moduloActivo: string | null = null;
+
+  private readonly PANEL_A_TIPO: Record<string, string> = {
+    'docs-desarrollo': 'COM_DESARROLLO',
+    'pagos':           'COM_PAGOS',
+    'cumplimiento':    'COM_CUMPLIMIENTO',
+  };
 
   modulos: ModuloGestion[] = [
     { key: 'docs-solicitud',  icon: 'folder_open',  titleKey: 'MODULOS.DOCS_SOLICITUD' },
@@ -93,7 +101,7 @@ export class DetalleComisionComponent implements OnInit {
       this.documentosDesarrollo = [...MOCK_DOCUMENTOS_DESARROLLO];
       this.pagos = [...MOCK_PAGOS];
       this.cumplimiento = [...MOCK_CUMPLIMIENTO];
-      this.observaciones = [];
+      this.observacionesSolicitud = [];
       this.cargando = false;
     }, 500);
 
@@ -149,7 +157,7 @@ export class DetalleComisionComponent implements OnInit {
             }
 
             const obsRaw: any[] = Array.isArray(detResp?.Data?.Observaciones) ? detResp.Data.Observaciones : [];
-            this.observaciones = obsRaw
+            this.observacionesSolicitud = obsRaw
               .filter((obs: any) => !!String(obs?.Descripcion || '').trim())
               .map((obs: any, i: number) => ({
                 id: obs.Id ?? i,
@@ -185,7 +193,52 @@ export class DetalleComisionComponent implements OnInit {
   }
 
   onModuloClick(key: string): void {
+    const anterior = this.moduloActivo;
     this.moduloActivo = this.moduloActivo === key ? null : key;
+    if (this.moduloActivo && this.moduloActivo !== anterior && this.PANEL_A_TIPO[this.moduloActivo]) {
+      this.cargarComentariosPanel(this.moduloActivo);
+    }
+  }
+
+  private cargarComentariosPanel(key: string): void {
+    const codigo = this.PANEL_A_TIPO[key];
+    if (!codigo) return;
+
+    this.cargandoComentarios = { ...this.cargandoComentarios, [key]: true };
+
+    this.seguimientoService.get(`seguimiento/comentarios/${this.comisionId}/${codigo}`).subscribe({
+      next: (resp: any) => {
+        const items: any[] = Array.isArray(resp?.Data) ? resp.Data : [];
+        this.observacionesPorPanel = {
+          ...this.observacionesPorPanel,
+          [key]: items.map((item: any) => ({
+            id: item.id,
+            comisionId: this.comisionId,
+            autor: item.nombre || item.numero_identificacion || 'Usuario',
+            rolAutor: item.rol || 'DOCENTE',
+            fecha: this.formatFechaHora(item.fecha_creacion),
+            texto: item.texto,
+            modulo: key,
+          })),
+        };
+        this.cargandoComentarios = { ...this.cargandoComentarios, [key]: false };
+      },
+      error: () => {
+        this.cargandoComentarios = { ...this.cargandoComentarios, [key]: false };
+      },
+    });
+  }
+
+  private formatFechaHora(iso: string): string {
+    if (!iso) return '';
+    try {
+      const d = new Date(iso);
+      const fecha = d.toLocaleDateString('es-CO', { day: '2-digit', month: '2-digit', year: 'numeric' });
+      const hora = d.toLocaleTimeString('es-CO', { hour: '2-digit', minute: '2-digit' });
+      return `${fecha} ${hora}`;
+    } catch {
+      return iso;
+    }
   }
 
   onVerDocumento(doc: DocumentoSoporte): void {
@@ -248,20 +301,31 @@ export class DetalleComisionComponent implements OnInit {
   }
 
   onNuevaObservacion(texto: string): void {
+    const key = this.moduloActivo || '';
+    const codigo = this.PANEL_A_TIPO[key];
+    if (!codigo) return;
+
     this.popup.confirm(this.translate.instant('POPUPS.CONFIRMAR_OBSERVACION')).then(result => {
-      if (result.isConfirmed) {
-        const nueva: Observacion = {
-          id: Date.now(),
-          comisionId: this.comisionId,
-          autor: 'Usuario actual',
-          rolAutor: this.rolActual || 'DOCENTE',
-          fecha: new Date().toISOString().split('T')[0],
-          texto,
-          modulo: this.moduloActivo || 'general',
-        };
-        this.observaciones = [nueva, ...this.observaciones];
-        this.popup.success(this.translate.instant('POPUPS.OBSERVACION_GUARDADA'));
-      }
+      if (!result.isConfirmed) return;
+
+      const body = {
+        comision_id: this.comisionId,
+        codigo_tipo_seguimiento: codigo,
+        rol: this.rolActual || 'DOCENTE',
+        nombre: getNombreUsuario() || '',
+        numero_identificacion: getDocumento() || '',
+        texto,
+      };
+
+      this.seguimientoService.post('seguimiento/comentario', body).subscribe({
+        next: () => {
+          this.cargarComentariosPanel(key);
+          this.popup.success(this.translate.instant('POPUPS.OBSERVACION_GUARDADA'));
+        },
+        error: () => {
+          this.popup.error(this.translate.instant('POPUPS.ERROR_OBSERVACION'));
+        },
+      });
     });
   }
 
