@@ -50,8 +50,11 @@
             <button type="button" class="sga-table-action sga-table-action--primary"
                     [matTooltip]="'ACTIONS.VER' | translate"
                     (click)="onVer(doc)"
-                    [disabled]="doc.estado === 'PENDIENTE'">
-              <mat-icon>visibility</mat-icon>
+                    [disabled]="doc.estado === 'PENDIENTE' || doc.cargandoArchivo">
+              <mat-icon *ngIf="!doc.cargandoArchivo">visibility</mat-icon>
+              <div *ngIf="doc.cargandoArchivo"
+                   class="w-4 h-4 border-2 border-sga/30 border-t-sga rounded-full animate-spin">
+              </div>
             </button>
             <button *ngIf="permitirCarga && doc.estado === 'PENDIENTE'"
                     type="button" class="sga-table-action sga-table-action--primary"

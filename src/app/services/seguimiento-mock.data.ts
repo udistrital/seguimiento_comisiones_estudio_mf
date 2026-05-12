@@ -20,7 +20,7 @@ export const MOCK_COMISIONES: ComisionRow[] = [
     fechaSolicitud: '2026-01-15',
     fechaInicio: '2026-03-01',
     fechaFin: '2026-09-01',
-    estado: 'EN_EJECUCION',
+    estado: 'DES_ACAD',
     estadoProrroga: 'NO_APLICA',
   },
   {
@@ -32,7 +32,7 @@ export const MOCK_COMISIONES: ComisionRow[] = [
     fechaSolicitud: '2025-11-20',
     fechaInicio: '2026-02-01',
     fechaFin: '2026-08-01',
-    estado: 'EN_REVISION',
+    estado: 'INF_FIN',
     estadoProrroga: 'SOLICITADA',
   },
   {
@@ -44,7 +44,7 @@ export const MOCK_COMISIONES: ComisionRow[] = [
     fechaSolicitud: '2025-09-10',
     fechaInicio: '2026-01-15',
     fechaFin: '2026-07-15',
-    estado: 'PRORROGA_APROBADA',
+    estado: 'PROR',
     estadoProrroga: 'APROBADA',
   },
   {
@@ -56,7 +56,7 @@ export const MOCK_COMISIONES: ComisionRow[] = [
     fechaSolicitud: '2025-08-05',
     fechaInicio: '2025-12-01',
     fechaFin: '2026-06-01',
-    estado: 'FINALIZADA',
+    estado: 'COM_FIN',
     estadoProrroga: 'NO_APLICA',
   },
   {
@@ -68,7 +68,7 @@ export const MOCK_COMISIONES: ComisionRow[] = [
     fechaSolicitud: '2026-02-28',
     fechaInicio: '2026-04-15',
     fechaFin: '2026-10-15',
-    estado: 'PENDIENTE',
+    estado: 'COM_INI',
     estadoProrroga: 'NO_APLICA',
   },
   {
@@ -80,7 +80,7 @@ export const MOCK_COMISIONES: ComisionRow[] = [
     fechaSolicitud: '2025-07-12',
     fechaInicio: '2025-10-01',
     fechaFin: '2026-04-01',
-    estado: 'CANCELADA',
+    estado: 'COM_CANC',
     estadoProrroga: 'NO_APLICA',
   },
 ];
@@ -101,7 +101,7 @@ export const MOCK_DETALLE: ComisionDetalle = {
   fechaInicio: '2026-03-01',
   fechaFin: '2026-09-01',
   duracionMeses: 6,
-  estado: 'EN_EJECUCION',
+  estado: 'DES_ACAD',
   estadoProrroga: 'NO_APLICA',
   decanoNombre: 'Pedro Ramírez Ortiz',
   decanoId: '1012345678',

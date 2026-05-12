@@ -2,8 +2,8 @@ import { Injectable } from '@angular/core';
 import { RequestManager } from '../managers/request.manager';
 
 @Injectable({ providedIn: 'root' })
-export class SeguimientoService {
-  private readonly client = this.requestManager.client('COMISIONES_MID_SERVICE');
+export class ComisionesCrudService {
+  private readonly client = this.requestManager.client('COMISIONES_CRUD_SERVICE');
 
   constructor(private readonly requestManager: RequestManager) {}
 

@@ -5,15 +5,15 @@ import { EstadoComision, EstadoDocumento, EstadoPago, EstadoProrroga } from '../
  */
 export function estadoComisionClass(estado: EstadoComision): string {
   switch (estado) {
-    case 'PENDIENTE':           return 'st-pendiente';
-    case 'EN_EJECUCION':        return 'st-ejecucion';
-    case 'EN_REVISION':         return 'st-revision';
-    case 'PRORROGA_SOLICITADA': return 'st-prorroga';
-    case 'PRORROGA_APROBADA':   return 'st-prorroga';
-    case 'FINALIZADA':          return 'st-finalizada';
-    case 'CANCELADA':           return 'st-cancelada';
-    case 'INCUMPLIDA':          return 'st-cancelada';
-    default:                    return 'st-pendiente';
+    case 'COM_INI':      return 'st-pendiente';
+    case 'DES_ACAD':     return 'st-ejecucion';
+    case 'PROR':         return 'st-prorroga';
+    case 'TIT':          return 'st-ejecucion';
+    case 'INF_FIN':      return 'st-revision';
+    case 'TRAM_PAZ_SAL': return 'st-revision';
+    case 'COM_FIN':      return 'st-finalizada';
+    case 'COM_CANC':     return 'st-cancelada';
+    default:             return 'st-pendiente';
   }
 }
 
