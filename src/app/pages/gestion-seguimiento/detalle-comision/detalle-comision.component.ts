@@ -4,6 +4,7 @@ import { MatDialog } from '@angular/material/dialog';
 import { TranslateService } from '@ngx-translate/core';
 
 import { Role, resolverRolEfectivo } from '../../../models/roles.model';
+import { estadoDocumentoClass } from '../../../utils/estado-comision.util';
 import { ComisionDetalle } from '../../../models/comision.model';
 import { DocumentoSoporte } from '../../../models/documento.model';
 import { EstadoDocumento } from '../../../models/estados.model';
@@ -45,6 +46,11 @@ export class DetalleComisionComponent implements OnInit {
   observacionesPorPanel: Record<string, Observacion[]> = {};
   cargandoComentarios: Record<string, boolean> = {};
 
+  gruposDocumentos: any[] = [];
+  cargandoDocDesarrollo = false;
+  colsDocDesarrollo = ['nombre', 'estado', 'gestion'];
+  itemSubiendoDocumento: any = null;
+
   moduloActivo: string | null = null;
 
   private readonly PANEL_A_TIPO: Record<string, string> = {
@@ -55,7 +61,7 @@ export class DetalleComisionComponent implements OnInit {
 
   modulos: ModuloGestion[] = [
     { key: 'docs-solicitud',  icon: 'folder_open',  titleKey: 'MODULOS.DOCS_SOLICITUD' },
-    { key: 'docs-desarrollo', icon: 'description',  titleKey: 'MODULOS.DOCS_DESARROLLO', badge: 2, badgeClass: 'bg-orange-100 text-orange-700' },
+    { key: 'docs-desarrollo', icon: 'description',  titleKey: 'MODULOS.DOCS_DESARROLLO' },
     { key: 'pagos',           icon: 'payments',     titleKey: 'MODULOS.GESTION_PAGOS' },
     { key: 'cumplimiento',    icon: 'task_alt',     titleKey: 'MODULOS.CUMPLIMIENTO' },
     { key: 'prorroga-cierre', icon: 'event_repeat', titleKey: 'MODULOS.PRORROGA_CIERRE' },
@@ -195,8 +201,13 @@ export class DetalleComisionComponent implements OnInit {
   onModuloClick(key: string): void {
     const anterior = this.moduloActivo;
     this.moduloActivo = this.moduloActivo === key ? null : key;
-    if (this.moduloActivo && this.moduloActivo !== anterior && this.PANEL_A_TIPO[this.moduloActivo]) {
-      this.cargarComentariosPanel(this.moduloActivo);
+    if (this.moduloActivo && this.moduloActivo !== anterior) {
+      if (this.PANEL_A_TIPO[this.moduloActivo]) {
+        this.cargarComentariosPanel(this.moduloActivo);
+      }
+      if (this.moduloActivo === 'docs-desarrollo') {
+        this.cargarDocumentosDesarrollo();
+      }
     }
   }
 
@@ -327,6 +338,92 @@ export class DetalleComisionComponent implements OnInit {
         },
       });
     });
+  }
+
+  private cargarDocumentosDesarrollo(): void {
+    this.cargandoDocDesarrollo = true;
+    this.seguimientoService.get(`seguimiento/documentos_desarrollo/${this.comisionId}`).subscribe({
+      next: (resp: any) => {
+        this.gruposDocumentos = Array.isArray(resp?.Data) ? resp.Data : [];
+        this.cargandoDocDesarrollo = false;
+      },
+      error: () => { this.cargandoDocDesarrollo = false; },
+    });
+  }
+
+  onArchivoSeleccionado(event: Event): void {
+    const file = (event.target as HTMLInputElement).files?.[0];
+    if (!file || !this.itemSubiendoDocumento) return;
+
+    const reader = new FileReader();
+    reader.onload = () => {
+      const base64 = (reader.result as string).split(',')[1];
+      const body = {
+        comision_id: this.comisionId,
+        tipo_documento_codigo: this.itemSubiendoDocumento.codigo,
+        id_tipo_documento: 1,
+        nombre: file.name,
+        descripcion: this.itemSubiendoDocumento.nombre,
+        file: base64,
+      };
+      this.seguimientoService.post('seguimiento/documento_desarrollo', body).subscribe({
+        next: () => {
+          this.cargarDocumentosDesarrollo();
+          this.popup.success(this.translate.instant('POPUPS.DOC_SUBIDO'));
+        },
+        error: () => this.popup.error(this.translate.instant('POPUPS.ERROR_SUBIR_DOC')),
+      });
+    };
+    reader.readAsDataURL(file);
+    (event.target as HTMLInputElement).value = '';
+    this.itemSubiendoDocumento = null;
+  }
+
+  onVerDocDesarrollo(item: any): void {
+    if (!item.enlace) {
+      this.popup.error(this.translate.instant('POPUPS.DOC_NO_DISPONIBLE'));
+      return;
+    }
+    this.gestorDocumental.get(`document/${encodeURIComponent(item.enlace)}`).subscribe({
+      next: (resp: any) => {
+        const base64 = resp?.Data?.file || resp?.file || null;
+        if (!base64) {
+          this.popup.error(this.translate.instant('POPUPS.DOC_NO_DISPONIBLE'));
+          return;
+        }
+        this.dialog.open(VisorDocumentosComponent, {
+          width: '900px', maxWidth: '95vw', maxHeight: '90vh',
+          data: { nombre: item.nombre, estado: this.mapEstadoDesarrollo(item.estado), base64, mimeType: 'application/pdf' },
+        });
+      },
+      error: () => this.popup.error(this.translate.instant('POPUPS.ERROR_CARGAR_DOCUMENTO')),
+    });
+  }
+
+  onEliminarDocDesarrollo(item: any): void {
+    this.popup.confirm(this.translate.instant('POPUPS.CONFIRMAR_ELIMINAR_DOC')).then(result => {
+      if (!result.isConfirmed) return;
+      this.seguimientoService.put(`seguimiento/documento_desarrollo/${item.documento_comision_id}/desactivar`, {}).subscribe({
+        next: () => {
+          this.cargarDocumentosDesarrollo();
+          this.popup.success(this.translate.instant('POPUPS.DOC_ELIMINADO'));
+        },
+        error: () => this.popup.error(this.translate.instant('POPUPS.ERROR_ELIMINAR_DOC')),
+      });
+    });
+  }
+
+  mapEstadoDesarrollo(codigo: string): EstadoDocumento {
+    const mapa: Record<string, EstadoDocumento> = {
+      'CARG': 'CARGADO', 'APROB': 'APROBADO', 'APROB_PROY': 'APROBADO',
+      'APROB_SEC_ACAD': 'APROBADO', 'APROB_SEC_GRAL': 'APROBADO', 'APROB_DEC': 'APROBADO',
+      'NO_APROB': 'RECHAZADO', 'CORR': 'POR_CORREGIR', 'SUBS': 'CARGADO', 'ANUL': 'RECHAZADO',
+    };
+    return mapa[codigo] ?? 'PENDIENTE';
+  }
+
+  getClaseEstadoDesarrollo(codigo: string): string {
+    return estadoDocumentoClass(this.mapEstadoDesarrollo(codigo));
   }
 
   volver(): void {

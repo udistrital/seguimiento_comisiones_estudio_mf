@@ -58,7 +58,8 @@
     "ADJUNTAR": "Adjuntar documento",
     "CARGAR": "Cargar",
     "CANCELAR": "Cancelar",
-    "GUARDAR": "Guardar"
+    "GUARDAR": "Guardar",
+    "ELIMINAR": "Eliminar"
   },
 
   "TOOLTIPS": {
@@ -182,6 +183,11 @@
     "CARGAR_DOCUMENTO_PLACEHOLDER": "La funcionalidad de carga documental se habilitará cuando se integre con el gestor documental (Nuxeo).",
     "DOC_NO_DISPONIBLE": "El documento no está disponible en este momento.",
     "ERROR_CARGAR_DOCUMENTO": "No se pudo obtener el documento. Intente de nuevo.",
+    "CONFIRMAR_ELIMINAR_DOC": "¿Está seguro de eliminar este documento? Esta acción no se puede deshacer.",
+    "DOC_SUBIDO": "Documento subido exitosamente.",
+    "DOC_ELIMINADO": "Documento eliminado correctamente.",
+    "ERROR_SUBIR_DOC": "No se pudo subir el documento. Intente de nuevo.",
+    "ERROR_ELIMINAR_DOC": "No se pudo eliminar el documento. Intente de nuevo.",
     "CONFIRMAR_RETORNAR": "¿Está seguro de retornar esta solicitud para corrección?",
     "SOLICITUD_RETORNADA": "Solicitud retornada correctamente.",
     "CONFIRMAR_RECHAZAR": "¿Está seguro de rechazar esta solicitud? Esta acción no se puede deshacer.",
