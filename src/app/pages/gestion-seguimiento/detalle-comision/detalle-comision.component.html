@@ -69,13 +69,81 @@
 
       <!-- Documentos desarrollo -->
       <mat-card *ngSwitchCase="'docs-desarrollo'" class="rounded-xl border border-black/10 bg-white p-5">
-        <app-panel-documentos
-          [documentos]="documentosDesarrollo"
-          [titulo]="'MODULOS.DOCS_DESARROLLO'"
-          [permitirCarga]="canUploadDocs"
-          (verDocumento)="onVerDocumento($event)"
-          (cargarDocumento)="onCargarDocumento($event)">
-        </app-panel-documentos>
+
+        <input #fileInput type="file" class="hidden"
+               accept=".pdf,.doc,.docx,.jpg,.jpeg,.png"
+               (change)="onArchivoSeleccionado($event)">
+
+        <h4 class="text-sm font-semibold text-black/80 mb-4">{{ 'MODULOS.DOCS_DESARROLLO' | translate }}</h4>
+
+        <!-- Cargando -->
+        <div *ngIf="cargandoDocDesarrollo" class="flex justify-center py-8">
+          <div class="w-6 h-6 border-2 border-sga/30 border-t-sga rounded-full animate-spin"></div>
+        </div>
+
+        <!-- Grupos por momento del proceso -->
+        <div *ngIf="!cargandoDocDesarrollo" class="flex flex-col gap-6">
+          <div *ngFor="let grupo of gruposDocumentos">
+            <p class="text-xs font-semibold text-sga/70 uppercase tracking-wide mb-2">{{ grupo.momento }}</p>
+            <div class="rounded-xl border-2 border-sga overflow-hidden bg-white doc-table">
+              <div class="h-2 bg-gradient-to-r from-sga to-sga/60" aria-hidden="true"></div>
+              <table mat-table [dataSource]="grupo.documentos" class="w-full bg-white">
+
+                <ng-container matColumnDef="nombre">
+                  <th mat-header-cell *matHeaderCellDef class="doc-th text-sga font-semibold">
+                    {{ 'DETALLE.DOCUMENTO_NOMBRE' | translate }}
+                  </th>
+                  <td mat-cell *matCellDef="let doc" class="doc-td text-sm text-black/75">
+                    {{ doc.nombre }}
+                  </td>
+                </ng-container>
+
+                <ng-container matColumnDef="estado">
+                  <th mat-header-cell *matHeaderCellDef class="doc-th text-sga font-semibold">
+                    {{ 'TABLE.ESTADO' | translate }}
+                  </th>
+                  <td mat-cell *matCellDef="let doc" class="doc-td">
+                    <span class="sga-chip" [ngClass]="getClaseEstadoDesarrollo(doc.estado)">
+                      {{ 'DOC_ESTADOS.' + mapEstadoDesarrollo(doc.estado) | translate }}
+                    </span>
+                  </td>
+                </ng-container>
+
+                <ng-container matColumnDef="gestion">
+                  <th mat-header-cell *matHeaderCellDef class="doc-th text-sga font-semibold">
+                    {{ 'TABLE.GESTION' | translate }}
+                  </th>
+                  <td mat-cell *matCellDef="let doc" class="doc-td">
+                    <div class="flex items-center justify-center gap-1">
+                      <button type="button" class="sga-table-action sga-table-action--primary"
+                              [matTooltip]="'ACTIONS.VER' | translate"
+                              [disabled]="!doc.documento_comision_id"
+                              (click)="onVerDocDesarrollo(doc)">
+                        <mat-icon>visibility</mat-icon>
+                      </button>
+                      <button *ngIf="canUploadDocs" type="button" class="sga-table-action sga-table-action--primary"
+                              [matTooltip]="'ACTIONS.CARGAR' | translate"
+                              [disabled]="!!doc.documento_comision_id"
+                              (click)="itemSubiendoDocumento = doc; fileInput.click()">
+                        <mat-icon>cloud_upload</mat-icon>
+                      </button>
+                      <button *ngIf="canUploadDocs" type="button" class="sga-table-action sga-table-action--warn"
+                              [matTooltip]="'ACTIONS.ELIMINAR' | translate"
+                              [disabled]="!doc.documento_comision_id"
+                              (click)="onEliminarDocDesarrollo(doc)">
+                        <mat-icon>delete</mat-icon>
+                      </button>
+                    </div>
+                  </td>
+                </ng-container>
+
+                <tr mat-header-row *matHeaderRowDef="colsDocDesarrollo"></tr>
+                <tr mat-row *matRowDef="let row; columns: colsDocDesarrollo;"></tr>
+              </table>
+            </div>
+          </div>
+        </div>
+
         <div class="border-t border-black/10 my-4"></div>
         <app-panel-observaciones
           [observaciones]="observacionesPorPanel['docs-desarrollo'] || []"

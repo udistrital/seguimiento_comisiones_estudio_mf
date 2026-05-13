@@ -16,6 +16,10 @@ export class PanelObservacionesComponent {
 
   textoNuevo = '';
 
+  get observacionesOrdenadas(): Observacion[] {
+    return [...this.observaciones].reverse();
+  }
+
   enviar(): void {
     const texto = this.textoNuevo.trim();
     if (!texto) return;

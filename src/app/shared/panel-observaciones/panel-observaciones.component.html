@@ -3,16 +3,13 @@
 
   <!-- Lista de observaciones -->
   <div class="flex flex-col gap-2 max-h-64 overflow-y-auto pr-1">
-    <div *ngFor="let obs of observaciones"
+    <div *ngFor="let obs of observacionesOrdenadas"
          class="rounded-lg border border-black/8 bg-white p-3 text-sm">
-      <div class="flex items-center justify-between mb-1">
-        <span class="font-medium text-sga text-xs">{{ obs.autor }}</span>
-        <span class="text-xs text-black/50">{{ obs.fecha }}</span>
-      </div>
-      <div class="flex items-center gap-2 mb-1">
+      <div class="flex items-center justify-between mb-2">
         <span class="sga-chip st-ejecucion text-[10px] h-[18px] min-w-0 px-2">
           {{ 'ROLES.' + obs.rolAutor | translate }}
         </span>
+        <span class="text-xs text-black/50">{{ obs.fecha }}</span>
       </div>
       <p class="text-black/70 leading-relaxed text-[13px]">{{ obs.texto }}</p>
     </div>
