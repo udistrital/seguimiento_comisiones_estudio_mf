@@ -214,7 +214,7 @@ export class DetalleComisionComponent implements OnInit {
           [key]: items.map((item: any) => ({
             id: item.id,
             comisionId: this.comisionId,
-            autor: item.nombre || item.numero_identificacion || 'Usuario',
+            autor: this.formatRol(item.rol),
             rolAutor: item.rol || 'DOCENTE',
             fecha: this.formatFechaHora(item.fecha_creacion),
             texto: item.texto,
@@ -233,8 +233,8 @@ export class DetalleComisionComponent implements OnInit {
     if (!iso) return '';
     try {
       const d = new Date(iso);
-      const fecha = d.toLocaleDateString('es-CO', { day: '2-digit', month: '2-digit', year: 'numeric' });
-      const hora = d.toLocaleTimeString('es-CO', { hour: '2-digit', minute: '2-digit' });
+      const fecha = d.toLocaleDateString('es-CO', { timeZone: 'America/Bogota', day: '2-digit', month: '2-digit', year: 'numeric' });
+      const hora = d.toLocaleTimeString('es-CO', { timeZone: 'America/Bogota', hour: '2-digit', minute: '2-digit' });
       return `${fecha} ${hora}`;
     } catch {
       return iso;
