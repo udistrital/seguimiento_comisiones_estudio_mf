@@ -1,11 +1,7 @@
 <mat-card class="rounded-xl border border-black/10 bg-white" *ngIf="comision">
   <mat-card-content class="p-5">
-    <div class="flex items-center justify-between mb-4">
+    <div class="flex items-center mb-4">
       <h3 class="text-lg font-semibold text-sga">{{ 'DETALLE.INFO_GENERAL' | translate }}</h3>
-      <span class="sga-chip"
-            [ngClass]="comision.estado | estadoComisionPipe">
-        {{ 'ESTADOS.' + comision.estado | translate }}
-      </span>
     </div>
 
     <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-x-6 gap-y-3">
