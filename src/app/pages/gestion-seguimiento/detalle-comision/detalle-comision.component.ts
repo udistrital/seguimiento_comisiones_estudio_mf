@@ -96,7 +96,7 @@ export class DetalleComisionComponent implements OnInit {
   get isDocente(): boolean { return this.rolActual === 'DOCENTE'; }
   get isDecano(): boolean { return this.rolActual === 'DECANO'; }
   get isSecretariaGeneral(): boolean { return this.rolActual === 'SECRETARIA_GENERAL'; }
-  get canUploadDocs(): boolean { return !this.isReadOnly && (this.isDocente || this.isDecano); }
+  get canUploadDocs(): boolean { return !this.isReadOnly && this.isDocente; }
 
   private cargarDetalle(): void {
     this.cargando = true;
@@ -355,15 +355,19 @@ export class DetalleComisionComponent implements OnInit {
     const file = (event.target as HTMLInputElement).files?.[0];
     if (!file || !this.itemSubiendoDocumento) return;
 
+    const item = this.itemSubiendoDocumento;
+    this.itemSubiendoDocumento = null;
+    (event.target as HTMLInputElement).value = '';
+
     const reader = new FileReader();
     reader.onload = () => {
       const base64 = (reader.result as string).split(',')[1];
       const body = {
         comision_id: this.comisionId,
-        tipo_documento_codigo: this.itemSubiendoDocumento.codigo,
-        id_tipo_documento: 1,
+        tipo_documento_codigo: item.codigo,
+        id_tipo_documento: 2, // TODO: reemplazar por ID del tipo_documento de comisiones cuando se cree el workspace en Nuxeo
         nombre: file.name,
-        descripcion: this.itemSubiendoDocumento.nombre,
+        descripcion: item.nombre,
         file: base64,
       };
       this.seguimientoService.post('seguimiento/documento_desarrollo', body).subscribe({
@@ -375,8 +379,6 @@ export class DetalleComisionComponent implements OnInit {
       });
     };
     reader.readAsDataURL(file);
-    (event.target as HTMLInputElement).value = '';
-    this.itemSubiendoDocumento = null;
   }
 
   onVerDocDesarrollo(item: any): void {
