@@ -11,7 +11,7 @@
   <ng-container *ngIf="!cargando && comision">
 
     <!-- Header -->
-    <div class="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-3">
+    <div class="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-3 bg-white rounded-xl border border-black/10 p-4">
       <div>
         <button mat-stroked-button class="h-9 rounded-lg border-black/20 text-sm mb-2" (click)="volver()">
           <mat-icon class="text-[18px] mr-1">arrow_back</mat-icon>
@@ -26,11 +26,6 @@
           <span *ngIf="isReadOnly" class="ml-2 text-xs text-black/40">({{ 'DETALLE.SOLO_LECTURA' | translate }})</span>
         </p>
       </div>
-
-      <span class="sga-chip text-sm h-6 px-4"
-            [ngClass]="comision.estado | estadoComisionPipe">
-        {{ 'ESTADOS.' + comision.estado | translate }}
-      </span>
     </div>
 
     <!-- Información General -->

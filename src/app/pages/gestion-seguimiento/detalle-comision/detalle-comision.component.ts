@@ -18,12 +18,6 @@ import { SeguimientoService } from '../../../services/seguimiento.service';
 import { ComisionesCrudService } from '../../../services/comisiones-crud.service';
 import { GestorDocumentalService } from '../../../services/gestor-documental.service';
 import { VisorDocumentosComponent } from '../../../shared/visor-documentos/visor-documentos.component';
-import {
-  MOCK_DETALLE,
-  MOCK_DOCUMENTOS_DESARROLLO,
-  MOCK_PAGOS,
-  MOCK_CUMPLIMIENTO,
-} from '../../../services/seguimiento-mock.data';
 
 @Component({
     selector: 'app-detalle-comision',
@@ -101,17 +95,52 @@ export class DetalleComisionComponent implements OnInit {
   private cargarDetalle(): void {
     this.cargando = true;
 
-    // TODO: reemplazar por endpoint real cuando el MID lo implemente
-    setTimeout(() => {
-      this.comision = { ...MOCK_DETALLE, id: this.comisionId };
-      this.documentosDesarrollo = [...MOCK_DOCUMENTOS_DESARROLLO];
-      this.pagos = [...MOCK_PAGOS];
-      this.cumplimiento = [...MOCK_CUMPLIMIENTO];
-      this.observacionesSolicitud = [];
-      this.cargando = false;
-    }, 500);
+    this.seguimientoService.get(`seguimiento/detalle_comision/${this.comisionId}`).subscribe({
+      next: (resp: any) => {
+        const data = resp?.Data;
+        if (!data) {
+          this.cargando = false;
+          return;
+        }
+        this.comision = {
+          id: this.comisionId,
+          solicitudId: data.solicitud_id ?? 0,
+          radicado: data.radicado ?? `SOL-${data.solicitud_id}`,
+          docente: data.docente ?? '',
+          idDocente: data.id_docente ?? '',
+          correoDocente: data.correo_docente ?? '',
+          programa: data.programa ?? '',
+          facultad: data.facultad ?? '',
+          tipoEstudio: data.tipo_estudio ?? '',
+          universidadDestino: data.universidad_destino ?? '',
+          paisDestino: data.pais_destino ?? '',
+          ciudadDestino: data.ciudad_destino ?? '',
+          fechaSolicitud: data.fecha_solicitud ?? '',
+          fechaInicio: data.fecha_inicio ?? '',
+          fechaFin: data.fecha_fin ?? '',
+          duracionMeses: parseInt(data.duracion ?? '0', 10) || 0,
+          estado: this.mapEstadoComision(data.estado_comision),
+          estadoProrroga: 'NO_APLICA',
+          decanoNombre: '',
+          decanoId: '',
+        };
+        this.cargando = false;
+      },
+      error: () => {
+        this.cargando = false;
+        this.popup.error(this.translate.instant('POPUPS.ERROR_CARGA'));
+      },
+    });
 
     this.cargarDocumentosSolicitud();
+  }
+
+  private mapEstadoComision(codigo: string | undefined): import('../../../models/estados.model').EstadoComision {
+    const validos = ['COM_INI','DES_ACAD','PROR','TIT','INF_FIN','TRAM_PAZ_SAL','COM_FIN','COM_CANC'] as const;
+    const c = (codigo ?? '').toUpperCase();
+    return (validos as readonly string[]).includes(c)
+      ? c as import('../../../models/estados.model').EstadoComision
+      : 'COM_INI';
   }
 
   private cargarDocumentosSolicitud(): void {
