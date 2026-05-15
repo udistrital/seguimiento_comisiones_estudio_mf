@@ -105,7 +105,7 @@ export class DetalleComisionComponent implements OnInit {
         this.comision = {
           id: this.comisionId,
           solicitudId: data.solicitud_id ?? 0,
-          radicado: data.radicado ?? `SOL-${data.solicitud_id}`,
+          radicado: `COM-${this.comisionId}`,
           docente: data.docente ?? '',
           idDocente: data.id_docente ?? '',
           correoDocente: data.correo_docente ?? '',
@@ -116,8 +116,8 @@ export class DetalleComisionComponent implements OnInit {
           paisDestino: data.pais_destino ?? '',
           ciudadDestino: data.ciudad_destino ?? '',
           fechaSolicitud: data.fecha_solicitud ?? '',
-          fechaInicio: data.fecha_inicio ?? '',
-          fechaFin: data.fecha_fin ?? '',
+          fechaInicio: this.formatearFecha(data.fecha_inicio),
+          fechaFin: this.formatearFecha(data.fecha_fin),
           duracionMeses: parseInt(data.duracion ?? '0', 10) || 0,
           estado: this.mapEstadoComision(data.estado_comision),
           estadoProrroga: 'NO_APLICA',
@@ -133,6 +133,14 @@ export class DetalleComisionComponent implements OnInit {
     });
 
     this.cargarDocumentosSolicitud();
+  }
+
+  private formatearFecha(fecha: string | undefined): string {
+    if (!fecha) return '';
+    const dateStr = fecha.substring(0, 10);
+    const parts = dateStr.split('-');
+    if (parts.length !== 3) return fecha;
+    return `${parts[2]}/${parts[1]}/${parts[0]}`;
   }
 
   private mapEstadoComision(codigo: string | undefined): import('../../../models/estados.model').EstadoComision {
@@ -272,10 +280,23 @@ export class DetalleComisionComponent implements OnInit {
   private formatFechaHora(iso: string): string {
     if (!iso) return '';
     try {
-      const d = new Date(iso);
-      const fecha = d.toLocaleDateString('es-CO', { timeZone: 'America/Bogota', day: '2-digit', month: '2-digit', year: 'numeric' });
-      const hora = d.toLocaleTimeString('es-CO', { timeZone: 'America/Bogota', hour: '2-digit', minute: '2-digit' });
-      return `${fecha} ${hora}`;
+      // El MID retorna el formato Go: "2026-05-15 12:45:46.202365 +0000 +0000"
+      // El valor de hora es Colombia (wall clock), sin conversión de zona.
+      // Normalizamos a "YYYY-MM-DDTHH:mm:ss" sin TZ para que new Date()
+      // lo trate como hora local y getHours() devuelva exactamente ese valor.
+      const clean = iso.trim()
+        .replace(' ', 'T')       // primer espacio → T
+        .replace(/\.\d+.*$/, '') // quitar microsegundos y todo lo que sigue (+0000 +0000)
+        .replace(/Z$/, '')       // quitar Z si viniera en otro formato
+        .replace(/[+-]\d{2}:?\d{2}$/, ''); // quitar ±HH:MM o ±HHMM si quedara
+      const d = new Date(clean);
+      if (isNaN(d.getTime())) return iso;
+      const dd = String(d.getDate()).padStart(2, '0');
+      const mm = String(d.getMonth() + 1).padStart(2, '0');
+      const yyyy = d.getFullYear();
+      const hh = String(d.getHours()).padStart(2, '0');
+      const min = String(d.getMinutes()).padStart(2, '0');
+      return `${dd}/${mm}/${yyyy} ${hh}:${min}`;
     } catch {
       return iso;
     }

@@ -50,7 +50,11 @@
       <!-- País / Ciudad -->
       <div class="flex flex-col">
         <span class="text-xs text-black/50 font-medium">{{ 'DETALLE.DESTINO' | translate }}</span>
-        <span class="text-sm text-black/80">{{ comision.ciudadDestino }}, {{ comision.paisDestino }}</span>
+        <span class="text-sm text-black/80">
+          {{ (comision.ciudadDestino && comision.paisDestino)
+            ? comision.ciudadDestino + ', ' + comision.paisDestino
+            : (comision.ciudadDestino || comision.paisDestino || '—') }}
+        </span>
       </div>
 
       <!-- Duración -->
@@ -71,11 +75,6 @@
         <span class="text-sm text-black/80">{{ comision.fechaFin }}</span>
       </div>
 
-      <!-- Decano -->
-      <div class="flex flex-col">
-        <span class="text-xs text-black/50 font-medium">{{ 'DETALLE.DECANO' | translate }}</span>
-        <span class="text-sm text-black/80">{{ comision.decanoNombre }}</span>
-      </div>
     </div>
   </mat-card-content>
 </mat-card>
