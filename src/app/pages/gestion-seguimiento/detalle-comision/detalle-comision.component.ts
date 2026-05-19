@@ -18,12 +18,6 @@ import { SeguimientoService } from '../../../services/seguimiento.service';
 import { ComisionesCrudService } from '../../../services/comisiones-crud.service';
 import { GestorDocumentalService } from '../../../services/gestor-documental.service';
 import { VisorDocumentosComponent } from '../../../shared/visor-documentos/visor-documentos.component';
-import {
-  MOCK_DETALLE,
-  MOCK_DOCUMENTOS_DESARROLLO,
-  MOCK_PAGOS,
-  MOCK_CUMPLIMIENTO,
-} from '../../../services/seguimiento-mock.data';
 
 @Component({
     selector: 'app-detalle-comision',
@@ -101,17 +95,60 @@ export class DetalleComisionComponent implements OnInit {
   private cargarDetalle(): void {
     this.cargando = true;
 
-    // TODO: reemplazar por endpoint real cuando el MID lo implemente
-    setTimeout(() => {
-      this.comision = { ...MOCK_DETALLE, id: this.comisionId };
-      this.documentosDesarrollo = [...MOCK_DOCUMENTOS_DESARROLLO];
-      this.pagos = [...MOCK_PAGOS];
-      this.cumplimiento = [...MOCK_CUMPLIMIENTO];
-      this.observacionesSolicitud = [];
-      this.cargando = false;
-    }, 500);
+    this.seguimientoService.get(`seguimiento/detalle_comision/${this.comisionId}`).subscribe({
+      next: (resp: any) => {
+        const data = resp?.Data;
+        if (!data) {
+          this.cargando = false;
+          return;
+        }
+        this.comision = {
+          id: this.comisionId,
+          solicitudId: data.solicitud_id ?? 0,
+          radicado: `COM-${this.comisionId}`,
+          docente: data.docente ?? '',
+          idDocente: data.id_docente ?? '',
+          correoDocente: data.correo_docente ?? '',
+          programa: data.programa ?? '',
+          facultad: data.facultad ?? '',
+          tipoEstudio: data.tipo_estudio ?? '',
+          universidadDestino: data.universidad_destino ?? '',
+          paisDestino: data.pais_destino ?? '',
+          ciudadDestino: data.ciudad_destino ?? '',
+          fechaSolicitud: data.fecha_solicitud ?? '',
+          fechaInicio: this.formatearFecha(data.fecha_inicio),
+          fechaFin: this.formatearFecha(data.fecha_fin),
+          duracionMeses: parseInt(data.duracion ?? '0', 10) || 0,
+          estado: this.mapEstadoComision(data.estado_comision),
+          estadoProrroga: 'NO_APLICA',
+          decanoNombre: '',
+          decanoId: '',
+        };
+        this.cargando = false;
+      },
+      error: () => {
+        this.cargando = false;
+        this.popup.error(this.translate.instant('POPUPS.ERROR_CARGA'));
+      },
+    });
 
     this.cargarDocumentosSolicitud();
+  }
+
+  private formatearFecha(fecha: string | undefined): string {
+    if (!fecha) return '';
+    const dateStr = fecha.substring(0, 10);
+    const parts = dateStr.split('-');
+    if (parts.length !== 3) return fecha;
+    return `${parts[2]}/${parts[1]}/${parts[0]}`;
+  }
+
+  private mapEstadoComision(codigo: string | undefined): import('../../../models/estados.model').EstadoComision {
+    const validos = ['COM_INI','DES_ACAD','PROR','TIT','INF_FIN','TRAM_PAZ_SAL','COM_FIN','COM_CANC'] as const;
+    const c = (codigo ?? '').toUpperCase();
+    return (validos as readonly string[]).includes(c)
+      ? c as import('../../../models/estados.model').EstadoComision
+      : 'COM_INI';
   }
 
   private cargarDocumentosSolicitud(): void {
@@ -243,10 +280,23 @@ export class DetalleComisionComponent implements OnInit {
   private formatFechaHora(iso: string): string {
     if (!iso) return '';
     try {
-      const d = new Date(iso);
-      const fecha = d.toLocaleDateString('es-CO', { timeZone: 'America/Bogota', day: '2-digit', month: '2-digit', year: 'numeric' });
-      const hora = d.toLocaleTimeString('es-CO', { timeZone: 'America/Bogota', hour: '2-digit', minute: '2-digit' });
-      return `${fecha} ${hora}`;
+      // El MID retorna el formato Go: "2026-05-15 12:45:46.202365 +0000 +0000"
+      // El valor de hora es Colombia (wall clock), sin conversión de zona.
+      // Normalizamos a "YYYY-MM-DDTHH:mm:ss" sin TZ para que new Date()
+      // lo trate como hora local y getHours() devuelva exactamente ese valor.
+      const clean = iso.trim()
+        .replace(' ', 'T')       // primer espacio → T
+        .replace(/\.\d+.*$/, '') // quitar microsegundos y todo lo que sigue (+0000 +0000)
+        .replace(/Z$/, '')       // quitar Z si viniera en otro formato
+        .replace(/[+-]\d{2}:?\d{2}$/, ''); // quitar ±HH:MM o ±HHMM si quedara
+      const d = new Date(clean);
+      if (isNaN(d.getTime())) return iso;
+      const dd = String(d.getDate()).padStart(2, '0');
+      const mm = String(d.getMonth() + 1).padStart(2, '0');
+      const yyyy = d.getFullYear();
+      const hh = String(d.getHours()).padStart(2, '0');
+      const min = String(d.getMinutes()).padStart(2, '0');
+      return `${dd}/${mm}/${yyyy} ${hh}:${min}`;
     } catch {
       return iso;
     }
