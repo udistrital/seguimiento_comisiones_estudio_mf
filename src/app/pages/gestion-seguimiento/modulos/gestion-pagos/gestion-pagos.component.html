@@ -68,12 +68,12 @@
           {{ 'TABLE.GESTION' | translate }}
         </th>
         <td mat-cell *matCellDef="let doc" class="doc-td">
-          <div class="flex gap-1">
-            <button class="sga-table-action" [title]="'TABLE.VER' | translate"
+          <div class="flex justify-center gap-1">
+            <button class="sga-table-action sga-table-action--primary" [title]="'TABLE.VER' | translate"
               (click)="onVerDocumento(doc)">
               <mat-icon>visibility</mat-icon>
             </button>
-            <button *ngIf="puedeEliminar" class="sga-table-action text-red-500"
+            <button *ngIf="puedeEliminar" class="sga-table-action sga-table-action--warn"
               [title]="'TABLE.ELIMINAR' | translate"
               (click)="onEliminarDocumento(doc)">
               <mat-icon>delete</mat-icon>
