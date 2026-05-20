@@ -188,6 +188,7 @@
     "DOC_SUBIDO": "Documento subido exitosamente.",
     "DOC_ELIMINADO": "Documento eliminado correctamente.",
     "ERROR_SUBIR_DOC": "No se pudo subir el documento. Intente de nuevo.",
+    "ERROR_TIPO_DOC_NO_RESUELTO": "No se pudo determinar el tipo de documento. Intente recargar la página.",
     "ERROR_ELIMINAR_DOC": "No se pudo eliminar el documento. Intente de nuevo.",
     "CONFIRMAR_RETORNAR": "¿Está seguro de retornar esta solicitud para corrección?",
     "SOLICITUD_RETORNADA": "Solicitud retornada correctamente.",
