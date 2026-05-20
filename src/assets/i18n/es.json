@@ -137,12 +137,16 @@
   },
 
   "PAGOS": {
-    "CONCEPTO": "Concepto",
-    "MONTO": "Monto",
-    "FECHA_PROGRAMADA": "Fecha programada",
-    "FECHA_PAGO": "Fecha de pago",
-    "TOTAL_PROGRAMADO": "Total programado",
-    "TOTAL_PAGADO": "Total pagado"
+    "SUBIR_DOCUMENTO": "Subir documento",
+    "SUBIENDO": "Subiendo...",
+    "DOCUMENTO": "Documento",
+    "SUBIDO_POR": "Subido por",
+    "SIN_DOCUMENTOS": "No hay documentos de pagos cargados.",
+    "NOMBRE_DOCUMENTO": "Nombre del documento",
+    "NOMBRE_PLACEHOLDER": "Ej: Recibo pago enero 2026",
+    "NOMBRE_MIN_CHARS": "El nombre debe tener al menos 12 caracteres.",
+    "CONTINUAR": "Continuar",
+    "CANCELAR": "Cancelar"
   },
 
   "CUMPLIMIENTO": {
@@ -188,6 +192,7 @@
     "DOC_SUBIDO": "Documento subido exitosamente.",
     "DOC_ELIMINADO": "Documento eliminado correctamente.",
     "ERROR_SUBIR_DOC": "No se pudo subir el documento. Intente de nuevo.",
+    "ERROR_TIPO_DOC_NO_RESUELTO": "No se pudo determinar el tipo de documento. Intente recargar la página.",
     "ERROR_ELIMINAR_DOC": "No se pudo eliminar el documento. Intente de nuevo.",
     "CONFIRMAR_RETORNAR": "¿Está seguro de retornar esta solicitud para corrección?",
     "SOLICITUD_RETORNADA": "Solicitud retornada correctamente.",

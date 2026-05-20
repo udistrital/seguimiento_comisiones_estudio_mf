@@ -9,7 +9,6 @@ import { ComisionDetalle } from '../../../models/comision.model';
 import { DocumentoSoporte } from '../../../models/documento.model';
 import { EstadoDocumento } from '../../../models/estados.model';
 import { Observacion } from '../../../models/observacion.model';
-import { PagoComision } from '../../../models/pago.model';
 import { CumplimientoItem } from '../../../models/cumplimiento.model';
 import { ModuloGestion } from '../../../models/modulo-gestion.model';
 import { getRolesUsuario, getDocumento, getNombreUsuario } from '../../../utils/auth.util';
@@ -17,6 +16,7 @@ import { PopUpManager } from '../../../managers/popup.manager';
 import { SeguimientoService } from '../../../services/seguimiento.service';
 import { ComisionesCrudService } from '../../../services/comisiones-crud.service';
 import { GestorDocumentalService } from '../../../services/gestor-documental.service';
+import { DocumentoCrudService } from '../../../services/documento-crud.service';
 import { VisorDocumentosComponent } from '../../../shared/visor-documentos/visor-documentos.component';
 
 @Component({
@@ -34,7 +34,6 @@ export class DetalleComisionComponent implements OnInit {
   comision!: ComisionDetalle;
   documentosSolicitud: DocumentoSoporte[] = [];
   documentosDesarrollo: DocumentoSoporte[] = [];
-  pagos: PagoComision[] = [];
   cumplimiento: CumplimientoItem[] = [];
   observacionesSolicitud: Observacion[] = [];
   observacionesPorPanel: Record<string, Observacion[]> = {};
@@ -42,6 +41,7 @@ export class DetalleComisionComponent implements OnInit {
 
   gruposDocumentos: any[] = [];
   cargandoDocDesarrollo = false;
+  private idTipoDocumentoDesarrollo: number | null = null;
   colsDocDesarrollo = ['nombre', 'estado', 'gestion'];
   itemSubiendoDocumento: any = null;
 
@@ -70,6 +70,7 @@ export class DetalleComisionComponent implements OnInit {
     private readonly seguimientoService: SeguimientoService,
     private readonly comisionesCrud: ComisionesCrudService,
     private readonly gestorDocumental: GestorDocumentalService,
+    private readonly documentoCrud: DocumentoCrudService,
   ) {}
 
   ngOnInit(): void {
@@ -83,7 +84,18 @@ export class DetalleComisionComponent implements OnInit {
 
     this.comisionId = Number(this.route.snapshot.paramMap.get('id'));
 
+    this.resolverIdTipoDocumento();
     this.cargarDetalle();
+  }
+
+  private resolverIdTipoDocumento(): void {
+    this.documentoCrud.get('tipo_documento?query=CodigoAbreviacion:DE_COM').subscribe({
+      next: (resp: any) => {
+        const lista = Array.isArray(resp) ? resp : resp?.Data;
+        this.idTipoDocumentoDesarrollo = lista?.[0]?.Id ?? null;
+      },
+      error: () => { this.idTipoDocumentoDesarrollo = null; },
+    });
   }
 
   get isReadOnly(): boolean { return this.mode === 'VER'; }
@@ -409,13 +421,18 @@ export class DetalleComisionComponent implements OnInit {
     this.itemSubiendoDocumento = null;
     (event.target as HTMLInputElement).value = '';
 
+    if (!this.idTipoDocumentoDesarrollo) {
+      this.popup.error(this.translate.instant('POPUPS.ERROR_TIPO_DOC_NO_RESUELTO'));
+      return;
+    }
+
     const reader = new FileReader();
     reader.onload = () => {
       const base64 = (reader.result as string).split(',')[1];
       const body = {
         comision_id: this.comisionId,
         tipo_documento_codigo: item.codigo,
-        id_tipo_documento: 2, // TODO: reemplazar por ID del tipo_documento de comisiones cuando se cree el workspace en Nuxeo
+        id_tipo_documento: this.idTipoDocumentoDesarrollo,
         nombre: file.name,
         descripcion: item.nombre,
         file: base64,

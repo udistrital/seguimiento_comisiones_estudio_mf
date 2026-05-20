@@ -177,6 +177,21 @@ tr.mat-mdc-row:hover {
       color: var(--sga-primary);
     }
   }
+
+  &:disabled,
+  &[disabled] {
+    cursor: not-allowed;
+    opacity: 0.35;
+
+    &:hover {
+      background-color: transparent;
+    }
+
+    mat-icon,
+    .mat-icon {
+      color: rgba(0, 0, 0, 0.3) !important;
+    }
+  }
 }
 
 // --- Tablas de documentos ---
