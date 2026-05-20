@@ -137,12 +137,16 @@
   },
 
   "PAGOS": {
-    "CONCEPTO": "Concepto",
-    "MONTO": "Monto",
-    "FECHA_PROGRAMADA": "Fecha programada",
-    "FECHA_PAGO": "Fecha de pago",
-    "TOTAL_PROGRAMADO": "Total programado",
-    "TOTAL_PAGADO": "Total pagado"
+    "SUBIR_DOCUMENTO": "Subir documento",
+    "SUBIENDO": "Subiendo...",
+    "DOCUMENTO": "Documento",
+    "SUBIDO_POR": "Subido por",
+    "SIN_DOCUMENTOS": "No hay documentos de pagos cargados.",
+    "NOMBRE_DOCUMENTO": "Nombre del documento",
+    "NOMBRE_PLACEHOLDER": "Ej: Recibo pago enero 2026",
+    "NOMBRE_MIN_CHARS": "El nombre debe tener al menos 12 caracteres.",
+    "CONTINUAR": "Continuar",
+    "CANCELAR": "Cancelar"
   },
 
   "CUMPLIMIENTO": {

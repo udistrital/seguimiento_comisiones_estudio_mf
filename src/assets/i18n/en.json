@@ -136,12 +136,16 @@
   },
 
   "PAGOS": {
-    "CONCEPTO": "Concept",
-    "MONTO": "Amount",
-    "FECHA_PROGRAMADA": "Scheduled date",
-    "FECHA_PAGO": "Payment date",
-    "TOTAL_PROGRAMADO": "Total scheduled",
-    "TOTAL_PAGADO": "Total paid"
+    "SUBIR_DOCUMENTO": "Upload document",
+    "SUBIENDO": "Uploading...",
+    "DOCUMENTO": "Document",
+    "SUBIDO_POR": "Uploaded by",
+    "SIN_DOCUMENTOS": "No payment documents have been uploaded.",
+    "NOMBRE_DOCUMENTO": "Document name",
+    "NOMBRE_PLACEHOLDER": "E.g.: Payment receipt January 2026",
+    "NOMBRE_MIN_CHARS": "Name must be at least 12 characters.",
+    "CONTINUAR": "Continue",
+    "CANCELAR": "Cancel"
   },
 
   "CUMPLIMIENTO": {

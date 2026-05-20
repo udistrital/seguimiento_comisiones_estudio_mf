@@ -1,48 +1,97 @@
 <div class="flex flex-col gap-4">
+
+  <!-- Cabecera -->
   <div class="flex items-center justify-between">
     <h4 class="text-sm font-semibold text-black/80">{{ 'MODULOS.GESTION_PAGOS' | translate }}</h4>
-    <div class="flex gap-4 text-xs text-black/60">
-      <span>{{ 'PAGOS.TOTAL_PROGRAMADO' | translate }}: <strong class="text-black/80">{{ formatMoney(totalProgramado) }}</strong></span>
-      <span>{{ 'PAGOS.TOTAL_PAGADO' | translate }}: <strong class="text-green-700">{{ formatMoney(totalPagado) }}</strong></span>
-    </div>
+    <button *ngIf="puedeSubir"
+      class="sga-btn-primary flex items-center gap-1 text-sm"
+      [disabled]="subiendo"
+      (click)="onSubirDocumento()">
+      <mat-icon class="text-[18px] leading-none">cloud_upload</mat-icon>
+      {{ subiendo ? ('PAGOS.SUBIENDO' | translate) : ('PAGOS.SUBIR_DOCUMENTO' | translate) }}
+    </button>
   </div>
 
-  <div class="rounded-xl border-2 border-sga overflow-hidden bg-white doc-table">
+  <!-- Input file oculto -->
+  <input #fileInputPago type="file" accept=".pdf" class="hidden"
+    (change)="onArchivoSeleccionado($event)">
+
+  <!-- Estado de carga -->
+  <div *ngIf="cargando" class="flex justify-center py-6">
+    <mat-spinner diameter="32"></mat-spinner>
+  </div>
+
+  <!-- Tabla -->
+  <div *ngIf="!cargando" class="rounded-xl border-2 border-sga overflow-hidden bg-white doc-table">
     <div class="h-2 bg-gradient-to-r from-sga to-sga/60" aria-hidden="true"></div>
 
-    <table mat-table [dataSource]="pagos" class="w-full bg-white">
+    <table mat-table [dataSource]="documentos" class="w-full bg-white">
 
-      <ng-container matColumnDef="concepto">
-        <th mat-header-cell *matHeaderCellDef class="doc-th text-sga font-semibold">{{ 'PAGOS.CONCEPTO' | translate }}</th>
-        <td mat-cell *matCellDef="let p" class="doc-td text-black/75 text-sm">{{ p.concepto }}</td>
+      <!-- Documento -->
+      <ng-container matColumnDef="nombre">
+        <th mat-header-cell *matHeaderCellDef class="doc-th text-sga font-semibold">
+          {{ 'PAGOS.DOCUMENTO' | translate }}
+        </th>
+        <td mat-cell *matCellDef="let doc" class="doc-td text-black/75 text-sm">
+          {{ doc.nombre }}
+        </td>
       </ng-container>
 
-      <ng-container matColumnDef="monto">
-        <th mat-header-cell *matHeaderCellDef class="doc-th text-sga font-semibold">{{ 'PAGOS.MONTO' | translate }}</th>
-        <td mat-cell *matCellDef="let p" class="doc-td text-black/75 text-sm font-medium">{{ formatMoney(p.monto) }}</td>
+      <!-- Subido por -->
+      <ng-container matColumnDef="subido_por">
+        <th mat-header-cell *matHeaderCellDef class="doc-th text-sga font-semibold">
+          {{ 'PAGOS.SUBIDO_POR' | translate }}
+        </th>
+        <td mat-cell *matCellDef="let doc" class="doc-td">
+          <div class="flex flex-col gap-0.5">
+            <span class="sga-chip st-ejecucion text-xs">{{ nombreRol(doc.subido_por_rol) }}</span>
+            <span *ngIf="doc.subido_por_nombre" class="text-xs text-black/50">{{ doc.subido_por_nombre }}</span>
+          </div>
+        </td>
       </ng-container>
 
-      <ng-container matColumnDef="fechaProgramada">
-        <th mat-header-cell *matHeaderCellDef class="doc-th text-sga font-semibold">{{ 'PAGOS.FECHA_PROGRAMADA' | translate }}</th>
-        <td mat-cell *matCellDef="let p" class="doc-td text-black/75 text-sm">{{ p.fechaProgramada }}</td>
-      </ng-container>
-
-      <ng-container matColumnDef="fechaPago">
-        <th mat-header-cell *matHeaderCellDef class="doc-th text-sga font-semibold">{{ 'PAGOS.FECHA_PAGO' | translate }}</th>
-        <td mat-cell *matCellDef="let p" class="doc-td text-black/75 text-sm">{{ p.fechaPago || '-' }}</td>
-      </ng-container>
-
+      <!-- Estado -->
       <ng-container matColumnDef="estado">
-        <th mat-header-cell *matHeaderCellDef class="doc-th text-sga font-semibold">{{ 'TABLE.ESTADO' | translate }}</th>
-        <td mat-cell *matCellDef="let p" class="doc-td">
-          <span class="sga-chip" [ngClass]="getEstadoClass(p)">
-            {{ 'ESTADOS_PAGO.' + p.estado | translate }}
+        <th mat-header-cell *matHeaderCellDef class="doc-th text-sga font-semibold">
+          {{ 'TABLE.ESTADO' | translate }}
+        </th>
+        <td mat-cell *matCellDef="let doc" class="doc-td">
+          <span *ngIf="doc.estado_nombre" class="sga-chip doc-chip--carg text-xs">
+            {{ doc.estado_nombre }}
           </span>
+        </td>
+      </ng-container>
+
+      <!-- Gestión -->
+      <ng-container matColumnDef="acciones">
+        <th mat-header-cell *matHeaderCellDef class="doc-th text-sga font-semibold">
+          {{ 'TABLE.GESTION' | translate }}
+        </th>
+        <td mat-cell *matCellDef="let doc" class="doc-td">
+          <div class="flex gap-1">
+            <button class="sga-table-action" [title]="'TABLE.VER' | translate"
+              (click)="onVerDocumento(doc)">
+              <mat-icon>visibility</mat-icon>
+            </button>
+            <button *ngIf="puedeEliminar" class="sga-table-action text-red-500"
+              [title]="'TABLE.ELIMINAR' | translate"
+              (click)="onEliminarDocumento(doc)">
+              <mat-icon>delete</mat-icon>
+            </button>
+          </div>
         </td>
       </ng-container>
 
       <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
       <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+
+      <!-- Empty state -->
+      <tr class="mat-row" *matNoDataRow>
+        <td class="mat-cell doc-td text-black/40 text-sm italic" [attr.colspan]="displayedColumns.length">
+          {{ 'PAGOS.SIN_DOCUMENTOS' | translate }}
+        </td>
+      </tr>
     </table>
   </div>
+
 </div>

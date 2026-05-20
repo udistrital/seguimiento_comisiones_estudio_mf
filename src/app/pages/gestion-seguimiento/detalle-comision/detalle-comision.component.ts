@@ -9,7 +9,6 @@ import { ComisionDetalle } from '../../../models/comision.model';
 import { DocumentoSoporte } from '../../../models/documento.model';
 import { EstadoDocumento } from '../../../models/estados.model';
 import { Observacion } from '../../../models/observacion.model';
-import { PagoComision } from '../../../models/pago.model';
 import { CumplimientoItem } from '../../../models/cumplimiento.model';
 import { ModuloGestion } from '../../../models/modulo-gestion.model';
 import { getRolesUsuario, getDocumento, getNombreUsuario } from '../../../utils/auth.util';
@@ -35,7 +34,6 @@ export class DetalleComisionComponent implements OnInit {
   comision!: ComisionDetalle;
   documentosSolicitud: DocumentoSoporte[] = [];
   documentosDesarrollo: DocumentoSoporte[] = [];
-  pagos: PagoComision[] = [];
   cumplimiento: CumplimientoItem[] = [];
   observacionesSolicitud: Observacion[] = [];
   observacionesPorPanel: Record<string, Observacion[]> = {};
