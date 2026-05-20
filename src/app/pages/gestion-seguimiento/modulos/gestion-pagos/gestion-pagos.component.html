@@ -4,10 +4,10 @@
   <div class="flex items-center justify-between">
     <h4 class="text-sm font-semibold text-black/80">{{ 'MODULOS.GESTION_PAGOS' | translate }}</h4>
     <button *ngIf="puedeSubir"
-      class="sga-btn-primary flex items-center gap-1 text-sm"
+      class="flex items-center gap-1.5 px-3 py-1.5 rounded-lg bg-sga text-white text-sm font-medium transition-colors hover:bg-sga/85 disabled:opacity-50 disabled:cursor-not-allowed"
       [disabled]="subiendo"
       (click)="onSubirDocumento()">
-      <mat-icon class="text-[18px] leading-none">cloud_upload</mat-icon>
+      <mat-icon class="text-[18px] leading-none" style="color:white">cloud_upload</mat-icon>
       {{ subiendo ? ('PAGOS.SUBIENDO' | translate) : ('PAGOS.SUBIR_DOCUMENTO' | translate) }}
     </button>
   </div>
