@@ -14,9 +14,9 @@
         <span class="text-black/60">{{ 'VISOR.NOMBRE' | translate }}:</span>
         <span class="break-words">{{ data.nombre }}</span>
       </div>
-      <div class="grid grid-cols-[90px_1fr] gap-2">
+      <div *ngIf="data.autor" class="grid grid-cols-[90px_1fr] gap-2">
         <span class="text-black/60">{{ 'VISOR.AUTOR' | translate }}:</span>
-        <span class="break-words">{{ data.autor || '-' }}</span>
+        <span class="break-words">{{ data.autor }}</span>
       </div>
       <div class="grid grid-cols-[90px_1fr] gap-2">
         <span class="text-black/60">{{ 'VISOR.ESTADO' | translate }}:</span>
