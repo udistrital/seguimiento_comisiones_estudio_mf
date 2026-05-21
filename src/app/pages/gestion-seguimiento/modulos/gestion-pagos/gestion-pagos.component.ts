@@ -46,7 +46,7 @@ export class GestionPagosComponent implements OnChanges {
   }
 
   get puedeSubir(): boolean {
-    return this.mode === 'GESTIONAR' && (this.rolActual === 'DECANO' || this.rolActual === 'SECRETARIA_GENERAL');
+    return this.mode === 'GESTIONAR' && this.rolActual === 'DECANO';
   }
 
   get puedeEliminar(): boolean {
