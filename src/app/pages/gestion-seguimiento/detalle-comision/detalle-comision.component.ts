@@ -4,7 +4,7 @@ import { MatDialog } from '@angular/material/dialog';
 import { TranslateService } from '@ngx-translate/core';
 
 import { Role, resolverRolEfectivo } from '../../../models/roles.model';
-import { estadoDocumentoClass } from '../../../utils/estado-comision.util';
+import { estadoDocumentoClass, mapEstadoDocumento } from '../../../utils/estado-comision.util';
 import { ComisionDetalle } from '../../../models/comision.model';
 import { DocumentoSoporte } from '../../../models/documento.model';
 import { EstadoDocumento } from '../../../models/estados.model';
@@ -483,16 +483,11 @@ export class DetalleComisionComponent implements OnInit {
   }
 
   mapEstadoDesarrollo(codigo: string): EstadoDocumento {
-    const mapa: Record<string, EstadoDocumento> = {
-      'CARG': 'CARGADO', 'APROB': 'APROBADO', 'APROB_PROY': 'APROBADO',
-      'APROB_SEC_ACAD': 'APROBADO', 'APROB_SEC_GRAL': 'APROBADO', 'APROB_DEC': 'APROBADO',
-      'NO_APROB': 'RECHAZADO', 'CORR': 'POR_CORREGIR', 'SUBS': 'CARGADO', 'ANUL': 'RECHAZADO',
-    };
-    return mapa[codigo] ?? 'PENDIENTE';
+    return mapEstadoDocumento(codigo);
   }
 
   getClaseEstadoDesarrollo(codigo: string): string {
-    return estadoDocumentoClass(this.mapEstadoDesarrollo(codigo));
+    return estadoDocumentoClass(mapEstadoDocumento(codigo));
   }
 
   volver(): void {

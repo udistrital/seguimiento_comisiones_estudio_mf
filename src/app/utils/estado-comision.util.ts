@@ -45,6 +45,20 @@ export function estadoPagoClass(estado: EstadoPago): string {
 }
 
 /**
+ * Mapea el CodigoAbreviacion del backend (estado_documento_comision)
+ * al EstadoDocumento que usa el front para i18n y chips.
+ */
+export function mapEstadoDocumento(codigo: string): EstadoDocumento {
+  const mapa: Record<string, EstadoDocumento> = {
+    CARG: 'CARGADO', APROB: 'APROBADO', APROB_PROY: 'APROBADO',
+    APROB_SEC_ACAD: 'APROBADO', APROB_SEC_GRAL: 'APROBADO', APROB_DEC: 'APROBADO',
+    NO_APROB: 'RECHAZADO', CORR: 'POR_CORREGIR', SUBS: 'CARGADO', ANUL: 'RECHAZADO',
+    PENDIENTE: 'PENDIENTE',
+  };
+  return mapa[codigo] ?? 'PENDIENTE';
+}
+
+/**
  * Mapea un estado de prórroga a su clase CSS para chips.
  */
 export function estadoProrrogaClass(estado: EstadoProrroga): string {

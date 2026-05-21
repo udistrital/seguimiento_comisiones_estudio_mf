@@ -9,6 +9,7 @@ import { SeguimientoService } from '../../../../services/seguimiento.service';
 import { GestorDocumentalService } from '../../../../services/gestor-documental.service';
 import { VisorDocumentosComponent } from '../../../../shared/visor-documentos/visor-documentos.component';
 import { getNombreUsuario } from '../../../../utils/auth.util';
+import { mapEstadoDocumento } from '../../../../utils/estado-comision.util';
 
 @Component({
     selector: 'app-gestion-pagos',
@@ -45,7 +46,7 @@ export class GestionPagosComponent implements OnChanges {
   }
 
   get puedeSubir(): boolean {
-    return this.mode === 'GESTIONAR' && (this.rolActual === 'DECANO' || this.rolActual === 'SECRETARIA_GENERAL');
+    return this.mode === 'GESTIONAR' && this.rolActual === 'DECANO';
   }
 
   get puedeEliminar(): boolean {
@@ -151,9 +152,11 @@ export class GestionPagosComponent implements OnChanges {
           this.popup.error(this.translate.instant('POPUPS.DOC_NO_DISPONIBLE'));
           return;
         }
+        const autorLabel = this.nombreRol(doc.subido_por_rol) +
+          (doc.subido_por_nombre ? ' — ' + doc.subido_por_nombre : '');
         this.dialog.open(VisorDocumentosComponent, {
           width: '900px', maxWidth: '95vw', maxHeight: '90vh',
-          data: { nombre: doc.nombre, base64, mimeType: 'application/pdf' },
+          data: { nombre: doc.nombre, autor: autorLabel, estado: mapEstadoDocumento(doc.estado), base64, mimeType: 'application/pdf' },
         });
       },
       error: () => this.popup.error(this.translate.instant('POPUPS.ERROR_CARGAR_DOCUMENTO')),
