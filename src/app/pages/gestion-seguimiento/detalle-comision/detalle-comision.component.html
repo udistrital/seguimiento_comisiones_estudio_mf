@@ -173,6 +173,13 @@
           [mode]="mode"
           (estadoCambiado)="onEstadoCumplimientoChanged($event)">
         </app-cumplimiento>
+        <div class="border-t border-black/10 my-4"></div>
+        <app-panel-observaciones
+          [observaciones]="observacionesPorPanel['cumplimiento'] || []"
+          [readOnly]="isReadOnly"
+          [titulo]="'DETALLE.COMENTARIOS'"
+          (nuevaObservacion)="onNuevaObservacion($event)">
+        </app-panel-observaciones>
       </mat-card>
 
       <!-- Prórroga y cierre -->
