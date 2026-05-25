@@ -103,14 +103,14 @@
   },
 
   "ESTADOS": {
-    "COM_INI": "Comisión iniciada",
-    "DES_ACAD": "En desarrollo académico",
-    "PROR": "En prórroga",
-    "TIT": "En titulación",
-    "INF_FIN": "En informe final",
-    "TRAM_PAZ_SAL": "En trámite de paz y salvo",
-    "COM_FIN": "Finalizada",
-    "COM_CANC": "Cancelada"
+    "COM_INI":        "Comisión iniciada",
+    "CUMP_PARCIAL":   "Cumplimiento parcial",
+    "PROR":           "En prórroga",
+    "INCUMP_PARCIAL": "Incumplimiento parcial",
+    "CUMP_TOTAL":     "Cumplimiento total",
+    "INCUMP_CIERRE":  "Incumplimiento de cierre",
+    "COM_FIN":        "Finalizada",
+    "COM_CANC":       "Cancelada"
   },
 
   "ESTADOS_PRORROGA": {
@@ -151,10 +151,21 @@
 
   "CUMPLIMIENTO": {
     "DESCRIPCION": "Descripción",
-    "FECHA_LIMITE": "Fecha límite",
-    "ESTADO": "Estado",
-    "CUMPLIDO": "Cumplido",
-    "PENDIENTE": "Pendiente"
+    "DESCRIPCION_PH": "Describa el avance o estado actual de la comisión...",
+    "DESCRIPCION_REQUERIDA": "La descripción es obligatoria.",
+    "FECHA": "Fecha",
+    "ESTADO": "Estado de la comisión",
+    "SIN_REGISTROS": "No hay registros de seguimiento de cumplimiento.",
+    "REGISTRAR": "Registrar seguimiento",
+    "GUARDANDO": "Guardando...",
+    "TITULO_SWAL": "Registrar seguimiento de cumplimiento",
+    "SELECCIONAR_ESTADO": "Seleccione el estado de cumplimiento...",
+    "CONFIRMAR": "Registrar",
+    "CANCELAR": "Cancelar",
+    "EXITO_REGISTRO": "Seguimiento de cumplimiento registrado correctamente.",
+    "ERROR_REGISTRO": "No se pudo registrar el seguimiento. Intente de nuevo.",
+    "ERROR_CARGA": "No se pudo cargar el historial de cumplimiento.",
+    "ERROR_ESTADOS": "No se pudieron cargar los estados disponibles. Intente recargar."
   },
 
   "PRORROGA": {

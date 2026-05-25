@@ -167,7 +167,12 @@
 
       <!-- Cumplimiento -->
       <mat-card *ngSwitchCase="'cumplimiento'" class="rounded-xl border border-black/10 bg-white p-5">
-        <app-cumplimiento [items]="cumplimiento" [readOnly]="isReadOnly"></app-cumplimiento>
+        <app-cumplimiento
+          [comisionId]="comisionId"
+          [rolActual]="rolActual"
+          [mode]="mode"
+          (estadoCambiado)="onEstadoCumplimientoChanged($event)">
+        </app-cumplimiento>
         <div class="border-t border-black/10 my-4"></div>
         <app-panel-observaciones
           [observaciones]="observacionesPorPanel['cumplimiento'] || []"

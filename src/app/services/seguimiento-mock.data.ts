@@ -16,7 +16,7 @@ export const MOCK_COMISIONES: ComisionRow[] = [
     fechaSolicitud: '2026-01-15',
     fechaInicio: '2026-03-01',
     fechaFin: '2026-09-01',
-    estado: 'DES_ACAD',
+    estado: 'CUMP_PARCIAL',
     estadoProrroga: 'NO_APLICA',
   },
   {
@@ -28,7 +28,7 @@ export const MOCK_COMISIONES: ComisionRow[] = [
     fechaSolicitud: '2025-11-20',
     fechaInicio: '2026-02-01',
     fechaFin: '2026-08-01',
-    estado: 'INF_FIN',
+    estado: 'INCUMP_PARCIAL',
     estadoProrroga: 'SOLICITADA',
   },
   {
