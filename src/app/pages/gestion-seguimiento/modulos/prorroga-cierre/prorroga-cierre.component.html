@@ -23,61 +23,480 @@
   </div>
 
   <!-- Solicitar prórroga (docente) -->
-  <div *ngIf="canSolicitarProrroga" class="flex flex-col gap-3 p-4 rounded-lg border border-sga/20 bg-sga/[0.02]">
-    <h5 class="text-sm font-medium text-sga">{{ 'PRORROGA.SOLICITAR' | translate }}</h5>
+  <div class="flex flex-col gap-5">
 
-    <mat-form-field appearance="outline" class="sga-no-notch">
-      <mat-label>{{ 'PRORROGA.NUEVA_FECHA_FIN' | translate }}</mat-label>
-      <input matInput type="date" [(ngModel)]="fechaNuevaFin">
-    </mat-form-field>
+    <!-- ===================================================== -->
+    <!-- VALIDANDO DISPONIBILIDAD PRÓRROGA -->
+    <!-- ===================================================== -->
 
-    <mat-form-field appearance="outline" class="sga-no-notch-textarea">
-      <mat-label>{{ 'PRORROGA.JUSTIFICACION' | translate }}</mat-label>
-      <textarea matInput [(ngModel)]="justificacion" rows="3"></textarea>
-    </mat-form-field>
+    <div
+      *ngIf="cargandoValidacionProrroga"
+      class="flex items-center gap-3 rounded-lg border border-sga/20 bg-white p-4">
 
-    <div class="flex justify-end">
-      <button mat-flat-button color="primary" class="rounded-lg"
-              [disabled]="!fechaNuevaFin || !justificacion.trim()">
-        {{ 'PRORROGA.ENVIAR_SOLICITUD' | translate }}
-      </button>
-    </div>
-  </div>
+      <div class="w-5 h-5 border-2 border-sga/30 border-t-sga rounded-full animate-spin"></div>
 
-  <!-- Panel de revisión (Secretaría General) -->
-  <div *ngIf="isSecretariaGeneral && !readOnly" class="flex flex-col gap-3 p-4 rounded-lg border border-sga/20 bg-sga/[0.02]">
-    <h5 class="text-sm font-medium text-sga">{{ 'PRORROGA.REVISION' | translate }}</h5>
+      <span class="text-sm text-black/70">
+        Validando disponibilidad para crear solicitud de prórroga...
+      </span>
 
-    <!-- Soportes placeholder -->
-    <div class="text-sm text-black/60 p-3 rounded-lg bg-white border border-black/8">
-      {{ 'PRORROGA.SOPORTES_PLACEHOLDER' | translate }}
     </div>
 
-    <!-- Observaciones -->
-    <mat-form-field appearance="outline" class="sga-no-notch-textarea">
-      <mat-label>{{ 'PRORROGA.OBSERVACIONES_REVISOR' | translate }}</mat-label>
-      <textarea matInput rows="3"></textarea>
-    </mat-form-field>
 
-    <!-- Botones de acción -->
-    <div class="flex items-center justify-end gap-2 pt-2">
-      <button mat-stroked-button class="h-10 rounded-lg border-black/20"
-              (click)="retornar.emit()">
-        {{ 'ACTIONS.RETORNAR' | translate }}
-      </button>
-      <button mat-stroked-button class="h-10 rounded-lg border-red-300 text-red-700"
-              (click)="rechazar.emit()">
-        {{ 'ACTIONS.RECHAZAR' | translate }}
-      </button>
-      <button mat-flat-button color="primary" class="h-10 rounded-lg"
-              (click)="enviar.emit()">
-        {{ 'ACTIONS.ENVIAR' | translate }}
-      </button>
+    <!-- ===================================================== -->
+    <!-- FORMULARIO CREACIÓN -->
+    <!-- ===================================================== -->
+
+    <div
+      *ngIf="!cargandoValidacionProrroga && puedeCrearProrroga && !tieneProrrogaEnCurso">
+
+      <div *ngIf="canSolicitarProrroga"
+          class="flex flex-col gap-5 p-4 rounded-lg border border-sga/20 bg-sga/[0.02]">
+
+        <!-- Encabezado -->
+        <div class="flex flex-col gap-1">
+
+          <h5 class="text-sm font-semibold text-sga">
+            {{ 'PRORROGA.SOLICITAR' | translate }}
+          </h5>
+
+          <p class="text-xs text-gray-500">
+            Adjunte los documentos requeridos para realizar la solicitud de prórroga.
+          </p>
+
+        </div>
+
+        <!-- Input oculto -->
+        <input
+          #fileInput
+          type="file"
+          accept=".pdf"
+          hidden
+          (change)="onSubirDocumentoProrroga($event)">
+
+        <!-- Tabla -->
+        <div class="rounded-xl border-2 border-sga overflow-hidden bg-white doc-table">
+
+          <!-- Barra superior -->
+          <div class="h-2 bg-gradient-to-r from-sga to-sga/60" aria-hidden="true"></div>
+
+          <table class="w-full bg-white border-collapse">
+
+            <!-- Header -->
+            <thead>
+
+              <tr>
+
+                <!-- Documento -->
+                <th class="doc-th text-sga font-semibold text-left">
+                  Documento
+                </th>
+
+                <!-- Estado -->
+                <th class="doc-th text-sga font-semibold text-left"
+                    style="width: 150px; min-width: 150px;">
+
+                  Estado
+                </th>
+
+                <!-- Gestión -->
+                <th class="doc-th text-sga font-semibold text-center"
+                    style="width: 140px; min-width: 140px;">
+
+                  Gestión
+                </th>
+
+              </tr>
+
+            </thead>
+
+            <!-- Body -->
+            <tbody>
+
+              <tr
+                *ngFor="let item of documentosProrrogaTabla"
+                class="border-t border-gray-200 hover:bg-gray-50 transition-colors">
+
+                <!-- Documento -->
+                <td class="doc-td text-sm text-black/75">
+
+                  <div class="flex flex-col gap-1 py-1">
+
+                    <span class="font-medium text-black/80 leading-5">
+                      {{ item.nombre }}
+                    </span>
+
+                    <span class="text-xs text-black/55 leading-5">
+                      {{ item.descripcion }}
+                    </span>
+
+                  </div>
+
+                </td>
+
+                <!-- Estado -->
+                <td class="doc-td">
+
+                  <!-- Sin documento -->
+                  <span
+                    *ngIf="!tieneDocumentoProrroga(item.codigo)"
+                    class="inline-flex items-center rounded-full px-3 py-1 text-xs font-medium bg-yellow-100 text-yellow-700 border border-yellow-200">
+
+                    No adjuntado
+                  </span>
+
+                  <!-- Con documento -->
+                  <span
+                    *ngIf="tieneDocumentoProrroga(item.codigo)"
+                    class="inline-flex items-center rounded-full px-3 py-1 text-xs font-medium bg-green-100 text-green-700 border border-green-200">
+
+                    Adjuntado
+                  </span>
+
+                </td>
+
+                <!-- Gestión -->
+                <td class="doc-td">
+
+                  <ng-container
+                    *ngTemplateOutlet="
+                      accionesDocumento;
+                      context: { item: item, fileInput: fileInput }
+                    ">
+                  </ng-container>
+
+                </td>
+
+              </tr>
+
+            </tbody>
+
+          </table>
+
+        </div>
+
+        <!-- Template reutilizable acciones -->
+        <ng-template
+          #accionesDocumento
+          let-item="item"
+          let-fileInput="fileInput">
+
+          <div class="flex items-center justify-center gap-1">
+
+            <!-- Ver -->
+            <button
+              type="button"
+              class="sga-table-action"
+              [ngClass]="
+                tieneDocumentoProrroga(item.codigo)
+                  ? 'sga-table-action--primary'
+                  : 'bg-gray-200 text-gray-400 cursor-not-allowed'
+              "
+              matTooltip="Ver archivo"
+              [disabled]="!tieneDocumentoProrroga(item.codigo)"
+              (click)="onVerDocumentoProrroga(item)">
+
+              <mat-icon>visibility</mat-icon>
+
+            </button>
+
+            <!-- Subir -->
+            <button
+              type="button"
+              class="sga-table-action"
+              [ngClass]="
+                tieneDocumentoProrroga(item.codigo)
+                  ? 'bg-gray-200 text-gray-400 cursor-not-allowed'
+                  : 'sga-table-action--primary'
+              "
+              matTooltip="Subir archivo"
+              [disabled]="tieneDocumentoProrroga(item.codigo)"
+              (click)="itemSubiendoDocumento = item; fileInput.click()">
+
+              <mat-icon>cloud_upload</mat-icon>
+
+            </button>
+
+            <!-- Eliminar -->
+            <button
+              type="button"
+              class="sga-table-action"
+              [ngClass]="
+                tieneDocumentoProrroga(item.codigo)
+                  ? 'sga-table-action--warn'
+                  : 'bg-gray-200 text-gray-400 cursor-not-allowed'
+              "
+              matTooltip="Eliminar archivo"
+              [disabled]="!tieneDocumentoProrroga(item.codigo)"
+              (click)="onEliminarDocumentoProrroga(item)">
+
+              <mat-icon>delete</mat-icon>
+
+            </button>
+
+          </div>
+
+        </ng-template>
+
+        <!-- Observaciones -->
+        <div class="flex flex-col gap-2">
+
+          <h6 class="text-sm font-medium text-sga">
+            Observaciones generales
+          </h6>
+
+          <textarea
+            class="w-full min-h-[120px] rounded-lg border border-gray-300 bg-white px-4 py-3 text-sm text-gray-700 resize-none outline-none transition-all focus:border-sga focus:ring-1 focus:ring-sga/20"
+            placeholder="Ingrese una observación"
+            [(ngModel)]="justificacion">
+          </textarea>
+
+        </div>
+
+        <!-- Botón -->
+        <div class="flex flex-col items-end gap-2">
+
+          <!-- Botón -->
+          <button
+            mat-flat-button
+            color="primary"
+            class="rounded-lg"
+            [disabled]="
+              !documentosProrrogaCompletos ||
+              !puedeCrearProrroga
+            "
+            (click)="crearSolicitudProrroga()">
+
+            <mat-icon class="mr-1">
+              send
+            </mat-icon>
+
+            {{ 'PRORROGA.ENVIAR_SOLICITUD' | translate }}
+
+          </button>
+
+          <!-- Mensaje -->
+          <span
+            *ngIf="!documentosProrrogaCompletos"
+            class="text-sm text-red-600 font-medium text-right">
+
+            Debe adjuntar todos los documentos requeridos para crear la solicitud de prórroga.
+
+          </span>
+
+        </div>
+
+      </div>
+
+    </div>
+
+    <!-- ===================================================== -->
+    <!-- SEGUIMIENTO PRÓRROGA -->
+    <!-- ===================================================== -->
+
+    <div *ngIf="tieneProrrogaEnCurso && prorrogaActual"
+        class="flex flex-col gap-5 p-4 rounded-lg border border-sga/20 bg-sga/[0.02]">
+
+      <!-- Encabezado -->
+      <div class="flex flex-col gap-1">
+
+        <h5 class="text-sm font-semibold text-sga">
+          Seguimiento de solicitud de prórroga
+        </h5>
+
+        <p class="text-xs text-gray-500">
+          Actualmente tiene una solicitud de prórroga en gestión.
+        </p>
+
+      </div>
+
+      <!-- Contenido -->
+      <div class="flex flex-col gap-4 rounded-xl border border-sga/15 bg-white p-4">
+
+        <!-- Información -->
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+
+          <!-- Solicitud -->
+          <div class="flex flex-col gap-1">
+
+            <span class="text-xs text-gray-500 uppercase tracking-wide">
+              Solicitud
+            </span>
+
+            <span class="text-sm font-semibold text-black/80">
+              #{{ prorrogaActual.solicitud_id }}
+            </span>
+
+          </div>
+
+          <!-- Fecha -->
+          <div class="flex flex-col gap-1">
+
+            <span class="text-xs text-gray-500 uppercase tracking-wide">
+              Fecha creación
+            </span>
+
+            <span class="text-sm text-black/70">
+              {{ prorrogaActual.fecha_creacion }}
+            </span>
+
+          </div>
+
+          <!-- Estado -->
+          <div class="flex flex-col gap-1">
+
+            <span class="text-xs text-gray-500 uppercase tracking-wide">
+              Estado actual
+            </span>
+
+            <span class="text-sm font-semibold text-sga">
+              {{ prorrogaActual.estado }}
+            </span>
+
+          </div>
+
+        </div>
+
+        
+      </div>
+      <!-- Botón -->
+      <div class="flex justify-center">
+
+        <button
+          mat-flat-button
+          color="primary"
+          class="rounded-lg">
+
+          <mat-icon class="mr-1">
+            visibility
+          </mat-icon>
+
+          Ver detalle
+
+        </button>
+
+      </div>
+
+    </div>
+
+    <!-- ===================================================== -->
+    <!-- HISTÓRICO PRÓRROGAS -->
+    <!-- ===================================================== -->
+
+    <div
+      *ngIf="historicoProrrogas.length > 0"
+      class="flex flex-col gap-3 mt-5">
+
+      <!-- Título -->
+      <div class="flex flex-col gap-1">
+
+        <h5 class="text-sm font-semibold text-sga">
+          Histórico de solicitudes de prórroga
+        </h5>
+
+        <p class="text-xs text-gray-500">
+          Consulte las solicitudes de prórroga rechazadas anteriormente.
+        </p>
+
+      </div>
+
+      <!-- Tabla -->
+      <div class="rounded-xl border-2 border-sga overflow-hidden bg-white doc-table">
+
+        <!-- Barra superior -->
+        <div class="h-2 bg-gradient-to-r from-sga to-sga/60"></div>
+
+        <table class="w-full bg-white border-collapse">
+
+          <!-- Header -->
+          <thead>
+
+            <tr>
+
+              <th class="doc-th text-sga font-semibold text-left"
+                  style="width: 120px; min-width: 120px;">
+
+                Solicitud
+
+              </th>
+
+              <th class="doc-th text-sga font-semibold text-left">
+                Fecha de creación
+              </th>
+
+              <th class="doc-th text-sga font-semibold text-left"
+                  style="width: 180px; min-width: 180px;">
+
+                Estado
+
+              </th>
+
+              <th class="doc-th text-sga font-semibold text-center"
+                  style="width: 120px; min-width: 120px;">
+
+                Gestión
+
+              </th>
+
+            </tr>
+
+          </thead>
+
+          <!-- Body -->
+          <tbody>
+
+            <tr
+              *ngFor="let item of historicoProrrogas"
+              class="border-t border-gray-200 hover:bg-gray-50 transition-colors">
+
+              <!-- ID -->
+              <td class="doc-td text-sm text-black/75">
+                #{{ item.solicitud_id }}
+              </td>
+
+              <!-- FECHA -->
+              <td class="doc-td text-sm text-black/75">
+                {{ item.fecha_creacion }}
+              </td>
+
+              <!-- ESTADO -->
+              <td class="doc-td">
+
+                <span
+                  class="inline-flex items-center rounded-full px-3 py-1 text-xs font-medium border bg-red-100 text-red-700 border-red-200">
+
+                  {{ item.estado }}
+
+                </span>
+
+              </td>
+
+              <!-- GESTIÓN -->
+              <td class="doc-td">
+
+                <div class="flex items-center justify-center">
+
+                  <button
+                    type="button"
+                    class="sga-table-action sga-table-action--primary"
+                    matTooltip="Ver detalle">
+
+                    <mat-icon>
+                      visibility
+                    </mat-icon>
+
+                  </button>
+
+                </div>
+
+              </td>
+
+            </tr>
+
+          </tbody>
+
+        </table>
+
+      </div>
+
     </div>
   </div>
-
-  <!-- Info para decano -->
-  <div *ngIf="rolActual === 'DECANO'" class="text-sm text-black/60 p-4 rounded-lg bg-black/[0.02] border border-black/8">
-    {{ 'PRORROGA.INFO_DECANO' | translate }}
-  </div>
-</div>
