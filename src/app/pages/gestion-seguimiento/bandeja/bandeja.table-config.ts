@@ -109,7 +109,7 @@ export function getActionsByRole(role: Role): TableAction<ComisionRow>[] {
   switch (role) {
     case 'DOCENTE':
       return [
-        { ...ACTION_GESTIONAR, visible: (r) => ['COM_INI', 'DES_ACAD', 'PROR', 'TIT', 'INF_FIN', 'TRAM_PAZ_SAL'].includes(r.estado) },
+        { ...ACTION_GESTIONAR, visible: (r) => ['COM_INI', 'CUMP_PARCIAL', 'PROR', 'INCUMP_PARCIAL', 'CUMP_TOTAL', 'INCUMP_CIERRE'].includes(r.estado) },
         { ...ACTION_VER,       visible: (r) => ['COM_FIN', 'COM_CANC'].includes(r.estado) },
       ];
     case 'DECANO':

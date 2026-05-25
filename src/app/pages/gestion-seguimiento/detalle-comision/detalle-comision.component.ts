@@ -9,7 +9,6 @@ import { ComisionDetalle } from '../../../models/comision.model';
 import { DocumentoSoporte } from '../../../models/documento.model';
 import { EstadoDocumento } from '../../../models/estados.model';
 import { Observacion } from '../../../models/observacion.model';
-import { CumplimientoItem } from '../../../models/cumplimiento.model';
 import { ModuloGestion } from '../../../models/modulo-gestion.model';
 import { getRolesUsuario, getDocumento, getNombreUsuario } from '../../../utils/auth.util';
 import { PopUpManager } from '../../../managers/popup.manager';
@@ -34,7 +33,6 @@ export class DetalleComisionComponent implements OnInit {
   comision!: ComisionDetalle;
   documentosSolicitud: DocumentoSoporte[] = [];
   documentosDesarrollo: DocumentoSoporte[] = [];
-  cumplimiento: CumplimientoItem[] = [];
   observacionesSolicitud: Observacion[] = [];
   observacionesPorPanel: Record<string, Observacion[]> = {};
   cargandoComentarios: Record<string, boolean> = {};
@@ -156,11 +154,17 @@ export class DetalleComisionComponent implements OnInit {
   }
 
   private mapEstadoComision(codigo: string | undefined): import('../../../models/estados.model').EstadoComision {
-    const validos = ['COM_INI','DES_ACAD','PROR','TIT','INF_FIN','TRAM_PAZ_SAL','COM_FIN','COM_CANC'] as const;
+    const validos = ['COM_INI','CUMP_PARCIAL','PROR','INCUMP_PARCIAL','CUMP_TOTAL','INCUMP_CIERRE','COM_FIN','COM_CANC'] as const;
     const c = (codigo ?? '').toUpperCase();
     return (validos as readonly string[]).includes(c)
       ? c as import('../../../models/estados.model').EstadoComision
       : 'COM_INI';
+  }
+
+  onEstadoCumplimientoChanged(estadoCodigo: string): void {
+    if (this.comision) {
+      this.comision = { ...this.comision, estado: this.mapEstadoComision(estadoCodigo) };
+    }
   }
 
   private cargarDocumentosSolicitud(): void {

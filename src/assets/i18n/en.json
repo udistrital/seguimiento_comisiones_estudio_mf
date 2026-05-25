@@ -102,14 +102,14 @@
   },
 
   "ESTADOS": {
-    "COM_INI": "Commission started",
-    "DES_ACAD": "In academic development",
-    "PROR": "In extension",
-    "TIT": "In titulation",
-    "INF_FIN": "Final report",
-    "TRAM_PAZ_SAL": "Peace and clearance process",
-    "COM_FIN": "Completed",
-    "COM_CANC": "Cancelled"
+    "COM_INI":        "Commission started",
+    "CUMP_PARCIAL":   "Partial compliance",
+    "PROR":           "In extension",
+    "INCUMP_PARCIAL": "Partial non-compliance",
+    "CUMP_TOTAL":     "Full compliance",
+    "INCUMP_CIERRE":  "Non-compliance at closure",
+    "COM_FIN":        "Completed",
+    "COM_CANC":       "Cancelled"
   },
 
   "ESTADOS_PRORROGA": {
@@ -150,10 +150,21 @@
 
   "CUMPLIMIENTO": {
     "DESCRIPCION": "Description",
-    "FECHA_LIMITE": "Deadline",
-    "ESTADO": "Status",
-    "CUMPLIDO": "Completed",
-    "PENDIENTE": "Pending"
+    "DESCRIPCION_PH": "Describe the current progress or status of the commission...",
+    "DESCRIPCION_REQUERIDA": "Description is required.",
+    "FECHA": "Date",
+    "ESTADO": "Commission status",
+    "SIN_REGISTROS": "No compliance tracking records found.",
+    "REGISTRAR": "Register tracking",
+    "GUARDANDO": "Saving...",
+    "TITULO_SWAL": "Register compliance tracking",
+    "SELECCIONAR_ESTADO": "Select compliance status...",
+    "CONFIRMAR": "Register",
+    "CANCELAR": "Cancel",
+    "EXITO_REGISTRO": "Compliance tracking registered successfully.",
+    "ERROR_REGISTRO": "Could not register the tracking. Please try again.",
+    "ERROR_CARGA": "Could not load compliance history.",
+    "ERROR_ESTADOS": "Could not load available statuses. Please reload."
   },
 
   "PRORROGA": {

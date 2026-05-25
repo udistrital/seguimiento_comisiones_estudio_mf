@@ -3,14 +3,14 @@
 // Códigos reales de la tabla comision.estado_comision en BD
 // ============================================================
 export type EstadoComision =
-  | 'COM_INI'       // Comisión iniciada
-  | 'DES_ACAD'      // En desarrollo académico
-  | 'PROR'          // En prórroga
-  | 'TIT'           // En titulación
-  | 'INF_FIN'       // En informe final
-  | 'TRAM_PAZ_SAL'  // En trámite de paz y salvo
-  | 'COM_FIN'       // Comisión finalizada
-  | 'COM_CANC';     // Comisión cancelada
+  | 'COM_INI'        // Comisión iniciada
+  | 'CUMP_PARCIAL'   // Cumplimiento parcial
+  | 'PROR'           // En prórroga
+  | 'INCUMP_PARCIAL' // Incumplimiento parcial
+  | 'CUMP_TOTAL'     // Cumplimiento total
+  | 'INCUMP_CIERRE'  // Incumplimiento de cierre de comisión
+  | 'COM_FIN'        // Comisión finalizada
+  | 'COM_CANC';      // Comisión cancelada
 
 // ============================================================
 // Estados de documento soporte

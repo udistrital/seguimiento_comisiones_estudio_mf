@@ -10,8 +10,8 @@ import { MOCK_COMISIONES } from '../../../services/seguimiento-mock.data';
 export class IndicadoresComponent {
   stats = {
     total: MOCK_COMISIONES.length,
-    enEjecucion: MOCK_COMISIONES.filter(c => c.estado === 'DES_ACAD').length,
-    enRevision: MOCK_COMISIONES.filter(c => c.estado === 'INF_FIN').length,
+    enEjecucion: MOCK_COMISIONES.filter(c => c.estado === 'CUMP_PARCIAL').length,
+    enRevision: MOCK_COMISIONES.filter(c => c.estado === 'INCUMP_PARCIAL').length,
     finalizadas: MOCK_COMISIONES.filter(c => c.estado === 'COM_FIN').length,
     canceladas: MOCK_COMISIONES.filter(c => c.estado === 'COM_CANC').length,
     conProrroga: MOCK_COMISIONES.filter(c => c.estadoProrroga !== 'NO_APLICA').length,
