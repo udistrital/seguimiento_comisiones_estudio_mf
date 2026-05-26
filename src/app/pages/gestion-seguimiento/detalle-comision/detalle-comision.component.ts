@@ -165,6 +165,7 @@ export class DetalleComisionComponent implements OnInit {
     if (this.comision) {
       this.comision = { ...this.comision, estado: this.mapEstadoComision(estadoCodigo) };
     }
+    this.cargarComentariosPanel('cumplimiento');
   }
 
   private cargarDocumentosSolicitud(): void {
