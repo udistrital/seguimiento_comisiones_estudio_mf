@@ -6,9 +6,6 @@
       "jasmine"
     ]
   },
-  "files": [
-    "src/main.ts"
-  ],
   "include": [
     "src/**/*.spec.ts",
     "src/**/*.d.ts"
