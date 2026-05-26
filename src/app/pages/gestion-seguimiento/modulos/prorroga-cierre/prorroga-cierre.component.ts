@@ -8,6 +8,7 @@ import { TranslateService } from '@ngx-translate/core';
 import { VisorDocumentosComponent } from '../../../../shared/visor-documentos/visor-documentos.component';
 import { ComisionesCrudService } from '../../../../services/comisiones-crud.service';
 import { SeguimientoService } from '../../../../services/seguimiento.service';
+import { ProrrogaDetalleModalComponent } from './prorroga-detalle-modal/prorroga-detalle-modal.component';
 
 @Component({
   selector: 'app-prorroga-cierre',
@@ -656,4 +657,20 @@ export class ProrrogaCierreComponent implements OnInit {
         });
     });
   }
+
+  abrirDetalleSolicitud(solicitudId: number): void {
+    this.dialog.open(
+      ProrrogaDetalleModalComponent,
+      {
+        width: '1100px',
+        maxWidth: '95vw',
+        maxHeight: '95vh',
+        autoFocus: false,
+        data: {
+          solicitudId,
+        },
+      },
+    );
+  }
+
 }

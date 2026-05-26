@@ -364,7 +364,8 @@
         <button
           mat-flat-button
           color="primary"
-          class="rounded-lg">
+          class="rounded-lg"
+          (click)="abrirDetalleSolicitud(prorrogaActual.solicitud_id)">
 
           <mat-icon class="mr-1">
             visibility
@@ -478,7 +479,8 @@
                   <button
                     type="button"
                     class="sga-table-action sga-table-action--primary"
-                    matTooltip="Ver detalle">
+                    matTooltip="Ver detalle"
+                    (click)="abrirDetalleSolicitud(prorrogaActual.solicitud_id)">
 
                     <mat-icon>
                       visibility
