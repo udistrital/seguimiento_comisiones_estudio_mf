@@ -34,6 +34,7 @@ export class CumplimientoComponent implements OnChanges {
   @Input() comisionId!: number;
   @Input() rolActual: Role | null = null;
   @Input() mode: 'VER' | 'GESTIONAR' = 'VER';
+  @Input() permisoRegistrar = true;
 
   @Output() estadoCambiado = new EventEmitter<string>();
 
@@ -57,7 +58,7 @@ export class CumplimientoComponent implements OnChanges {
   }
 
   get puedeRegistrar(): boolean {
-    return this.mode === 'GESTIONAR' && this.rolActual === 'DECANO';
+    return this.mode === 'GESTIONAR' && this.rolActual === 'DECANO' && this.permisoRegistrar;
   }
 
   private cargarDatos(): void {

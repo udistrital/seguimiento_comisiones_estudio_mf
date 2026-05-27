@@ -17,6 +17,7 @@ import { ComisionesCrudService } from '../../../services/comisiones-crud.service
 import { GestorDocumentalService } from '../../../services/gestor-documental.service';
 import { DocumentoCrudService } from '../../../services/documento-crud.service';
 import { VisorDocumentosComponent } from '../../../shared/visor-documentos/visor-documentos.component';
+import { PermisosUtils } from '../../../utils/role-permissions';
 
 @Component({
     selector: 'app-detalle-comision',
@@ -27,7 +28,22 @@ import { VisorDocumentosComponent } from '../../../shared/visor-documentos/visor
 export class DetalleComisionComponent implements OnInit {
   comisionId!: number;
   rolActual: Role | null = null;
+  roles: string[] = [];
   mode: 'VER' | 'GESTIONAR' = 'VER';
+
+  readonly opcionesPermisos = [
+    'ver_documentos',
+    'cargar_documento_desarrollo',
+    'eliminar_documento_desarrollo',
+    'registrar_cumplimiento',
+    'cargar_documento_pagos',
+    'eliminar_documento_pagos',
+    'comentar_desarrollo',
+    'comentar_pagos',
+    'comentar_cumplimiento',
+  ];
+  permisos: { [key: string]: boolean } = {};
+  permisosListos = false;
 
   cargando = true;
   comision!: ComisionDetalle;
@@ -69,11 +85,12 @@ export class DetalleComisionComponent implements OnInit {
     private readonly comisionesCrud: ComisionesCrudService,
     private readonly gestorDocumental: GestorDocumentalService,
     private readonly documentoCrud: DocumentoCrudService,
+    private readonly permisosUtils: PermisosUtils,
   ) {}
 
   ngOnInit(): void {
-    const rolesUsuario = getRolesUsuario();
-    this.rolActual = resolverRolEfectivo(rolesUsuario) || 'DOCENTE';
+    this.roles = getRolesUsuario();
+    this.rolActual = resolverRolEfectivo(this.roles) || 'DOCENTE';
 
     const paramMode = this.route.snapshot.queryParamMap.get('mode');
     if (paramMode === 'GESTIONAR' || paramMode === 'VER') {
@@ -84,6 +101,14 @@ export class DetalleComisionComponent implements OnInit {
 
     this.resolverIdTipoDocumento();
     this.cargarDetalle();
+
+    this.permisosUtils.obtenerPermisos(this.roles, this.opcionesPermisos).subscribe({
+      next: (permisos) => {
+        this.permisos = permisos;
+        this.permisosListos = true;
+      },
+      error: () => { this.permisosListos = true; },
+    });
   }
 
   private resolverIdTipoDocumento(): void {
@@ -100,7 +125,12 @@ export class DetalleComisionComponent implements OnInit {
   get isDocente(): boolean { return this.rolActual === 'DOCENTE'; }
   get isDecano(): boolean { return this.rolActual === 'DECANO'; }
   get isSecretariaGeneral(): boolean { return this.rolActual === 'SECRETARIA_GENERAL'; }
-  get canUploadDocs(): boolean { return !this.isReadOnly && this.isDocente; }
+  get canUploadDocs(): boolean { return !this.isReadOnly && this.isDocente && (!this.permisosListos || this.permisos['cargar_documento_desarrollo']); }
+  get canDeleteDocs(): boolean { return !this.isReadOnly && this.isDocente && (!this.permisosListos || this.permisos['eliminar_documento_desarrollo']); }
+  get puedeVerDocumentos(): boolean { return !this.permisosListos || this.permisos['ver_documentos']; }
+  get puedeComentarDesarrollo(): boolean { return !this.isReadOnly && (!this.permisosListos || this.permisos['comentar_desarrollo']); }
+  get puedeComentarPagos(): boolean { return !this.isReadOnly && (!this.permisosListos || this.permisos['comentar_pagos']); }
+  get puedeComentarCumplimiento(): boolean { return !this.isReadOnly && (!this.permisosListos || this.permisos['comentar_cumplimiento']); }
 
   private cargarDetalle(): void {
     this.cargando = true;

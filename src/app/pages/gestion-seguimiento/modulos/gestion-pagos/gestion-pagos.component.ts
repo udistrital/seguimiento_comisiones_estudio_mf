@@ -22,6 +22,9 @@ export class GestionPagosComponent implements OnChanges {
   @Input() rolActual: Role | null = null;
   @Input() mode: 'VER' | 'GESTIONAR' = 'VER';
   @Input() idTipoDocumento: number | null = null;
+  @Input() permisoSubir = true;
+  @Input() permisoEliminar = true;
+  @Input() permisoVer = true;
 
   @ViewChild('fileInputPago') fileInputPago!: ElementRef<HTMLInputElement>;
 
@@ -46,11 +49,11 @@ export class GestionPagosComponent implements OnChanges {
   }
 
   get puedeSubir(): boolean {
-    return this.mode === 'GESTIONAR' && this.rolActual === 'DECANO';
+    return this.mode === 'GESTIONAR' && this.rolActual === 'DECANO' && this.permisoSubir;
   }
 
   get puedeEliminar(): boolean {
-    return this.puedeSubir;
+    return this.mode === 'GESTIONAR' && this.rolActual === 'DECANO' && this.permisoEliminar;
   }
 
   private cargarDocumentos(): void {
