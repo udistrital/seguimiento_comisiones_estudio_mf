@@ -10,6 +10,7 @@ import { getColumnsByRole, getActionsByRole, BandejaActionKey } from './bandeja.
 import { getRolesUsuario, getDocumento } from '../../../utils/auth.util';
 import { PopUpManager } from '../../../managers/popup.manager';
 import { SeguimientoService } from '../../../services/seguimiento.service';
+import { PermisosUtils } from '../../../utils/role-permissions';
 
 @Component({
     selector: 'app-bandeja-seguimiento',
@@ -19,6 +20,7 @@ import { SeguimientoService } from '../../../services/seguimiento.service';
 })
 export class BandejaComponent implements OnInit {
   rolActual: Role | null = null;
+  roles: string[] = [];
   rolLabel = '';
   comisiones: ComisionRow[] = [];
   columns: ColumnDef<ComisionRow>[] = [];
@@ -28,28 +30,46 @@ export class BandejaComponent implements OnInit {
   cargando = true;
   errorCarga = false;
 
+  readonly opcionesPermisos = ['ver_filtros_tabla', 'gestionar_comision'];
+  permisos: { [key: string]: boolean } = {};
+  permisosListos = false;
+
   constructor(
     private readonly router: Router,
     private readonly translate: TranslateService,
     private readonly popup: PopUpManager,
     private readonly seguimientoService: SeguimientoService,
+    private readonly permisosUtils: PermisosUtils,
   ) {}
 
   ngOnInit(): void {
-    const rolesUsuario = getRolesUsuario();
-    this.rolActual = resolverRolEfectivo(rolesUsuario);
+    this.roles = getRolesUsuario();
+    this.rolActual = resolverRolEfectivo(this.roles);
 
     if (!this.rolActual) {
       this.rolActual = 'DOCENTE'; // fallback para desarrollo local
     }
 
     this.translate.get('ROLES.' + this.rolActual).subscribe(label => { this.rolLabel = label; });
+    // Valor inicial basado en rol; se refina cuando cargan los permisos
     this.enableFilters = this.rolActual !== 'DOCENTE';
 
     this.columns = getColumnsByRole(this.rolActual);
     this.actions = getActionsByRole(this.rolActual);
 
     this.cargarComisiones();
+
+    this.permisosUtils.obtenerPermisos(this.roles, this.opcionesPermisos).subscribe({
+      next: (permisos) => {
+        this.permisos = permisos;
+        this.permisosListos = true;
+        this.enableFilters = permisos['ver_filtros_tabla'] ?? false;
+        if (!permisos['gestionar_comision']) {
+          this.actions = this.actions.filter(a => a.key !== 'GESTIONAR');
+        }
+      },
+      error: () => { this.permisosListos = true; },
+    });
   }
 
   private cargarComisiones(): void {

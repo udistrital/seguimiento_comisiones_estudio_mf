@@ -11,6 +11,7 @@ import { estadoDocumentoClass } from '../../utils/estado-comision.util';
 export class PanelDocumentosComponent {
   @Input() documentos: DocumentoSoporte[] = [];
   @Input() titulo = 'DETALLE.DOCUMENTOS';
+  @Input() permitirVer = true;
   @Input() permitirCarga = false;
   @Input() permitirCheck = false;
 
