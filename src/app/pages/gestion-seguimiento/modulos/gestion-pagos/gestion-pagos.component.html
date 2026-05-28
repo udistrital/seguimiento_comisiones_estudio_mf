@@ -69,7 +69,7 @@
         </th>
         <td mat-cell *matCellDef="let doc" class="doc-td">
           <div class="flex justify-center gap-1">
-            <button class="sga-table-action sga-table-action--primary" [title]="'TABLE.VER' | translate"
+            <button *ngIf="permisoVer" class="sga-table-action sga-table-action--primary" [title]="'TABLE.VER' | translate"
               (click)="onVerDocumento(doc)">
               <mat-icon>visibility</mat-icon>
             </button>
