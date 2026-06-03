@@ -7,7 +7,8 @@ export type EstadoComision =
   | 'CUMP_PARCIAL'   // Cumplimiento parcial
   | 'PROR'           // En prórroga
   | 'INCUMP_PARCIAL' // Incumplimiento parcial
-  | 'CUMP_TOTAL'     // Cumplimiento total
+  | 'CUMP_TOTAL'     // Cumplimiento total (legado)
+  | 'CU_TOTAL'       // Cumplimiento total
   | 'INCUMP_CIERRE'  // Incumplimiento de cierre de comisión
   | 'COM_FIN'        // Comisión finalizada
   | 'COM_CANC';      // Comisión cancelada

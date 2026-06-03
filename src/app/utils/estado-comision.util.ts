@@ -9,7 +9,8 @@ export function estadoComisionClass(estado: EstadoComision): string {
     case 'CUMP_PARCIAL':   return 'st-ejecucion';
     case 'PROR':           return 'st-prorroga';
     case 'INCUMP_PARCIAL': return 'st-revision';
-    case 'CUMP_TOTAL':     return 'st-finalizada';
+    case 'CUMP_TOTAL':
+    case 'CU_TOTAL':       return 'st-finalizada';
     case 'INCUMP_CIERRE':  return 'st-cancelada';
     case 'COM_FIN':        return 'st-finalizada';
     case 'COM_CANC':       return 'st-cancelada';

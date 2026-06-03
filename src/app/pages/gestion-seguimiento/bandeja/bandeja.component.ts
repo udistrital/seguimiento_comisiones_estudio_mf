@@ -130,24 +130,6 @@ export class BandejaComponent implements OnInit {
   }
 
   onAction(event: { action: string; row: ComisionRow }): void {
-    const key = event.action as BandejaActionKey;
-    const comision = event.row;
-
-    switch (key) {
-      case 'VER':
-        this.router.navigate(['/seguimiento', comision.id], {
-          queryParams: { mode: 'VER' },
-        });
-        break;
-
-      case 'GESTIONAR':
-        this.router.navigate(['/seguimiento', comision.id], {
-          queryParams: { mode: 'GESTIONAR' },
-        });
-        break;
-
-      default:
-        console.warn(`[Bandeja] Acción no reconocida: ${key}`);
-    }
+    this.router.navigate(['/seguimiento', event.row.id]);
   }
 }
