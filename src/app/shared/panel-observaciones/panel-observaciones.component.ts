@@ -24,6 +24,9 @@ export class PanelObservacionesComponent {
     const texto = this.textoNuevo.trim();
     if (!texto) return;
     this.nuevaObservacion.emit(texto);
+  }
+
+  limpiar(): void {
     this.textoNuevo = '';
   }
 }

@@ -1,6 +1,7 @@
 import { Component, EventEmitter, Input, Output, OnChanges, SimpleChanges, ViewChild, AfterViewInit } from '@angular/core';
 import { MatPaginator } from '@angular/material/paginator';
 import { MatTableDataSource } from '@angular/material/table';
+import { TranslateService } from '@ngx-translate/core';
 import { ColumnDef, TableAction } from './dynamic-table.types';
 
 @Component({
@@ -20,6 +21,8 @@ export class DynamicTableComponent<T extends Record<string, any>> implements OnC
   @Output() actionClick = new EventEmitter<{ action: string; row: T }>();
 
   @ViewChild(MatPaginator) paginator!: MatPaginator;
+
+  constructor(private readonly translate: TranslateService) {}
 
   dataSource = new MatTableDataSource<T>([]);
 
@@ -96,7 +99,8 @@ export class DynamicTableComponent<T extends Record<string, any>> implements OnC
       return active.every(([key, value]) => {
         const col = colMap.get(key);
         if (!col) return true;
-        const cellText = (col.cell(row) ?? '').toString().toLowerCase();
+        const raw = (col.cell(row) ?? '').toString();
+        const cellText = this.translate.instant(raw).toLowerCase();
         return cellText.includes(value);
       });
     });

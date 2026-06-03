@@ -1,23 +1,24 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ViewChildren, QueryList } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { MatDialog } from '@angular/material/dialog';
 import { TranslateService } from '@ngx-translate/core';
 
 import { Role, resolverRolEfectivo } from '../../../models/roles.model';
-import { estadoDocumentoClass } from '../../../utils/estado-comision.util';
+import { estadoDocumentoClass, mapEstadoDocumento } from '../../../utils/estado-comision.util';
 import { ComisionDetalle } from '../../../models/comision.model';
 import { DocumentoSoporte } from '../../../models/documento.model';
 import { EstadoDocumento } from '../../../models/estados.model';
 import { Observacion } from '../../../models/observacion.model';
-import { PagoComision } from '../../../models/pago.model';
-import { CumplimientoItem } from '../../../models/cumplimiento.model';
 import { ModuloGestion } from '../../../models/modulo-gestion.model';
 import { getRolesUsuario, getDocumento, getNombreUsuario } from '../../../utils/auth.util';
 import { PopUpManager } from '../../../managers/popup.manager';
 import { SeguimientoService } from '../../../services/seguimiento.service';
 import { ComisionesCrudService } from '../../../services/comisiones-crud.service';
 import { GestorDocumentalService } from '../../../services/gestor-documental.service';
+import { DocumentoCrudService } from '../../../services/documento-crud.service';
 import { VisorDocumentosComponent } from '../../../shared/visor-documentos/visor-documentos.component';
+import { PanelObservacionesComponent } from '../../../shared/panel-observaciones/panel-observaciones.component';
+import { PermisosUtils } from '../../../utils/role-permissions';
 
 @Component({
     selector: 'app-detalle-comision',
@@ -26,22 +27,37 @@ import { VisorDocumentosComponent } from '../../../shared/visor-documentos/visor
     standalone: false
 })
 export class DetalleComisionComponent implements OnInit {
+  @ViewChildren(PanelObservacionesComponent) paneleObs!: QueryList<PanelObservacionesComponent>;
+
   comisionId!: number;
   rolActual: Role | null = null;
-  mode: 'VER' | 'GESTIONAR' = 'VER';
+  roles: string[] = [];
+
+  readonly opcionesPermisos = [
+    'ver_documentos',
+    'cargar_documento_desarrollo',
+    'eliminar_documento_desarrollo',
+    'registrar_cumplimiento',
+    'cargar_documento_pagos',
+    'eliminar_documento_pagos',
+    'comentar_desarrollo',
+    'comentar_pagos',
+    'comentar_cumplimiento',
+  ];
+  permisos: { [key: string]: boolean } = {};
+  permisosListos = false;
 
   cargando = true;
   comision!: ComisionDetalle;
   documentosSolicitud: DocumentoSoporte[] = [];
   documentosDesarrollo: DocumentoSoporte[] = [];
-  pagos: PagoComision[] = [];
-  cumplimiento: CumplimientoItem[] = [];
   observacionesSolicitud: Observacion[] = [];
   observacionesPorPanel: Record<string, Observacion[]> = {};
   cargandoComentarios: Record<string, boolean> = {};
 
   gruposDocumentos: any[] = [];
   cargandoDocDesarrollo = false;
+  private idTipoDocumentoDesarrollo: number | null = null;
   colsDocDesarrollo = ['nombre', 'estado', 'gestion'];
   itemSubiendoDocumento: any = null;
 
@@ -71,27 +87,47 @@ export class DetalleComisionComponent implements OnInit {
     private readonly seguimientoService: SeguimientoService,
     private readonly comisionesCrud: ComisionesCrudService,
     private readonly gestorDocumental: GestorDocumentalService,
+    private readonly documentoCrud: DocumentoCrudService,
+    private readonly permisosUtils: PermisosUtils,
   ) {}
 
   ngOnInit(): void {
-    const rolesUsuario = getRolesUsuario();
-    this.rolActual = resolverRolEfectivo(rolesUsuario) || 'DOCENTE';
-
-    const paramMode = this.route.snapshot.queryParamMap.get('mode');
-    if (paramMode === 'GESTIONAR' || paramMode === 'VER') {
-      this.mode = paramMode;
-    }
+    this.roles = getRolesUsuario();
+    this.rolActual = resolverRolEfectivo(this.roles) || 'DOCENTE';
 
     this.comisionId = Number(this.route.snapshot.paramMap.get('id'));
 
+    this.resolverIdTipoDocumento();
     this.cargarDetalle();
+
+    this.permisosUtils.obtenerPermisos(this.roles, this.opcionesPermisos).subscribe({
+      next: (permisos) => {
+        this.permisos = permisos;
+        this.permisosListos = true;
+      },
+      error: () => { this.permisosListos = true; },
+    });
   }
 
-  get isReadOnly(): boolean { return this.mode === 'VER'; }
+  private resolverIdTipoDocumento(): void {
+    this.documentoCrud.get('tipo_documento?query=CodigoAbreviacion:DE_COM').subscribe({
+      next: (resp: any) => {
+        const lista = Array.isArray(resp) ? resp : resp?.Data;
+        this.idTipoDocumentoDesarrollo = lista?.[0]?.Id ?? null;
+      },
+      error: () => { this.idTipoDocumentoDesarrollo = null; },
+    });
+  }
+
   get isDocente(): boolean { return this.rolActual === 'DOCENTE'; }
   get isDecano(): boolean { return this.rolActual === 'DECANO'; }
   get isSecretariaGeneral(): boolean { return this.rolActual === 'SECRETARIA_GENERAL'; }
-  get canUploadDocs(): boolean { return !this.isReadOnly && this.isDocente; }
+  get canUploadDocs(): boolean { return this.isDocente && (!this.permisosListos || this.permisos['cargar_documento_desarrollo']); }
+  get canDeleteDocs(): boolean { return this.isDocente && (!this.permisosListos || this.permisos['eliminar_documento_desarrollo']); }
+  get puedeVerDocumentos(): boolean { return !this.permisosListos || this.permisos['ver_documentos']; }
+  get puedeComentarDesarrollo(): boolean { return !this.permisosListos || this.permisos['comentar_desarrollo']; }
+  get puedeComentarPagos(): boolean { return !this.permisosListos || this.permisos['comentar_pagos']; }
+  get puedeComentarCumplimiento(): boolean { return !this.permisosListos || this.permisos['comentar_cumplimiento']; }
 
   private cargarDetalle(): void {
     this.cargando = true;
@@ -146,11 +182,18 @@ export class DetalleComisionComponent implements OnInit {
   }
 
   private mapEstadoComision(codigo: string | undefined): import('../../../models/estados.model').EstadoComision {
-    const validos = ['COM_INI','DES_ACAD','PROR','TIT','INF_FIN','TRAM_PAZ_SAL','COM_FIN','COM_CANC'] as const;
+    const validos = ['COM_INI','CUMP_PARCIAL','PROR','INCUMP_PARCIAL','CUMP_TOTAL','CU_TOTAL','INCUMP_CIERRE','COM_FIN','COM_CANC'] as const;
     const c = (codigo ?? '').toUpperCase();
     return (validos as readonly string[]).includes(c)
       ? c as import('../../../models/estados.model').EstadoComision
       : 'COM_INI';
+  }
+
+  onEstadoCumplimientoChanged(estadoCodigo: string): void {
+    if (this.comision) {
+      this.comision = { ...this.comision, estado: this.mapEstadoComision(estadoCodigo) };
+    }
+    this.cargarComentariosPanel('cumplimiento');
   }
 
   private cargarDocumentosSolicitud(): void {
@@ -383,6 +426,7 @@ export class DetalleComisionComponent implements OnInit {
       this.seguimientoService.post('seguimiento/comentario', body).subscribe({
         next: () => {
           this.cargarComentariosPanel(key);
+          this.paneleObs.first?.limpiar();
           this.popup.success(this.translate.instant('POPUPS.OBSERVACION_GUARDADA'));
         },
         error: () => {
@@ -407,9 +451,21 @@ export class DetalleComisionComponent implements OnInit {
     const file = (event.target as HTMLInputElement).files?.[0];
     if (!file || !this.itemSubiendoDocumento) return;
 
+    if (file.type !== 'application/pdf') {
+      this.popup.error(this.translate.instant('POPUPS.SOLO_PDF'));
+      (event.target as HTMLInputElement).value = '';
+      this.itemSubiendoDocumento = null;
+      return;
+    }
+
     const item = this.itemSubiendoDocumento;
     this.itemSubiendoDocumento = null;
     (event.target as HTMLInputElement).value = '';
+
+    if (!this.idTipoDocumentoDesarrollo) {
+      this.popup.error(this.translate.instant('POPUPS.ERROR_TIPO_DOC_NO_RESUELTO'));
+      return;
+    }
 
     const reader = new FileReader();
     reader.onload = () => {
@@ -417,7 +473,7 @@ export class DetalleComisionComponent implements OnInit {
       const body = {
         comision_id: this.comisionId,
         tipo_documento_codigo: item.codigo,
-        id_tipo_documento: 2, // TODO: reemplazar por ID del tipo_documento de comisiones cuando se cree el workspace en Nuxeo
+        id_tipo_documento: this.idTipoDocumentoDesarrollo,
         nombre: file.name,
         descripcion: item.nombre,
         file: base64,
@@ -468,16 +524,11 @@ export class DetalleComisionComponent implements OnInit {
   }
 
   mapEstadoDesarrollo(codigo: string): EstadoDocumento {
-    const mapa: Record<string, EstadoDocumento> = {
-      'CARG': 'CARGADO', 'APROB': 'APROBADO', 'APROB_PROY': 'APROBADO',
-      'APROB_SEC_ACAD': 'APROBADO', 'APROB_SEC_GRAL': 'APROBADO', 'APROB_DEC': 'APROBADO',
-      'NO_APROB': 'RECHAZADO', 'CORR': 'POR_CORREGIR', 'SUBS': 'CARGADO', 'ANUL': 'RECHAZADO',
-    };
-    return mapa[codigo] ?? 'PENDIENTE';
+    return mapEstadoDocumento(codigo);
   }
 
   getClaseEstadoDesarrollo(codigo: string): string {
-    return estadoDocumentoClass(this.mapEstadoDesarrollo(codigo));
+    return estadoDocumentoClass(mapEstadoDocumento(codigo));
   }
 
   volver(): void {

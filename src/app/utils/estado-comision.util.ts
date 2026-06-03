@@ -5,15 +5,16 @@ import { EstadoComision, EstadoDocumento, EstadoPago, EstadoProrroga } from '../
  */
 export function estadoComisionClass(estado: EstadoComision): string {
   switch (estado) {
-    case 'COM_INI':      return 'st-pendiente';
-    case 'DES_ACAD':     return 'st-ejecucion';
-    case 'PROR':         return 'st-prorroga';
-    case 'TIT':          return 'st-ejecucion';
-    case 'INF_FIN':      return 'st-revision';
-    case 'TRAM_PAZ_SAL': return 'st-revision';
-    case 'COM_FIN':      return 'st-finalizada';
-    case 'COM_CANC':     return 'st-cancelada';
-    default:             return 'st-pendiente';
+    case 'COM_INI':        return 'st-pendiente';
+    case 'CUMP_PARCIAL':   return 'st-ejecucion';
+    case 'PROR':           return 'st-prorroga';
+    case 'INCUMP_PARCIAL': return 'st-revision';
+    case 'CUMP_TOTAL':
+    case 'CU_TOTAL':       return 'st-finalizada';
+    case 'INCUMP_CIERRE':  return 'st-cancelada';
+    case 'COM_FIN':        return 'st-finalizada';
+    case 'COM_CANC':       return 'st-cancelada';
+    default:               return 'st-pendiente';
   }
 }
 
@@ -42,6 +43,20 @@ export function estadoPagoClass(estado: EstadoPago): string {
     case 'RECHAZADO':   return 'st-cancelada';
     default:            return 'st-pendiente';
   }
+}
+
+/**
+ * Mapea el CodigoAbreviacion del backend (estado_documento_comision)
+ * al EstadoDocumento que usa el front para i18n y chips.
+ */
+export function mapEstadoDocumento(codigo: string): EstadoDocumento {
+  const mapa: Record<string, EstadoDocumento> = {
+    CARG: 'CARGADO', APROB: 'APROBADO', APROB_PROY: 'APROBADO',
+    APROB_SEC_ACAD: 'APROBADO', APROB_SEC_GRAL: 'APROBADO', APROB_DEC: 'APROBADO',
+    NO_APROB: 'RECHAZADO', CORR: 'POR_CORREGIR', SUBS: 'CARGADO', ANUL: 'RECHAZADO',
+    PENDIENTE: 'PENDIENTE',
+  };
+  return mapa[codigo] ?? 'PENDIENTE';
 }
 
 /**

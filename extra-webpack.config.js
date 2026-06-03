@@ -2,5 +2,6 @@ const singleSpaAngularWebpack = require('single-spa-angular/lib/webpack').defaul
 
 module.exports = (config, options) => {
   const singleSpaWebpackConfig = singleSpaAngularWebpack(config, options);
+  singleSpaWebpackConfig.devtool = config.devtool ?? false;
   return singleSpaWebpackConfig;
 };

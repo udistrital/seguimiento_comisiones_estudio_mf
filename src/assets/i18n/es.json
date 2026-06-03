@@ -48,7 +48,6 @@
   },
 
   "ACTIONS": {
-    "VER": "Ver",
     "GESTIONAR": "Gestionar",
     "CERRAR": "Cerrar",
     "REGRESAR": "Regresar",
@@ -63,7 +62,6 @@
   },
 
   "TOOLTIPS": {
-    "VER_DETALLE": "Ver detalle de la comisión",
     "GESTIONAR": "Gestionar comisión"
   },
 
@@ -71,7 +69,6 @@
     "TITULO": "Seguimiento de comisión",
     "CARGANDO": "Cargando detalle...",
     "RADICADO": "Radicado",
-    "SOLO_LECTURA": "Solo lectura",
     "INFO_GENERAL": "Información general",
     "PROGRAMA": "Programa",
     "FACULTAD": "Facultad",
@@ -103,14 +100,15 @@
   },
 
   "ESTADOS": {
-    "COM_INI": "Comisión iniciada",
-    "DES_ACAD": "En desarrollo académico",
-    "PROR": "En prórroga",
-    "TIT": "En titulación",
-    "INF_FIN": "En informe final",
-    "TRAM_PAZ_SAL": "En trámite de paz y salvo",
-    "COM_FIN": "Finalizada",
-    "COM_CANC": "Cancelada"
+    "COM_INI":        "Comisión iniciada",
+    "CUMP_PARCIAL":   "Cumplimiento parcial",
+    "PROR":           "En prórroga",
+    "INCUMP_PARCIAL": "Incumplimiento parcial",
+    "CUMP_TOTAL":     "Cumplimiento total",
+    "CU_TOTAL":       "Cumplimiento total",
+    "INCUMP_CIERRE":  "Incumplimiento de cierre",
+    "COM_FIN":        "Finalizada",
+    "COM_CANC":       "Cancelada"
   },
 
   "ESTADOS_PRORROGA": {
@@ -137,20 +135,35 @@
   },
 
   "PAGOS": {
-    "CONCEPTO": "Concepto",
-    "MONTO": "Monto",
-    "FECHA_PROGRAMADA": "Fecha programada",
-    "FECHA_PAGO": "Fecha de pago",
-    "TOTAL_PROGRAMADO": "Total programado",
-    "TOTAL_PAGADO": "Total pagado"
+    "SUBIR_DOCUMENTO": "Subir documento",
+    "SUBIENDO": "Subiendo...",
+    "DOCUMENTO": "Documento",
+    "SUBIDO_POR": "Subido por",
+    "SIN_DOCUMENTOS": "No hay documentos de pagos cargados.",
+    "NOMBRE_DOCUMENTO": "Nombre del documento",
+    "NOMBRE_PLACEHOLDER": "Ej: Recibo pago enero 2026",
+    "NOMBRE_MIN_CHARS": "El nombre debe tener al menos 12 caracteres.",
+    "CONTINUAR": "Continuar",
+    "CANCELAR": "Cancelar"
   },
 
   "CUMPLIMIENTO": {
     "DESCRIPCION": "Descripción",
-    "FECHA_LIMITE": "Fecha límite",
-    "ESTADO": "Estado",
-    "CUMPLIDO": "Cumplido",
-    "PENDIENTE": "Pendiente"
+    "DESCRIPCION_PH": "Describa el avance o estado actual de la comisión...",
+    "DESCRIPCION_REQUERIDA": "La descripción es obligatoria.",
+    "FECHA": "Fecha",
+    "ESTADO": "Estado de la comisión",
+    "SIN_REGISTROS": "No hay registros de seguimiento de cumplimiento.",
+    "REGISTRAR": "Registrar seguimiento",
+    "GUARDANDO": "Guardando...",
+    "TITULO_SWAL": "Registrar seguimiento de cumplimiento",
+    "SELECCIONAR_ESTADO": "Seleccione el estado de cumplimiento...",
+    "CONFIRMAR": "Registrar",
+    "CANCELAR": "Cancelar",
+    "EXITO_REGISTRO": "Seguimiento de cumplimiento registrado correctamente.",
+    "ERROR_REGISTRO": "No se pudo registrar el seguimiento. Intente de nuevo.",
+    "ERROR_CARGA": "No se pudo cargar el historial de cumplimiento.",
+    "ERROR_ESTADOS": "No se pudieron cargar los estados disponibles. Intente recargar."
   },
 
   "PRORROGA": {
@@ -188,6 +201,8 @@
     "DOC_SUBIDO": "Documento subido exitosamente.",
     "DOC_ELIMINADO": "Documento eliminado correctamente.",
     "ERROR_SUBIR_DOC": "No se pudo subir el documento. Intente de nuevo.",
+    "ERROR_TIPO_DOC_NO_RESUELTO": "No se pudo determinar el tipo de documento. Intente recargar la página.",
+    "SOLO_PDF": "Solo se permiten archivos PDF.",
     "ERROR_ELIMINAR_DOC": "No se pudo eliminar el documento. Intente de nuevo.",
     "CONFIRMAR_RETORNAR": "¿Está seguro de retornar esta solicitud para corrección?",
     "SOLICITUD_RETORNADA": "Solicitud retornada correctamente.",

@@ -65,6 +65,7 @@ import { MatDatepickerModule } from '@angular/material/datepicker';
 import { MatNativeDateModule, MAT_DATE_LOCALE } from '@angular/material/core';
 import { MatTooltipModule } from '@angular/material/tooltip';
 import { MatPaginatorModule, MatPaginatorIntl } from '@angular/material/paginator';
+import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 
 export function HttpLoaderFactory(http: HttpClient): TranslateHttpLoader {
   return new TranslateHttpLoader(http, `${environment.deployUrl}assets/i18n/`, '.json');
@@ -174,6 +175,7 @@ registerLocaleData(localeEs);
     MatNativeDateModule,
     MatTooltipModule,
     MatPaginatorModule,
+    MatProgressSpinnerModule,
   ],
   providers: [
     { provide: LOCALE_ID, useValue: 'es-CO' },
