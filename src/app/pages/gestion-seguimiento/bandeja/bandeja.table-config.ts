@@ -86,15 +86,7 @@ export function getColumnsByRole(role: Role): ColumnDef<ComisionRow>[] {
 // Acciones por rol
 // ============================================================
 
-export type BandejaActionKey = 'VER' | 'GESTIONAR';
-
-const ACTION_VER: TableAction<ComisionRow> = {
-  key: 'VER',
-  label: 'ACTIONS.VER',
-  icon: 'visibility',
-  tooltip: 'TOOLTIPS.VER_DETALLE',
-  color: 'primary',
-};
+export type BandejaActionKey = 'GESTIONAR';
 
 const ACTION_GESTIONAR: TableAction<ComisionRow> = {
   key: 'GESTIONAR',
@@ -102,21 +94,8 @@ const ACTION_GESTIONAR: TableAction<ComisionRow> = {
   icon: 'settings',
   tooltip: 'TOOLTIPS.GESTIONAR',
   color: 'primary',
-  visible: (r) => !['COM_FIN', 'COM_CANC'].includes(r.estado),
 };
 
-export function getActionsByRole(role: Role): TableAction<ComisionRow>[] {
-  switch (role) {
-    case 'DOCENTE':
-      return [
-        { ...ACTION_GESTIONAR, visible: (r) => ['COM_INI', 'CUMP_PARCIAL', 'PROR', 'INCUMP_PARCIAL', 'CUMP_TOTAL', 'INCUMP_CIERRE'].includes(r.estado) },
-        { ...ACTION_VER,       visible: (r) => ['COM_FIN', 'COM_CANC'].includes(r.estado) },
-      ];
-    case 'DECANO':
-      return [ACTION_GESTIONAR];
-    case 'SECRETARIA_GENERAL':
-      return [ACTION_GESTIONAR];
-    default:
-      return [ACTION_VER];
-  }
+export function getActionsByRole(_role: Role): TableAction<ComisionRow>[] {
+  return [ACTION_GESTIONAR];
 }

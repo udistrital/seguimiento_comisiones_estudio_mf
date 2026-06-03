@@ -20,7 +20,6 @@ import { mapEstadoDocumento } from '../../../../utils/estado-comision.util';
 export class GestionPagosComponent implements OnChanges {
   @Input() comisionId!: number;
   @Input() rolActual: Role | null = null;
-  @Input() mode: 'VER' | 'GESTIONAR' = 'VER';
   @Input() idTipoDocumento: number | null = null;
   @Input() permisoSubir = true;
   @Input() permisoEliminar = true;
@@ -49,11 +48,11 @@ export class GestionPagosComponent implements OnChanges {
   }
 
   get puedeSubir(): boolean {
-    return this.mode === 'GESTIONAR' && this.rolActual === 'DECANO' && this.permisoSubir;
+    return this.rolActual === 'DECANO' && this.permisoSubir;
   }
 
   get puedeEliminar(): boolean {
-    return this.mode === 'GESTIONAR' && this.rolActual === 'DECANO' && this.permisoEliminar;
+    return this.rolActual === 'DECANO' && this.permisoEliminar;
   }
 
   private cargarDocumentos(): void {

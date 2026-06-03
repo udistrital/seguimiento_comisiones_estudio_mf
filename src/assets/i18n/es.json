@@ -48,7 +48,6 @@
   },
 
   "ACTIONS": {
-    "VER": "Ver",
     "GESTIONAR": "Gestionar",
     "CERRAR": "Cerrar",
     "REGRESAR": "Regresar",
@@ -63,7 +62,6 @@
   },
 
   "TOOLTIPS": {
-    "VER_DETALLE": "Ver detalle de la comisión",
     "GESTIONAR": "Gestionar comisión"
   },
 
@@ -71,7 +69,6 @@
     "TITULO": "Seguimiento de comisión",
     "CARGANDO": "Cargando detalle...",
     "RADICADO": "Radicado",
-    "SOLO_LECTURA": "Solo lectura",
     "INFO_GENERAL": "Información general",
     "PROGRAMA": "Programa",
     "FACULTAD": "Facultad",
@@ -108,6 +105,7 @@
     "PROR":           "En prórroga",
     "INCUMP_PARCIAL": "Incumplimiento parcial",
     "CUMP_TOTAL":     "Cumplimiento total",
+    "CU_TOTAL":       "Cumplimiento total",
     "INCUMP_CIERRE":  "Incumplimiento de cierre",
     "COM_FIN":        "Finalizada",
     "COM_CANC":       "Cancelada"
@@ -204,6 +202,7 @@
     "DOC_ELIMINADO": "Documento eliminado correctamente.",
     "ERROR_SUBIR_DOC": "No se pudo subir el documento. Intente de nuevo.",
     "ERROR_TIPO_DOC_NO_RESUELTO": "No se pudo determinar el tipo de documento. Intente recargar la página.",
+    "SOLO_PDF": "Solo se permiten archivos PDF.",
     "ERROR_ELIMINAR_DOC": "No se pudo eliminar el documento. Intente de nuevo.",
     "CONFIRMAR_RETORNAR": "¿Está seguro de retornar esta solicitud para corrección?",
     "SOLICITUD_RETORNADA": "Solicitud retornada correctamente.",
