@@ -33,7 +33,6 @@ interface RegistroCumplimiento {
 export class CumplimientoComponent implements OnChanges {
   @Input() comisionId!: number;
   @Input() rolActual: Role | null = null;
-  @Input() mode: 'VER' | 'GESTIONAR' = 'VER';
   @Input() permisoRegistrar = true;
 
   @Output() estadoCambiado = new EventEmitter<string>();
@@ -58,14 +57,15 @@ export class CumplimientoComponent implements OnChanges {
   }
 
   get puedeRegistrar(): boolean {
-    return this.mode === 'GESTIONAR' && this.rolActual === 'DECANO' && this.permisoRegistrar;
+    return this.rolActual === 'DECANO' && this.permisoRegistrar;
   }
 
   private cargarDatos(): void {
     this.cargando = true;
     this.seguimientoService.get('seguimiento/estados_cumplimiento').subscribe({
       next: (resp: any) => {
-        this.estadosCumplimiento = Array.isArray(resp?.Data) ? resp.Data : [];
+        const todos: EstadoCumplimiento[] = Array.isArray(resp?.Data) ? resp.Data : [];
+        this.estadosCumplimiento = todos.filter(e => !['CUMP_TOTAL', 'CU_TOTAL'].includes(e.codigo));
       },
       error: () => {
         this.popup.error(this.translate.instant('CUMPLIMIENTO.ERROR_ESTADOS'));
@@ -86,7 +86,7 @@ export class CumplimientoComponent implements OnChanges {
 
   chipClass(codigo: string): string {
     // Reutiliza el mismo mapeo que el resto de la app, con fallback seguro.
-    const estadosValidos = ['COM_INI','CUMP_PARCIAL','PROR','INCUMP_PARCIAL','CUMP_TOTAL','INCUMP_CIERRE','COM_FIN','COM_CANC'];
+    const estadosValidos = ['COM_INI','CUMP_PARCIAL','PROR','INCUMP_PARCIAL','CUMP_TOTAL','CU_TOTAL','INCUMP_CIERRE','COM_FIN','COM_CANC'];
     if (estadosValidos.includes(codigo)) {
       return estadoComisionClass(codigo as any);
     }

@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ViewChildren, QueryList } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { MatDialog } from '@angular/material/dialog';
 import { TranslateService } from '@ngx-translate/core';
@@ -17,6 +17,7 @@ import { ComisionesCrudService } from '../../../services/comisiones-crud.service
 import { GestorDocumentalService } from '../../../services/gestor-documental.service';
 import { DocumentoCrudService } from '../../../services/documento-crud.service';
 import { VisorDocumentosComponent } from '../../../shared/visor-documentos/visor-documentos.component';
+import { PanelObservacionesComponent } from '../../../shared/panel-observaciones/panel-observaciones.component';
 import { PermisosUtils } from '../../../utils/role-permissions';
 
 @Component({
@@ -26,10 +27,11 @@ import { PermisosUtils } from '../../../utils/role-permissions';
     standalone: false
 })
 export class DetalleComisionComponent implements OnInit {
+  @ViewChildren(PanelObservacionesComponent) paneleObs!: QueryList<PanelObservacionesComponent>;
+
   comisionId!: number;
   rolActual: Role | null = null;
   roles: string[] = [];
-  mode: 'VER' | 'GESTIONAR' = 'VER';
 
   readonly opcionesPermisos = [
     'ver_documentos',
@@ -92,11 +94,6 @@ export class DetalleComisionComponent implements OnInit {
     this.roles = getRolesUsuario();
     this.rolActual = resolverRolEfectivo(this.roles) || 'DOCENTE';
 
-    const paramMode = this.route.snapshot.queryParamMap.get('mode');
-    if (paramMode === 'GESTIONAR' || paramMode === 'VER') {
-      this.mode = paramMode;
-    }
-
     this.comisionId = Number(this.route.snapshot.paramMap.get('id'));
 
     this.resolverIdTipoDocumento();
@@ -121,16 +118,15 @@ export class DetalleComisionComponent implements OnInit {
     });
   }
 
-  get isReadOnly(): boolean { return this.mode === 'VER'; }
   get isDocente(): boolean { return this.rolActual === 'DOCENTE'; }
   get isDecano(): boolean { return this.rolActual === 'DECANO'; }
   get isSecretariaGeneral(): boolean { return this.rolActual === 'SECRETARIA_GENERAL'; }
-  get canUploadDocs(): boolean { return !this.isReadOnly && this.isDocente && (!this.permisosListos || this.permisos['cargar_documento_desarrollo']); }
-  get canDeleteDocs(): boolean { return !this.isReadOnly && this.isDocente && (!this.permisosListos || this.permisos['eliminar_documento_desarrollo']); }
+  get canUploadDocs(): boolean { return this.isDocente && (!this.permisosListos || this.permisos['cargar_documento_desarrollo']); }
+  get canDeleteDocs(): boolean { return this.isDocente && (!this.permisosListos || this.permisos['eliminar_documento_desarrollo']); }
   get puedeVerDocumentos(): boolean { return !this.permisosListos || this.permisos['ver_documentos']; }
-  get puedeComentarDesarrollo(): boolean { return !this.isReadOnly && (!this.permisosListos || this.permisos['comentar_desarrollo']); }
-  get puedeComentarPagos(): boolean { return !this.isReadOnly && (!this.permisosListos || this.permisos['comentar_pagos']); }
-  get puedeComentarCumplimiento(): boolean { return !this.isReadOnly && (!this.permisosListos || this.permisos['comentar_cumplimiento']); }
+  get puedeComentarDesarrollo(): boolean { return !this.permisosListos || this.permisos['comentar_desarrollo']; }
+  get puedeComentarPagos(): boolean { return !this.permisosListos || this.permisos['comentar_pagos']; }
+  get puedeComentarCumplimiento(): boolean { return !this.permisosListos || this.permisos['comentar_cumplimiento']; }
 
   private cargarDetalle(): void {
     this.cargando = true;
@@ -184,7 +180,7 @@ export class DetalleComisionComponent implements OnInit {
   }
 
   private mapEstadoComision(codigo: string | undefined): import('../../../models/estados.model').EstadoComision {
-    const validos = ['COM_INI','CUMP_PARCIAL','PROR','INCUMP_PARCIAL','CUMP_TOTAL','INCUMP_CIERRE','COM_FIN','COM_CANC'] as const;
+    const validos = ['COM_INI','CUMP_PARCIAL','PROR','INCUMP_PARCIAL','CUMP_TOTAL','CU_TOTAL','INCUMP_CIERRE','COM_FIN','COM_CANC'] as const;
     const c = (codigo ?? '').toUpperCase();
     return (validos as readonly string[]).includes(c)
       ? c as import('../../../models/estados.model').EstadoComision
@@ -428,6 +424,7 @@ export class DetalleComisionComponent implements OnInit {
       this.seguimientoService.post('seguimiento/comentario', body).subscribe({
         next: () => {
           this.cargarComentariosPanel(key);
+          this.paneleObs.first?.limpiar();
           this.popup.success(this.translate.instant('POPUPS.OBSERVACION_GUARDADA'));
         },
         error: () => {
@@ -451,6 +448,13 @@ export class DetalleComisionComponent implements OnInit {
   onArchivoSeleccionado(event: Event): void {
     const file = (event.target as HTMLInputElement).files?.[0];
     if (!file || !this.itemSubiendoDocumento) return;
+
+    if (file.type !== 'application/pdf') {
+      this.popup.error(this.translate.instant('POPUPS.SOLO_PDF'));
+      (event.target as HTMLInputElement).value = '';
+      this.itemSubiendoDocumento = null;
+      return;
+    }
 
     const item = this.itemSubiendoDocumento;
     this.itemSubiendoDocumento = null;

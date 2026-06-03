@@ -22,7 +22,6 @@ export class ProrrogaCierreComponent implements OnInit {
   // ======================================================
 
   @Input() comision!: ComisionDetalle;
-  @Input() readOnly = false;
   @Input() rolActual: Role | null = null;
 
   @Output() retornar = new EventEmitter<void>();
@@ -119,11 +118,7 @@ export class ProrrogaCierreComponent implements OnInit {
   }
 
   get canSolicitarProrroga(): boolean {
-    return (
-      !this.readOnly &&
-      this.rolActual === 'DOCENTE' &&
-      this.comision?.estadoProrroga === 'NO_APLICA'
-    );
+    return this.rolActual === 'DOCENTE' && this.comision?.estadoProrroga === 'NO_APLICA';
   }
 
 
