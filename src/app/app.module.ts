@@ -21,6 +21,9 @@ import { DocumentosDesarrolloComponent } from './pages/gestion-seguimiento/modul
 import { GestionPagosComponent } from './pages/gestion-seguimiento/modulos/gestion-pagos/gestion-pagos.component';
 import { CumplimientoComponent } from './pages/gestion-seguimiento/modulos/cumplimiento/cumplimiento.component';
 import { ProrrogaCierreComponent } from './pages/gestion-seguimiento/modulos/prorroga-cierre/prorroga-cierre.component';
+import { CierreComisionComponent } from './pages/gestion-seguimiento/modulos/cierre-comision/cierre-comision.component';
+import { ProrrogaDetalleModalComponent } from './pages/gestion-seguimiento/modulos/prorroga-cierre/prorroga-detalle-modal/prorroga-detalle-modal.component';
+import { CierreDetalleModalComponent } from './pages/gestion-seguimiento/modulos/cierre-comision/cierre-detalle-modal/cierre-detalle-modal.component';
 
 // Shared
 import { DynamicTableComponent } from './shared/dynamic-table/dynamic-table.component';
@@ -119,6 +122,9 @@ registerLocaleData(localeEs);
     GestionPagosComponent,
     CumplimientoComponent,
     ProrrogaCierreComponent,
+    CierreComisionComponent,
+    ProrrogaDetalleModalComponent,
+    CierreDetalleModalComponent,
 
     // Shared
     DynamicTableComponent,

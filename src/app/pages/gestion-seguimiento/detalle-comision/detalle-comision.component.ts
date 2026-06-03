@@ -62,7 +62,8 @@ export class DetalleComisionComponent implements OnInit {
   itemSubiendoDocumento: any = null;
 
   moduloActivo: string | null = null;
-
+  tipoGestionSeleccionada: 'prorroga' | 'cierre' | null = null;
+  
   private readonly PANEL_A_TIPO: Record<string, string> = {
     'docs-desarrollo': 'COM_DESARROLLO',
     'pagos':           'COM_PAGOS',
@@ -130,6 +131,7 @@ export class DetalleComisionComponent implements OnInit {
 
   private cargarDetalle(): void {
     this.cargando = true;
+    
 
     this.seguimientoService.get(`seguimiento/detalle_comision/${this.comisionId}`).subscribe({
       next: (resp: any) => {
