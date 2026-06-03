@@ -1,0 +1,196 @@
+<div class="flex flex-col gap-5 p-6 min-w-[900px] max-w-[1100px] bg-white">
+
+  <!-- HEADER -->
+  <div class="flex items-center justify-between">
+
+    <div class="flex flex-col gap-1">
+
+      <h2 class="text-xl font-semibold text-sga">
+        Detalles solicitud de cierre
+      </h2>
+
+      <span class="text-sm text-black/55">
+        Consulte el estado y observaciones asociadas a la solicitud.
+      </span>
+
+    </div>
+
+  </div>
+
+  <!-- LOADING -->
+  <div
+    *ngIf="cargando"
+    class="flex items-center gap-3 rounded-xl border border-sga/20 bg-white p-5 shadow-sm">
+
+    <div
+      class="w-5 h-5 border-2 border-sga/30 border-t-sga rounded-full animate-spin">
+    </div>
+
+    <span class="text-sm text-black/70">
+      Cargando detalle de solicitud...
+    </span>
+
+  </div>
+
+  <ng-container *ngIf="!cargando && detalleSolicitud">
+
+    <!-- INFO PRINCIPAL -->
+    <div class="grid grid-cols-3 gap-3">
+
+      <!-- SOLICITUD -->
+      <div
+        class="rounded-lg border border-sga/15 bg-white px-4 py-3">
+
+        <div
+          class="text-[11px] uppercase tracking-wide text-black/45 font-medium">
+
+          Solicitud
+
+        </div>
+
+        <div class="mt-1 text-base font-semibold text-black/85">
+
+          #{{ detalleSolicitud.Solicitud?.Id }}
+
+        </div>
+
+      </div>
+
+      <!-- FECHA -->
+      <div
+        class="rounded-lg border border-sga/15 bg-white px-4 py-3">
+
+        <div
+          class="text-[11px] uppercase tracking-wide text-black/45 font-medium">
+
+          Fecha creación
+
+        </div>
+
+        <div class="mt-1 text-base font-semibold text-black/85">
+
+          {{ detalleSolicitud.Solicitud?.FechaCreacion
+              ? (detalleSolicitud.Solicitud.FechaCreacion | date:'dd/MM/yyyy')
+              : 'N/A'
+          }}
+
+        </div>
+
+      </div>
+
+      <!-- ESTADO -->
+      <div
+        class="rounded-lg border border-sga/15 bg-white px-4 py-3">
+
+        <div
+          class="text-[11px] uppercase tracking-wide text-black/45 font-medium">
+
+          Estado actual
+
+        </div>
+
+        <div class="mt-2">
+
+          <span
+            class="inline-flex items-center rounded-full px-3 py-1 text-xs font-medium bg-sga/10 text-sga border border-sga/20">
+
+            {{ detalleSolicitud.EstadoSolicitud?.Nombre }}
+
+          </span>
+
+        </div>
+
+      </div>
+
+    </div>
+
+    <!-- OBSERVACIONES -->
+    <div class="grid grid-cols-2 gap-5">
+
+      <!-- DOCENTE -->
+      <div class="flex flex-col gap-2">
+
+        <h5 class="text-sm font-semibold text-sga">
+          Observación docente
+        </h5>
+
+        <div
+          class="rounded-xl border border-sga/15 bg-white p-4 min-h-[220px] text-sm text-black/70 whitespace-pre-line shadow-sm">
+
+          {{
+            detalleSolicitud.Solicitud?.ObservacionCierre ||
+            detalleSolicitud.Solicitud?.Observacion ||
+            'Sin observaciones.'
+          }}
+
+        </div>
+
+      </div>
+
+      <!-- REVISORES -->
+      <div class="flex flex-col gap-2">
+
+        <h5 class="text-sm font-semibold text-sga">
+          Observaciones de revisores
+        </h5>
+
+        <div
+          class="rounded-xl border border-sga/15 bg-white p-4 min-h-[220px] flex flex-col gap-3 shadow-sm">
+
+          <ng-container
+            *ngIf="detalleSolicitud.Observaciones?.length > 0">
+
+            <div
+              *ngFor="let obs of detalleSolicitud.Observaciones"
+              class="rounded-xl border border-sga/10 p-3 bg-sga/[0.03]">
+
+              <div
+                class="text-xs font-semibold text-sga uppercase">
+
+                {{ obs.Rol }}
+
+              </div>
+
+              <div
+                class="text-sm text-black/70 mt-1">
+
+                {{ obs.Descripcion }}
+
+              </div>
+
+            </div>
+
+          </ng-container>
+
+          <div
+            *ngIf="!detalleSolicitud.Observaciones?.length"
+            class="text-sm text-black/50">
+
+            No existen observaciones registradas.
+
+          </div>
+
+        </div>
+
+      </div>
+
+    </div>
+
+    <!-- FOOTER -->
+    <div class="flex justify-center pt-2">
+
+      <button
+        mat-flat-button
+        color="primary"
+        class="rounded-lg px-5"
+        (click)="cerrar()">
+
+        Aceptar
+
+      </button>
+
+    </div>
+
+  </ng-container>
+
+</div>

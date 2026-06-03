@@ -316,7 +316,7 @@ export class ProrrogaCierreComponent implements OnInit {
 
     this.comisionesCrudService
       .get(
-        'tipo_documento_solicitud?limit=-1&query=codigo_abreviacion__startswith:SOL_PRO'
+        'tipo_documento_solicitud?limit=-1&query=codigo_abreviacion__startswith:SOL_PRO,RolUsuario:DOCENTE'
       )
       .subscribe({
 
