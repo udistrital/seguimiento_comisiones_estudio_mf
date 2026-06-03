@@ -1,0 +1,407 @@
+<div class="flex flex-col gap-5">
+
+  <!-- Header -->
+  <div class="flex items-center justify-between">
+
+    <h4 class="text-sm font-semibold text-black/80">
+      Solicitud de cierre de comisión
+    </h4>
+
+  </div>
+
+  <!-- ===================================================== -->
+  <!-- VALIDANDO DISPONIBILIDAD -->
+  <!-- ===================================================== -->
+
+  <div
+    *ngIf="cargandoValidacionCierre"
+    class="flex items-center gap-3 rounded-lg border border-sga/20 bg-white p-4">
+
+    <div class="w-5 h-5 border-2 border-sga/30 border-t-sga rounded-full animate-spin"></div>
+
+    <span class="text-sm text-black/70">
+      Validando disponibilidad para crear solicitud de cierre...
+    </span>
+
+  </div>
+
+  <!-- ===================================================== -->
+  <!-- CREAR SOLICITUD -->
+  <!-- ===================================================== -->
+
+  <div
+    *ngIf="
+      !cargandoValidacionCierre &&
+      puedeCrearSolicitudCierre &&
+      !tieneSolicitudCierreActiva
+    "
+    class="flex flex-col gap-5 p-5 rounded-lg border border-sga/20 bg-sga/[0.02]">
+
+    <!-- Encabezado -->
+    <div class="flex flex-col gap-1">
+
+      <h5 class="text-sm font-semibold text-sga">
+        Crear solicitud de cierre
+      </h5>
+
+      <p class="text-sm text-black/60 leading-6">
+
+        La solicitud de cierre debe realizarse una vez haya finalizado
+        satisfactoriamente la comisión de estudios.
+
+        Esta gestión será enviada inicialmente al Decano de la facultad
+        para su revisión y validación. Posteriormente continuará con el
+        flujo institucional definido para la formalización del cierre.
+
+      </p>
+
+    </div>
+
+    <!-- Tarjeta informativa -->
+    <div class="rounded-xl border border-sga/15 bg-white p-4">
+
+      <div class="flex items-start gap-4">
+
+        <div
+          class="w-12 h-12 rounded-xl bg-sga/10 flex items-center justify-center">
+
+          <mat-icon class="text-sga">
+            fact_check
+          </mat-icon>
+
+        </div>
+
+        <div class="flex flex-col gap-1">
+
+          <span class="text-sm font-semibold text-black/80">
+            Solicitud única por comisión
+          </span>
+
+          <span class="text-sm text-black/60 leading-6">
+
+            Al crear la solicitud, esta será enviada a revisión y no podrá
+            generar una nueva solicitud de cierre mientras exista una en
+            estado de gestión o aprobada.
+
+          </span>
+
+        </div>
+
+      </div>
+
+    </div>
+
+    <!-- Botón -->
+    <div class="flex justify-end">
+
+      <button
+        mat-flat-button
+        color="primary"
+        class="rounded-lg"
+        (click)="crearSolicitudCierre()">
+
+        <mat-icon class="mr-1">
+          send
+        </mat-icon>
+
+        Crear solicitud de cierre
+
+      </button>
+
+    </div>
+
+  </div>
+
+  <!-- ===================================================== -->
+  <!-- SOLICITUD EXISTENTE -->
+  <!-- ===================================================== -->
+
+  <div
+    *ngIf="
+      !cargandoValidacionCierre &&
+      tieneSolicitudCierreActiva &&
+      solicitudCierre
+    "
+    class="flex flex-col gap-5 p-5 rounded-lg border border-sga/20 bg-sga/[0.02]">
+
+    <!-- Encabezado -->
+    <div class="flex flex-col gap-1">
+
+      <h5 class="text-sm font-semibold text-sga">
+        Solicitud de cierre en gestión
+      </h5>
+
+      <p class="text-xs text-gray-500">
+
+        Actualmente ya cuenta con una solicitud de cierre creada y en proceso
+        de revisión.
+
+      </p>
+
+      <p
+        *ngIf="mensajeValidacionCierre"
+        class="text-xs font-medium text-sga">
+
+        {{ mensajeValidacionCierre }}
+
+      </p>
+
+    </div>
+
+    <!-- Información principal -->
+    <div
+      class="flex flex-col gap-4 rounded-xl border border-sga/15 bg-white p-4">
+
+      <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+
+        <div class="flex flex-col gap-1">
+
+          <span class="text-xs text-gray-500 uppercase tracking-wide">
+            Solicitud
+          </span>
+
+          <span class="text-sm font-semibold text-black/80">
+            #{{ solicitudCierre.solicitud_id }}
+          </span>
+
+        </div>
+
+        <div class="flex flex-col gap-1">
+
+          <span class="text-xs text-gray-500 uppercase tracking-wide">
+            Fecha creación
+          </span>
+
+          <span class="text-sm text-black/70">
+            {{ solicitudCierre.fecha_creacion }}
+          </span>
+
+        </div>
+
+        <div class="flex flex-col gap-1">
+
+          <span class="text-xs text-gray-500 uppercase tracking-wide">
+            Estado actual
+          </span>
+
+          <span
+            class="inline-flex w-fit items-center rounded-full px-3 py-1 text-xs font-medium bg-blue-100 text-blue-700 border border-blue-200">
+
+            {{ solicitudCierre.estado }}
+
+          </span>
+
+        </div>
+
+      </div>
+
+    </div>
+
+    <!-- Estado visual -->
+    <div class="rounded-xl border border-blue-200 bg-blue-50 p-4">
+
+      <div class="flex items-start gap-3">
+
+        <mat-icon class="text-blue-600 mt-0.5">
+          info
+        </mat-icon>
+
+        <div class="flex flex-col gap-1">
+
+          <span class="text-sm font-medium text-blue-800">
+            Solicitud en proceso
+          </span>
+
+          <span class="text-sm text-blue-700 leading-6">
+
+            Su solicitud se encuentra actualmente en revisión por parte
+            de las instancias correspondientes.
+
+            Mientras permanezca en estado de gestión o aprobada,
+            no será posible registrar una nueva solicitud de cierre.
+
+          </span>
+
+        </div>
+
+      </div>
+
+    </div>
+
+    <!-- Botón -->
+    <div class="flex justify-center">
+
+      <button
+        mat-flat-button
+        color="primary"
+        class="rounded-lg"
+        (click)="verDetalleSolicitud(solicitudCierre.solicitud_id)">
+
+        <mat-icon class="mr-1">
+          visibility
+        </mat-icon>
+
+        Ver detalle
+
+      </button>
+
+    </div>
+
+  </div>
+
+  <!-- ===================================================== -->
+  <!-- MENSAJE CUANDO NO PUEDE CREAR -->
+  <!-- ===================================================== -->
+
+  <div
+    *ngIf="
+      !cargandoValidacionCierre &&
+      !puedeCrearSolicitudCierre &&
+      !tieneSolicitudCierreActiva &&
+      mensajeValidacionCierre
+    "
+    class="rounded-lg border border-yellow-200 bg-yellow-50 p-4">
+
+    <div class="flex items-start gap-3">
+
+      <mat-icon class="text-yellow-700">
+        warning
+      </mat-icon>
+
+      <div class="flex flex-col gap-1">
+
+        <span class="text-sm font-medium text-yellow-800">
+          No es posible crear la solicitud
+        </span>
+
+        <span class="text-sm text-yellow-700">
+          {{ mensajeValidacionCierre }}
+        </span>
+
+      </div>
+
+    </div>
+
+  </div>
+
+  <!-- ===================================================== -->
+  <!-- HISTÓRICO CIERRES RECHAZADOS -->
+  <!-- ===================================================== -->
+
+  <div
+    *ngIf="historicoCierres.length > 0"
+    class="flex flex-col gap-3">
+
+    <div class="flex flex-col gap-1">
+
+      <h5 class="text-sm font-semibold text-sga">
+        Histórico de solicitudes de cierre
+      </h5>
+
+      <p class="text-xs text-gray-500">
+        Consulte las solicitudes de cierre rechazadas anteriormente.
+      </p>
+
+    </div>
+
+    <div
+      class="rounded-xl border-2 border-sga overflow-hidden bg-white doc-table">
+
+      <div class="h-2 bg-gradient-to-r from-sga to-sga/60"></div>
+
+      <table class="w-full bg-white border-collapse">
+
+        <thead>
+
+          <tr>
+
+            <th
+              class="doc-th text-sga font-semibold text-left"
+              style="width: 120px; min-width: 120px;">
+
+              Solicitud
+
+            </th>
+
+            <th class="doc-th text-sga font-semibold text-left">
+
+              Fecha de creación
+
+            </th>
+
+            <th
+              class="doc-th text-sga font-semibold text-left"
+              style="width: 220px; min-width: 220px;">
+
+              Estado
+
+            </th>
+
+            <th
+              class="doc-th text-sga font-semibold text-center"
+              style="width: 120px; min-width: 120px;">
+
+              Gestión
+
+            </th>
+
+          </tr>
+
+        </thead>
+
+        <tbody>
+
+          <tr
+            *ngFor="let item of historicoCierres"
+            class="border-t border-gray-200 hover:bg-gray-50 transition-colors">
+
+            <td class="doc-td text-sm text-black/75">
+              #{{ item.solicitud_id }}
+            </td>
+
+            <td class="doc-td text-sm text-black/75">
+              {{ item.fecha_creacion }}
+            </td>
+
+            <td class="doc-td">
+
+              <span
+                class="inline-flex items-center rounded-full px-3 py-1 text-xs font-medium border bg-red-100 text-red-700 border-red-200">
+
+                {{ item.estado }}
+
+              </span>
+
+            </td>
+
+            <td class="doc-td">
+
+              <div class="flex items-center justify-center">
+
+                <button
+                  type="button"
+                  class="sga-table-action sga-table-action--primary"
+                  matTooltip="Ver detalle"
+                  (click)="verDetalleSolicitud(item.solicitud_id)">
+
+                  <mat-icon>
+                    visibility
+                  </mat-icon>
+
+                </button>
+
+              </div>
+
+            </td>
+
+          </tr>
+
+        </tbody>
+
+      </table>
+
+    </div>
+
+  </div>
+
+</div>

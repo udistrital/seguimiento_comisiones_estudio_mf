@@ -56,4 +56,33 @@ export class PopUpManager {
       },
     });
   }
+
+  loading(msg = 'Cargando...', title = ''): void {
+
+    Swal.fire({
+
+      title,
+
+      html: `
+        <p style="font-size:15px;line-height:1.5">
+          ${msg}
+        </p>
+      `,
+
+      allowOutsideClick: false,
+      allowEscapeKey: false,
+      showConfirmButton: false,
+
+      didOpen: () => {
+        Swal.showLoading();
+      },
+
+      customClass: {
+        popup: 'sga-swal-popup',
+      },
+    });
+  }
+  close(): void {
+    Swal.close();
+  }
 }
