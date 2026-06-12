@@ -183,7 +183,6 @@
           (nuevaObservacion)="onNuevaObservacion($event)">
         </app-panel-observaciones>
       </mat-card>
-
       <!-- ===================================================== -->
       <!-- PRÓRROGA Y CIERRE -->
       <!-- ===================================================== -->
@@ -193,170 +192,202 @@
         class="rounded-xl border border-black/10 bg-white p-5">
 
         <!-- ============================================ -->
-        <!-- SELECCIÓN -->
+        <!-- SOLO DOCENTE -->
         <!-- ============================================ -->
 
-        <ng-container *ngIf="!tipoGestionSeleccionada">
+        <ng-container *ngIf="rolActual === 'DOCENTE'; else moduloSoloDocentes">
 
-          <div class="flex flex-col gap-6">
+          <!-- ============================================ -->
+          <!-- SELECCIÓN -->
+          <!-- ============================================ -->
 
-            <!-- Header -->
-            <div class="flex flex-col gap-1">
+          <ng-container *ngIf="!tipoGestionSeleccionada">
 
-              <h4 class="text-lg font-semibold text-sga">
-                Gestión de comisión
-              </h4>
+            <div class="flex flex-col gap-6">
 
-              <p class="text-sm text-black/55">
-                Seleccione el tipo de gestión que desea realizar.
-              </p>
+              <!-- Header -->
+              <div class="flex flex-col gap-1">
+
+                <h4 class="text-lg font-semibold text-sga">
+                  Gestión de comisión
+                </h4>
+
+                <p class="text-sm text-black/55">
+                  Seleccione el tipo de gestión que desea realizar.
+                </p>
+
+              </div>
+
+              <!-- Opciones -->
+              <div class="grid grid-cols-1 md:grid-cols-2 gap-5">
+
+                <!-- PRÓRROGA -->
+                <button
+                  type="button"
+                  class="group rounded-2xl border-2 border-sga/20 bg-white p-6 text-left transition-all hover:border-sga hover:shadow-md"
+                  (click)="tipoGestionSeleccionada = 'prorroga'">
+
+                  <div class="flex flex-col gap-3">
+
+                    <div class="w-12 h-12 rounded-xl bg-sga/10 flex items-center justify-center">
+
+                      <mat-icon class="text-sga">
+                        update
+                      </mat-icon>
+
+                    </div>
+
+                    <div>
+
+                      <h5 class="text-base font-semibold text-sga">
+                        Solicitud de prórroga
+                      </h5>
+
+                      <p class="text-sm text-black/55 mt-1 leading-5">
+                        Permite solicitar ampliación del tiempo de la comisión de estudios.
+                      </p>
+
+                    </div>
+
+                  </div>
+
+                </button>
+
+                <!-- CIERRE -->
+                <button
+                  type="button"
+                  class="group rounded-2xl border-2 border-sga/20 bg-white p-6 text-left transition-all hover:border-sga hover:shadow-md"
+                  (click)="tipoGestionSeleccionada = 'cierre'">
+
+                  <div class="flex flex-col gap-3">
+
+                    <div class="w-12 h-12 rounded-xl bg-sga/10 flex items-center justify-center">
+
+                      <mat-icon class="text-sga">
+                        task_alt
+                      </mat-icon>
+
+                    </div>
+
+                    <div>
+
+                      <h5 class="text-base font-semibold text-sga">
+                        Solicitud de cierre
+                      </h5>
+
+                      <p class="text-sm text-black/55 mt-1 leading-5">
+                        Permite gestionar el cierre formal de la comisión.
+                      </p>
+
+                    </div>
+
+                  </div>
+
+                </button>
+
+              </div>
 
             </div>
 
-            <!-- Opciones -->
-            <div class="grid grid-cols-1 md:grid-cols-2 gap-5">
+          </ng-container>
 
-              <!-- PRÓRROGA -->
+          <!-- ============================================ -->
+          <!-- PRÓRROGA -->
+          <!-- ============================================ -->
+
+          <ng-container *ngIf="tipoGestionSeleccionada === 'prorroga'">
+
+            <div class="mb-5">
+
               <button
+                mat-stroked-button
                 type="button"
-                class="group rounded-2xl border-2 border-sga/20 bg-white p-6 text-left transition-all hover:border-sga hover:shadow-md"
-                (click)="tipoGestionSeleccionada = 'prorroga'">
+                class="rounded-lg"
+                (click)="tipoGestionSeleccionada = null">
 
-                <div class="flex flex-col gap-3">
+                <mat-icon class="mr-1">
+                  arrow_back
+                </mat-icon>
 
-                  <div class="w-12 h-12 rounded-xl bg-sga/10 flex items-center justify-center">
-
-                    <mat-icon class="text-sga">
-                      update
-                    </mat-icon>
-
-                  </div>
-
-                  <div>
-
-                    <h5 class="text-base font-semibold text-sga">
-                      Solicitud de prórroga
-                    </h5>
-
-                    <p class="text-sm text-black/55 mt-1 leading-5">
-                      Permite solicitar ampliación del tiempo de la comisión de estudios.
-                    </p>
-
-                  </div>
-
-                </div>
-
-              </button>
-
-              <!-- CIERRE -->
-              <button
-                type="button"
-                class="group rounded-2xl border-2 border-sga/20 bg-white p-6 text-left transition-all hover:border-sga hover:shadow-md"
-                (click)="tipoGestionSeleccionada = 'cierre'">
-
-                <div class="flex flex-col gap-3">
-
-                  <div class="w-12 h-12 rounded-xl bg-sga/10 flex items-center justify-center">
-
-                    <mat-icon class="text-sga">
-                      task_alt
-                    </mat-icon>
-
-                  </div>
-
-                  <div>
-
-                    <h5 class="text-base font-semibold text-sga">
-                      Solicitud de cierre
-                    </h5>
-
-                    <p class="text-sm text-black/55 mt-1 leading-5">
-                      Permite gestionar el cierre formal de la comisión.
-                    </p>
-
-                  </div>
-
-                </div>
+                Volver
 
               </button>
 
             </div>
 
-          </div>
+            <app-prorroga-cierre
+              [comision]="comision"
+              [rolActual]="rolActual"
+              (retornar)="onRetornar()"
+              (rechazar)="onRechazar()"
+              (enviar)="onEnviar()">
+
+            </app-prorroga-cierre>
+
+          </ng-container>
+
+          <!-- ============================================ -->
+          <!-- CIERRE -->
+          <!-- ============================================ -->
+
+          <ng-container *ngIf="tipoGestionSeleccionada === 'cierre'">
+
+            <div class="mb-5">
+
+              <button
+                mat-stroked-button
+                type="button"
+                class="rounded-lg"
+                (click)="tipoGestionSeleccionada = null">
+
+                <mat-icon class="mr-1">
+                  arrow_back
+                </mat-icon>
+
+                Volver
+
+              </button>
+
+            </div>
+
+            <app-cierre-comision
+              [comision]="comision"
+              [rolActual]="rolActual"
+              (retornar)="onRetornar()"
+              (rechazar)="onRechazar()"
+              (enviar)="onEnviar()">
+            </app-cierre-comision>
+
+          </ng-container>
 
         </ng-container>
 
         <!-- ============================================ -->
-        <!-- PRÓRROGA -->
+        <!-- MENSAJE SOLO DOCENTES -->
         <!-- ============================================ -->
 
-        <ng-container *ngIf="tipoGestionSeleccionada === 'prorroga'">
+        <ng-template #moduloSoloDocentes>
 
-          <!-- Volver -->
-          <div class="mb-5">
+          <div class="flex flex-col items-center justify-center py-10 text-center">
 
-            <button
-              mat-stroked-button
-              type="button"
-              class="rounded-lg"
-              (click)="tipoGestionSeleccionada = null">
+            <mat-icon
+              class="text-sga mb-3"
+              style="font-size: 56px; width: 56px; height: 56px;">
+              school
+            </mat-icon>
 
-              <mat-icon class="mr-1">
-                arrow_back
-              </mat-icon>
+            <h4 class="text-lg font-semibold text-sga mb-2">
+              Módulo exclusivo para docentes
+            </h4>
 
-              Volver
-
-            </button>
+            <p class="text-sm text-black/60 max-w-lg">
+              Las solicitudes de prórroga y cierre de comisión únicamente pueden ser
+              gestionadas por usuarios con rol docente.
+            </p>
 
           </div>
 
-          <app-prorroga-cierre
-            [comision]="comision"
-            [readOnly]="isReadOnly"
-            [rolActual]="rolActual"
-            (retornar)="onRetornar()"
-            (rechazar)="onRechazar()"
-            (enviar)="onEnviar()">
-
-          </app-prorroga-cierre>
-
-        </ng-container>
-
-        <!-- ============================================ -->
-        <!-- CIERRE -->
-        <!-- ============================================ -->
-
-        <ng-container *ngIf="tipoGestionSeleccionada === 'cierre'">
-
-          <div class="mb-5">
-
-            <button
-              mat-stroked-button
-              type="button"
-              class="rounded-lg"
-              (click)="tipoGestionSeleccionada = null">
-
-              <mat-icon class="mr-1">
-                arrow_back
-              </mat-icon>
-
-              Volver
-
-            </button>
-
-          </div>
-
-          <app-cierre-comision
-            [comision]="comision"
-            [readOnly]="isReadOnly"
-            [rolActual]="rolActual"
-            (retornar)="onRetornar()"
-            (rechazar)="onRechazar()"
-            (enviar)="onEnviar()">
-          </app-cierre-comision>
-
-        </ng-container>
+        </ng-template>
 
       </mat-card>
 
