@@ -85,6 +85,8 @@ export class CierreComisionComponent implements OnInit {
     this.validarSolicitudCierre();
 
     this.cargarHistoricoCierres();
+    console.log("ROOOOOL DEL DOCENTE")
+    console.log(this.rolActual)
 
   }
 
