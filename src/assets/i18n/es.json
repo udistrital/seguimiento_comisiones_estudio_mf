@@ -3,6 +3,14 @@
     "acceso_denegado": "No tiene permisos para acceder a esta funcionalidad."
   },
 
+  "ADMIN_SGA": {
+    "ROL_EMULADO": "Rol a emular",
+    "CEDULA_DOCENTE": "Cédula del docente",
+    "BUSCAR": "Buscar",
+    "CEDULAS_RECIENTES": "Recientes",
+    "CEDULA_REQUERIDA": "Ingrese una cédula para buscar."
+  },
+
   "BANDEJA": {
     "TITULO": "Seguimiento de Comisiones",
     "SUBTITULO": "Comisiones en ejecución y desarrollo",

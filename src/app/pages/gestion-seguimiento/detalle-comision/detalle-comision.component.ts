@@ -32,6 +32,7 @@ export class DetalleComisionComponent implements OnInit {
   comisionId!: number;
   rolActual: Role | null = null;
   roles: string[] = [];
+  isAdminSga = false;
 
   readonly opcionesPermisos = [
     'ver_documentos',
@@ -95,11 +96,15 @@ export class DetalleComisionComponent implements OnInit {
     this.roles = getRolesUsuario();
     this.rolActual = resolverRolEfectivo(this.roles) || 'DOCENTE';
 
-    this.comisionId = Number(this.route.snapshot.paramMap.get('id'));
+    if (this.rolActual === 'ADMIN_SGA') {
+      this.isAdminSga = true;
+      const rolEmulado = sessionStorage.getItem('admin_sga_rol_emulado_seg') as Role | null;
+      this.rolActual = (rolEmulado && (['DOCENTE', 'DECANO', 'SECRETARIA_GENERAL'] as string[]).includes(rolEmulado))
+        ? rolEmulado
+        : 'SECRETARIA_GENERAL';
+    }
 
-    this.resolverIdTipoDocumento();
-    this.cargarDetalle();
-
+    // Permisos: consulta bulk para todos los roles, incluyendo ADMIN_SGA
     this.permisosUtils.obtenerPermisos(this.roles, this.opcionesPermisos).subscribe({
       next: (permisos) => {
         this.permisos = permisos;
@@ -107,6 +112,10 @@ export class DetalleComisionComponent implements OnInit {
       },
       error: () => { this.permisosListos = true; },
     });
+
+    this.comisionId = Number(this.route.snapshot.paramMap.get('id'));
+    this.resolverIdTipoDocumento();
+    this.cargarDetalle();
   }
 
   private resolverIdTipoDocumento(): void {
@@ -407,6 +416,7 @@ export class DetalleComisionComponent implements OnInit {
   }
 
   onNuevaObservacion(texto: string): void {
+    if (this.isAdminSga) return;
     const key = this.moduloActivo || '';
     const codigo = this.PANEL_A_TIPO[key];
     if (!codigo) return;
@@ -448,6 +458,7 @@ export class DetalleComisionComponent implements OnInit {
   }
 
   onArchivoSeleccionado(event: Event): void {
+    if (this.isAdminSga) { (event.target as HTMLInputElement).value = ''; return; }
     const file = (event.target as HTMLInputElement).files?.[0];
     if (!file || !this.itemSubiendoDocumento) return;
 
@@ -511,6 +522,7 @@ export class DetalleComisionComponent implements OnInit {
   }
 
   onEliminarDocDesarrollo(item: any): void {
+    if (this.isAdminSga) return;
     this.popup.confirm(this.translate.instant('POPUPS.CONFIRMAR_ELIMINAR_DOC')).then(result => {
       if (!result.isConfirmed) return;
       this.seguimientoService.put(`seguimiento/documento_desarrollo/${item.documento_comision_id}/desactivar`, {}).subscribe({
@@ -536,18 +548,21 @@ export class DetalleComisionComponent implements OnInit {
   }
 
   onRetornar(): void {
+    if (this.isAdminSga) return;
     this.popup.confirm(this.translate.instant('POPUPS.CONFIRMAR_RETORNAR')).then(r => {
       if (r.isConfirmed) this.popup.success(this.translate.instant('POPUPS.SOLICITUD_RETORNADA'));
     });
   }
 
   onRechazar(): void {
+    if (this.isAdminSga) return;
     this.popup.confirm(this.translate.instant('POPUPS.CONFIRMAR_RECHAZAR')).then(r => {
       if (r.isConfirmed) this.popup.success(this.translate.instant('POPUPS.SOLICITUD_RECHAZADA'));
     });
   }
 
   onEnviar(): void {
+    if (this.isAdminSga) return;
     this.popup.confirm(this.translate.instant('POPUPS.CONFIRMAR_ENVIAR')).then(r => {
       if (r.isConfirmed) this.popup.alertSuccess(this.translate.instant('POPUPS.SOLICITUD_ENVIADA'));
     });
