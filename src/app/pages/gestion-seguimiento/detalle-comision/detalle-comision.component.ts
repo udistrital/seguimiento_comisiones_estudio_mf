@@ -58,7 +58,7 @@ export class DetalleComisionComponent implements OnInit {
 
   gruposDocumentos: any[] = [];
   cargandoDocDesarrollo = false;
-  private idTipoDocumentoDesarrollo: number | null = null;
+  idTipoDocumentoDesarrollo: number | null = null;
   colsDocDesarrollo = ['nombre', 'estado', 'gestion'];
   itemSubiendoDocumento: any = null;
 
