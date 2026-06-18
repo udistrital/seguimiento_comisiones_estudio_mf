@@ -3,6 +3,14 @@
     "acceso_denegado": "You do not have permission to access this feature."
   },
 
+  "ADMIN_SGA": {
+    "ROL_EMULADO": "Role to emulate",
+    "CEDULA_DOCENTE": "Teacher ID",
+    "BUSCAR": "Search",
+    "CEDULAS_RECIENTES": "Recent",
+    "CEDULA_REQUERIDA": "Enter an ID to search."
+  },
+
   "BANDEJA": {
     "TITULO": "Commission Tracking",
     "SUBTITULO": "Commissions in execution and development",

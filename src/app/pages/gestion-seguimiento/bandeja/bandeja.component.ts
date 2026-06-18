@@ -34,6 +34,16 @@ export class BandejaComponent implements OnInit {
   permisos: { [key: string]: boolean } = {};
   permisosListos = false;
 
+  // ADMIN_SGA
+  isAdminSga = false;
+  rolEmulado: Role = 'SECRETARIA_GENERAL';
+  readonly rolesEmulables: Role[] = ['DOCENTE', 'SECRETARIA_GENERAL', 'DECANO'];
+  cedulaBusqueda = '';
+  cedulasHistorial: string[] = [];
+  private readonly SK_ROL    = 'admin_sga_rol_emulado_seg';
+  private readonly SK_CEDULA = 'admin_sga_cedula_seg';
+  private readonly SK_CEDULAS = 'admin_sga_cedulas_seg';
+
   constructor(
     private readonly router: Router,
     private readonly translate: TranslateService,
@@ -48,6 +58,44 @@ export class BandejaComponent implements OnInit {
 
     if (!this.rolActual) {
       this.rolActual = 'DOCENTE'; // fallback para desarrollo local
+    }
+
+    if (this.rolActual === 'ADMIN_SGA') {
+      this.isAdminSga = true;
+
+      const savedRol = sessionStorage.getItem(this.SK_ROL) as Role | null;
+      const savedCedula = sessionStorage.getItem(this.SK_CEDULA) || '';
+      try { this.cedulasHistorial = JSON.parse(sessionStorage.getItem(this.SK_CEDULAS) || '[]'); } catch { this.cedulasHistorial = []; }
+
+      if (savedRol && (this.rolesEmulables as string[]).includes(savedRol)) {
+        this.rolEmulado = savedRol;
+        this.cedulaBusqueda = savedRol === 'DOCENTE' ? savedCedula : '';
+        this.columns = getColumnsByRole(savedRol);
+        this.actions = getActionsByRole(savedRol);
+        if (savedRol !== 'DOCENTE' || savedCedula) {
+          this.cargarComoAdminSga();
+        } else {
+          this.cargando = false;
+        }
+      } else {
+        this.rolEmulado = 'SECRETARIA_GENERAL';
+        this.columns = getColumnsByRole('SECRETARIA_GENERAL');
+        this.actions = getActionsByRole('SECRETARIA_GENERAL');
+        this.cargarComoAdminSga();
+      }
+
+      this.permisosUtils.obtenerPermisos(this.roles, this.opcionesPermisos).subscribe({
+        next: (permisos) => {
+          this.permisos = permisos;
+          this.permisosListos = true;
+          this.enableFilters = permisos['ver_filtros_tabla'] ?? false;
+          if (!permisos['gestionar_comision']) {
+            this.actions = this.actions.filter(a => a.key !== 'GESTIONAR');
+          }
+        },
+        error: () => { this.permisosListos = true; },
+      });
+      return;
     }
 
     this.translate.get('ROLES.' + this.rolActual).subscribe(label => { this.rolLabel = label; });
@@ -69,6 +117,61 @@ export class BandejaComponent implements OnInit {
         }
       },
       error: () => { this.permisosListos = true; },
+    });
+  }
+
+  onRolEmuladoSeleccionado(rol: Role): void {
+    this.rolEmulado = rol;
+    this.comisiones = [];
+    this.errorCarga = false;
+    sessionStorage.setItem(this.SK_ROL, rol);
+    this.columns = getColumnsByRole(rol);
+    this.actions = getActionsByRole(rol);
+    if (rol === 'DOCENTE') {
+      this.cedulaBusqueda = sessionStorage.getItem(this.SK_CEDULA) || '';
+      this.cargando = false;
+    } else {
+      this.cedulaBusqueda = '';
+      this.cargarComoAdminSga();
+    }
+  }
+
+  buscarComoDocente(): void {
+    const cedula = this.cedulaBusqueda.trim();
+    if (!cedula) { this.popup.error(this.translate.instant('ADMIN_SGA.CEDULA_REQUERIDA')); return; }
+    sessionStorage.setItem(this.SK_CEDULA, cedula);
+    if (!this.cedulasHistorial.includes(cedula)) {
+      this.cedulasHistorial = [cedula, ...this.cedulasHistorial].slice(0, 5);
+      sessionStorage.setItem(this.SK_CEDULAS, JSON.stringify(this.cedulasHistorial));
+    }
+    this.cargarComoAdminSga();
+  }
+
+  private cargarComoAdminSga(): void {
+    this.cargando = true;
+    this.errorCarga = false;
+
+    let endpoint: string;
+    switch (this.rolEmulado) {
+      case 'DOCENTE':
+        endpoint = `seguimiento/comisiones_docente/${this.cedulaBusqueda}`;
+        break;
+      case 'DECANO':
+      case 'SECRETARIA_GENERAL':
+        endpoint = 'seguimiento/comisiones_secretaria_general';
+        break;
+      default:
+        this.cargando = false;
+        return;
+    }
+
+    this.seguimientoService.get(endpoint).subscribe({
+      next: (resp: any) => {
+        const items: any[] = Array.isArray(resp?.Data) ? resp.Data : [];
+        this.comisiones = this.mapearRespuesta(items);
+        this.cargando = false;
+      },
+      error: () => { this.errorCarga = true; this.cargando = false; },
     });
   }
 
