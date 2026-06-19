@@ -131,11 +131,11 @@ export class CierreDetalleModalComponent implements OnInit {
             resp?.Status !== '200' &&
             resp?.Status !== 200
           ) {
-
+            this.popup.error(
             resp?.Message ||
             this.translate.instant(
               'CIERRE_DETALLE.ERROR_ESTADO_INVALIDO'
-            )
+            ));
 
             this.dialogRef.close();
 
