@@ -12,6 +12,7 @@ import { PopUpManager } from '../../../../managers/popup.manager';
 import { SeguimientoService } from '../../../../services/seguimiento.service';
 import { MatDialog } from '@angular/material/dialog';
 import { CierreDetalleModalComponent } from './cierre-detalle-modal/cierre-detalle-modal.component';
+import { TranslateService } from '@ngx-translate/core';
 
 @Component({
   selector: 'app-cierre-comision',
@@ -46,6 +47,7 @@ export class CierreComisionComponent implements OnInit {
     private readonly popup: PopUpManager,
     private readonly seguimientoService: SeguimientoService,
     private readonly dialog: MatDialog,
+    private readonly translate: TranslateService,
   ) {}
 
 
@@ -85,8 +87,6 @@ export class CierreComisionComponent implements OnInit {
     this.validarSolicitudCierre();
 
     this.cargarHistoricoCierres();
-    console.log("ROOOOOL DEL DOCENTE")
-    console.log(this.rolActual)
 
   }
 
@@ -125,7 +125,7 @@ export class CierreComisionComponent implements OnInit {
           if (!resp?.Success) {
 
             this.popup.error(
-              'No fue posible consultar el histórico de solicitudes de cierre.'
+              this.translate.instant('POPUPS.ERROR_HISTORICO_CIERRE')
             );
 
             return;
@@ -137,7 +137,7 @@ export class CierreComisionComponent implements OnInit {
           ) {
 
             this.popup.error(
-              'El histórico de cierres respondió con un estado inválido.'
+              this.translate.instant('POPUPS.ERROR_HISTORICO_ESTADO_INVALIDO')
             );
 
             return;
@@ -146,7 +146,7 @@ export class CierreComisionComponent implements OnInit {
           if (!Array.isArray(resp?.Data)) {
 
             this.popup.error(
-              'La respuesta del histórico de cierres es inválida.'
+              this.translate.instant('POPUPS.ERROR_HISTORICO_RESPUESTA_INVALIDA')
             );
 
             return;
@@ -210,7 +210,7 @@ export class CierreComisionComponent implements OnInit {
         error: () => {
 
           this.popup.error(
-            'Ocurrió un error consultando el histórico de solicitudes de cierre.'
+            this.translate.instant('POPUPS.ERROR_HISTORICO_CARGA')
           );
         },
       });
@@ -243,7 +243,7 @@ export class CierreComisionComponent implements OnInit {
 
             this.popup.error(
               resp?.Message ||
-              'No fue posible validar la solicitud de cierre.'
+              this.translate.instant('POPUPS.ERROR_VALIDAR_CIERRE')
             );
 
             return;
@@ -256,7 +256,7 @@ export class CierreComisionComponent implements OnInit {
 
             this.popup.error(
               resp?.Message ||
-              'La validación respondió con un estado inválido.'
+              this.translate.instant('POPUPS.ERROR_VALIDAR_CIERRE_ESTADO')
             );
 
             return;
@@ -278,7 +278,7 @@ export class CierreComisionComponent implements OnInit {
           const mensajeError =
             errorResp?.error?.Error ||
             errorResp?.error?.Message ||
-            'Ocurrió un error validando la solicitud de cierre.';
+            this.translate.instant('POPUPS.ERROR_VALIDAR_CIERRE_PROCESO');
 
           this.popup.error(mensajeError);
         },
@@ -293,7 +293,7 @@ export class CierreComisionComponent implements OnInit {
   crearSolicitudCierre(): void {
 
     this.popup.confirm(
-      '¿Está seguro de crear la solicitud de cierre de la comisión de estudios? Una vez enviada, será remitida para revisión y supervisión por parte del Decano.'
+      this.translate.instant('POPUPS.CONFIRMAR_CREAR_CIERRE')
     ).then(result => {
 
       if (!result.isConfirmed) {
@@ -321,7 +321,7 @@ export class CierreComisionComponent implements OnInit {
               const mensajeError =
                 resp?.Error ||
                 resp?.Message ||
-                'No fue posible crear la solicitud de cierre.';
+                this.translate.instant('POPUPS.ERROR_CREAR_CIERRE');
 
               this.popup.alertError(mensajeError);
 
@@ -335,7 +335,7 @@ export class CierreComisionComponent implements OnInit {
 
               const mensajeError =
                 resp?.Error ||
-                'La solicitud de cierre respondió con un estado inválido.';
+                this.translate.instant('POPUPS.ERROR_CREAR_CIERRE_ESTADO');
 
               this.popup.alertError(mensajeError);
 
@@ -343,7 +343,7 @@ export class CierreComisionComponent implements OnInit {
             }
 
             this.popup.alertSuccess(
-              'La solicitud de cierre fue creada correctamente.'
+              this.translate.instant('POPUPS.CIERRE_CREADO_OK')
             );
 
             setTimeout(() => {
@@ -358,7 +358,7 @@ export class CierreComisionComponent implements OnInit {
             const mensajeError =
               errorResp?.error?.Error ||
               errorResp?.error?.Message ||
-              'Ocurrió un error creando la solicitud de cierre.';
+              this.translate.instant('POPUPS.ERROR_CREAR_CIERRE_PROCESO');
 
             this.popup.alertError(mensajeError);
           },

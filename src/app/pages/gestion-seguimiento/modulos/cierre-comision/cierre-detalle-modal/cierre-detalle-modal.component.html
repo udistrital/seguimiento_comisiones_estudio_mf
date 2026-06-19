@@ -6,11 +6,11 @@
     <div class="flex flex-col gap-1">
 
       <h2 class="text-xl font-semibold text-sga">
-        Detalles solicitud de cierre
+        {{ 'CIERRE_DETALLE.TITULO' | translate }}
       </h2>
 
       <span class="text-sm text-black/55">
-        Consulte el estado y observaciones asociadas a la solicitud.
+        {{ 'CIERRE_DETALLE.SUBTITULO' | translate }}
       </span>
 
     </div>
@@ -27,7 +27,7 @@
     </div>
 
     <span class="text-sm text-black/70">
-      Cargando detalle de solicitud...
+      {{ 'CIERRE_DETALLE.CARGANDO_DETALLE' | translate }}
     </span>
 
   </div>
@@ -44,7 +44,7 @@
         <div
           class="text-[11px] uppercase tracking-wide text-black/45 font-medium">
 
-          Solicitud
+          {{ 'CIERRE_DETALLE.SOLICITUD' | translate }}
 
         </div>
 
@@ -63,7 +63,7 @@
         <div
           class="text-[11px] uppercase tracking-wide text-black/45 font-medium">
 
-          Fecha creación
+          {{ 'CIERRE_DETALLE.FECHA_CREACION' | translate }}
 
         </div>
 
@@ -71,7 +71,7 @@
 
           {{ detalleSolicitud.Solicitud?.FechaCreacion
               ? (detalleSolicitud.Solicitud.FechaCreacion | date:'dd/MM/yyyy')
-              : 'N/A'
+              : ('CIERRE_DETALLE.NO_DISPONIBLE' | translate)
           }}
 
         </div>
@@ -85,7 +85,7 @@
         <div
           class="text-[11px] uppercase tracking-wide text-black/45 font-medium">
 
-          Estado actual
+          {{ 'CIERRE_DETALLE.ESTADO_ACTUAL' | translate }}
 
         </div>
 
@@ -111,7 +111,7 @@
       <div class="flex flex-col gap-2">
 
         <h5 class="text-sm font-semibold text-sga">
-          Observación docente
+          {{ 'CIERRE_DETALLE.OBSERVACION_DOCENTE' | translate }}
         </h5>
 
         <div
@@ -120,7 +120,7 @@
           {{
             detalleSolicitud.Solicitud?.ObservacionCierre ||
             detalleSolicitud.Solicitud?.Observacion ||
-            'Sin observaciones.'
+            ('CIERRE_DETALLE.SIN_OBSERVACIONES' | translate)
           }}
 
         </div>
@@ -131,7 +131,7 @@
       <div class="flex flex-col gap-2">
 
         <h5 class="text-sm font-semibold text-sga">
-          Observaciones de revisores
+          {{ 'CIERRE_DETALLE.OBSERVACIONES_REVISORES' | translate }}
         </h5>
 
         <div
@@ -166,7 +166,7 @@
             *ngIf="!detalleSolicitud.Observaciones?.length"
             class="text-sm text-black/50">
 
-            No existen observaciones registradas.
+            {{ 'CIERRE_DETALLE.SIN_OBSERVACIONES_REVISORES' | translate }}
 
           </div>
 
@@ -185,7 +185,7 @@
         class="rounded-lg px-5"
         (click)="cerrar()">
 
-        Aceptar
+        {{ 'CIERRE_DETALLE.ACEPTAR' | translate }}
 
       </button>
 
