@@ -116,15 +116,17 @@
                               (click)="onVerDocDesarrollo(doc)">
                         <mat-icon>visibility</mat-icon>
                       </button>
-                      <button *ngIf="canUploadDocs" type="button" class="sga-table-action sga-table-action--primary"
+                      <button *ngIf="canUploadDocs" type="button" class="sga-table-action"
+                              [ngClass]="(!!doc.documento_comision_id || comisionCerrada) ? 'bg-gray-200 text-gray-400 cursor-not-allowed' : 'sga-table-action--primary'"
                               [matTooltip]="'ACTIONS.CARGAR' | translate"
-                              [disabled]="!!doc.documento_comision_id"
+                              [disabled]="!!doc.documento_comision_id || comisionCerrada"
                               (click)="itemSubiendoDocumento = doc; fileInput.click()">
                         <mat-icon>cloud_upload</mat-icon>
                       </button>
-                      <button *ngIf="canDeleteDocs" type="button" class="sga-table-action sga-table-action--warn"
+                      <button *ngIf="canDeleteDocs" type="button" class="sga-table-action"
+                              [ngClass]="(!doc.documento_comision_id || comisionCerrada) ? 'bg-gray-200 text-gray-400 cursor-not-allowed' : 'sga-table-action--warn'"
                               [matTooltip]="'ACTIONS.ELIMINAR' | translate"
-                              [disabled]="!doc.documento_comision_id"
+                              [disabled]="!doc.documento_comision_id || comisionCerrada"
                               (click)="onEliminarDocDesarrollo(doc)">
                         <mat-icon>delete</mat-icon>
                       </button>
@@ -142,7 +144,7 @@
         <div class="border-t border-black/10 my-4"></div>
         <app-panel-observaciones
           [observaciones]="observacionesPorPanel['docs-desarrollo'] || []"
-          [readOnly]="!puedeComentarDesarrollo"
+          [readOnly]="!puedeComentarDesarrollo || comisionCerrada"
           [titulo]="'DETALLE.COMENTARIOS'"
           (nuevaObservacion)="onNuevaObservacion($event)">
         </app-panel-observaciones>
@@ -161,7 +163,7 @@
         <div class="border-t border-black/10 my-4"></div>
         <app-panel-observaciones
           [observaciones]="observacionesPorPanel['pagos'] || []"
-          [readOnly]="!puedeComentarPagos"
+          [readOnly]="!puedeComentarPagos || comisionCerrada"
           [titulo]="'DETALLE.COMENTARIOS'"
           (nuevaObservacion)="onNuevaObservacion($event)">
         </app-panel-observaciones>
@@ -178,7 +180,7 @@
         <div class="border-t border-black/10 my-4"></div>
         <app-panel-observaciones
           [observaciones]="observacionesPorPanel['cumplimiento'] || []"
-          [readOnly]="!puedeComentarCumplimiento"
+          [readOnly]="!puedeComentarCumplimiento || comisionCerrada"
           [titulo]="'DETALLE.COMENTARIOS'"
           (nuevaObservacion)="onNuevaObservacion($event)">
         </app-panel-observaciones>
@@ -198,10 +200,43 @@
         <ng-container *ngIf="rolActual === 'DOCENTE'; else moduloSoloDocentes">
 
           <!-- ============================================ -->
-          <!-- SELECCIÓN -->
+          <!-- COMISIÓN FINALIZADA / CANCELADA: SOLO LECTURA -->
           <!-- ============================================ -->
 
-          <ng-container *ngIf="!tipoGestionSeleccionada">
+          <ng-container *ngIf="comisionCerrada">
+
+            <div class="flex items-start gap-3 rounded-lg border border-gray-200 bg-gray-50 p-4 mb-5">
+              <mat-icon class="text-gray-500 mt-0.5">lock</mat-icon>
+              <p class="text-sm text-gray-600">{{ 'DETALLE.COMISION_CERRADA_INFO' | translate }}</p>
+            </div>
+
+            <app-prorroga-cierre
+              [comision]="comision"
+              [rolActual]="rolActual"
+              [readOnly]="true"
+              (retornar)="onRetornar()"
+              (rechazar)="onRechazar()"
+              (enviar)="onEnviar()">
+            </app-prorroga-cierre>
+
+            <div class="border-t border-black/10 my-5"></div>
+
+            <app-cierre-comision
+              [comision]="comision"
+              [rolActual]="rolActual"
+              [readOnly]="true"
+              (retornar)="onRetornar()"
+              (rechazar)="onRechazar()"
+              (enviar)="onEnviar()">
+            </app-cierre-comision>
+
+          </ng-container>
+
+          <!-- ============================================ -->
+          <!-- SELECCIÓN (flujo normal) -->
+          <!-- ============================================ -->
+
+          <ng-container *ngIf="!comisionCerrada && !tipoGestionSeleccionada">
 
             <div class="flex flex-col gap-6">
 
@@ -295,7 +330,7 @@
           <!-- PRÓRROGA -->
           <!-- ============================================ -->
 
-          <ng-container *ngIf="tipoGestionSeleccionada === 'prorroga'">
+          <ng-container *ngIf="!comisionCerrada && tipoGestionSeleccionada === 'prorroga'">
 
             <div class="mb-5">
 
@@ -330,7 +365,7 @@
           <!-- CIERRE -->
           <!-- ============================================ -->
 
-          <ng-container *ngIf="tipoGestionSeleccionada === 'cierre'">
+          <ng-container *ngIf="!comisionCerrada && tipoGestionSeleccionada === 'cierre'">
 
             <div class="mb-5">
 
