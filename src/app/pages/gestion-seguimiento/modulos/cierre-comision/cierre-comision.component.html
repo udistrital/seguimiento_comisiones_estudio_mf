@@ -4,7 +4,7 @@
   <div class="flex items-center justify-between">
 
     <h4 class="text-sm font-semibold text-black/80">
-      Solicitud de cierre de comisión
+      {{ 'CIERRE_COMISION.TITLE' | translate }}
     </h4>
 
   </div>
@@ -20,7 +20,7 @@
     <div class="w-5 h-5 border-2 border-sga/30 border-t-sga rounded-full animate-spin"></div>
 
     <span class="text-sm text-black/70">
-      Validando disponibilidad para crear solicitud de cierre...
+      {{ 'CIERRE_COMISION.VALIDANDO' | translate }}
     </span>
 
   </div>
@@ -41,18 +41,11 @@
     <div class="flex flex-col gap-1">
 
       <h5 class="text-sm font-semibold text-sga">
-        Crear solicitud de cierre
+        {{ 'CIERRE_COMISION.CREAR_TITLE' | translate }}
       </h5>
 
       <p class="text-sm text-black/60 leading-6">
-
-        La solicitud de cierre debe realizarse una vez haya finalizado
-        satisfactoriamente la comisión de estudios.
-
-        Esta gestión será enviada inicialmente al Decano de la facultad
-        para su revisión y validación. Posteriormente continuará con el
-        flujo institucional definido para la formalización del cierre.
-
+        {{ 'CIERRE_COMISION.CREAR_DESC' | translate }}
       </p>
 
     </div>
@@ -74,15 +67,11 @@
         <div class="flex flex-col gap-1">
 
           <span class="text-sm font-semibold text-black/80">
-            Solicitud única por comisión
+            {{ 'CIERRE_COMISION.SOLICITUD_UNICA_TITLE' | translate }}
           </span>
 
           <span class="text-sm text-black/60 leading-6">
-
-            Al crear la solicitud, esta será enviada a revisión y no podrá
-            generar una nueva solicitud de cierre mientras exista una en
-            estado de gestión o aprobada.
-
+            {{ 'CIERRE_COMISION.SOLICITUD_UNICA_DESC' | translate }}
           </span>
 
         </div>
@@ -103,9 +92,7 @@
         <mat-icon class="mr-1">
           send
         </mat-icon>
-
-        Crear solicitud de cierre
-
+        {{ 'CIERRE_COMISION.CREAR_SOLICITUD' | translate }}
       </button>
 
     </div>
@@ -128,14 +115,11 @@
     <div class="flex flex-col gap-1">
 
       <h5 class="text-sm font-semibold text-sga">
-        Solicitud de cierre en gestión
+        {{ 'CIERRE_COMISION.GESTION_TITLE' | translate }}
       </h5>
 
       <p class="text-xs text-gray-500">
-
-        Actualmente ya cuenta con una solicitud de cierre creada y en proceso
-        de revisión.
-
+        {{ 'CIERRE_COMISION.GESTION_DESC' | translate }}
       </p>
 
       <p
@@ -157,7 +141,7 @@
         <div class="flex flex-col gap-1">
 
           <span class="text-xs text-gray-500 uppercase tracking-wide">
-            Solicitud
+            {{ 'CIERRE_COMISION.SOLICITUD' | translate }}
           </span>
 
           <span class="text-sm font-semibold text-black/80">
@@ -169,7 +153,7 @@
         <div class="flex flex-col gap-1">
 
           <span class="text-xs text-gray-500 uppercase tracking-wide">
-            Fecha creación
+            {{ 'CIERRE_COMISION.FECHA_CREACION' | translate }}
           </span>
 
           <span class="text-sm text-black/70">
@@ -181,7 +165,7 @@
         <div class="flex flex-col gap-1">
 
           <span class="text-xs text-gray-500 uppercase tracking-wide">
-            Estado actual
+            {{ 'CIERRE_COMISION.ESTADO_ACTUAL' | translate }}
           </span>
 
           <span
@@ -209,17 +193,11 @@
         <div class="flex flex-col gap-1">
 
           <span class="text-sm font-medium text-blue-800">
-            Solicitud en proceso
+            {{ 'CIERRE_COMISION.PROCESO_TITLE' | translate }}
           </span>
 
           <span class="text-sm text-blue-700 leading-6">
-
-            Su solicitud se encuentra actualmente en revisión por parte
-            de las instancias correspondientes.
-
-            Mientras permanezca en estado de gestión o aprobada,
-            no será posible registrar una nueva solicitud de cierre.
-
+            {{ 'CIERRE_COMISION.PROCESO_DESC' | translate }}
           </span>
 
         </div>
@@ -240,9 +218,7 @@
         <mat-icon class="mr-1">
           visibility
         </mat-icon>
-
-        Ver detalle
-
+        {{ 'CIERRE_COMISION.VER_DETALLE' | translate }}
       </button>
 
     </div>
@@ -271,7 +247,7 @@
       <div class="flex flex-col gap-1">
 
         <span class="text-sm font-medium text-yellow-800">
-          No es posible crear la solicitud
+          {{ 'CIERRE_COMISION.NO_DISPONIBLE_TITLE' | translate }}
         </span>
 
         <span class="text-sm text-yellow-700">
@@ -295,11 +271,11 @@
     <div class="flex flex-col gap-1">
 
       <h5 class="text-sm font-semibold text-sga">
-        Histórico de solicitudes de cierre
+        {{ 'CIERRE_COMISION.HISTORICO_TITLE' | translate }}
       </h5>
 
       <p class="text-xs text-gray-500">
-        Consulte las solicitudes de cierre rechazadas anteriormente.
+        {{ 'CIERRE_COMISION.HISTORICO_DESC' | translate }}
       </p>
 
     </div>
@@ -318,22 +294,18 @@
             <th
               class="doc-th text-sga font-semibold text-left"
               style="width: 120px; min-width: 120px;">
-
-              Solicitud
-
+              {{ 'CIERRE_COMISION.TABLE_SOLICITUD' | translate }}
             </th>
 
             <th class="doc-th text-sga font-semibold text-left">
-
-              Fecha de creación
-
+              {{ 'CIERRE_COMISION.TABLE_FECHA_CREACION' | translate }}
             </th>
 
             <th
               class="doc-th text-sga font-semibold text-left"
               style="width: 220px; min-width: 220px;">
 
-              Estado
+              {{ 'CIERRE_COMISION.TABLE_ESTADO' | translate }}
 
             </th>
 
@@ -341,7 +313,7 @@
               class="doc-th text-sga font-semibold text-center"
               style="width: 120px; min-width: 120px;">
 
-              Gestión
+              {{ 'CIERRE_COMISION.TABLE_GESTION' | translate }}
 
             </th>
 

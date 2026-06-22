@@ -6,11 +6,11 @@
     <div class="flex flex-col gap-1">
 
       <h2 class="text-xl font-semibold text-sga">
-        Detalles solicitud de prórroga
+        {{ 'PRORROGA_DETALLE.TITULO' | translate }}
       </h2>
 
       <span class="text-sm text-black/55">
-        Consulte el estado y documentos asociados a la solicitud.
+        {{ 'PRORROGA_DETALLE.SUBTITULO' | translate }}
       </span>
 
     </div>
@@ -25,7 +25,7 @@
     <div class="w-5 h-5 border-2 border-sga/30 border-t-sga rounded-full animate-spin"></div>
 
     <span class="text-sm text-black/70">
-      Cargando detalle de solicitud...
+      {{ 'PRORROGA_DETALLE.CARGANDO_DETALLE' | translate }}
     </span>
 
   </div>
@@ -39,7 +39,7 @@
       <div class="rounded-lg border border-sga/15 bg-white px-4 py-3">
 
         <div class="text-[11px] uppercase tracking-wide text-black/45 font-medium">
-          Solicitud
+          {{ 'PRORROGA_DETALLE.SOLICITUD' | translate }}
         </div>
 
         <div class="mt-1 text-base font-semibold text-black/85">
@@ -52,14 +52,14 @@
       <div class="rounded-lg border border-sga/15 bg-white px-4 py-3">
 
         <div class="text-[11px] uppercase tracking-wide text-black/45 font-medium">
-          Fecha creación
+          {{ 'PRORROGA_DETALLE.FECHA_CREACION' | translate }}
         </div>
 
         <div class="mt-1 text-base font-semibold text-black/85">
 
           {{ detalleSolicitud.Solicitud?.FechaCreacion
               ? (detalleSolicitud.Solicitud.FechaCreacion | date:'dd/MM/yyyy')
-              : 'N/A'
+              : ('PRORROGA_DETALLE.NO_DISPONIBLE' | translate)
           }}
 
         </div>
@@ -70,7 +70,7 @@
       <div class="rounded-lg border border-sga/15 bg-white px-4 py-3">
 
         <div class="text-[11px] uppercase tracking-wide text-black/45 font-medium">
-          Estado actual
+          {{ 'PRORROGA_DETALLE.ESTADO_ACTUAL' | translate }}
         </div>
 
         <div class="mt-2">
@@ -99,11 +99,11 @@
         <div class="flex flex-col">
 
           <span class="text-sm font-semibold text-sga">
-            Cargando documento
+            {{ 'PRORROGA_DETALLE.CARGANDO_DOCUMENTO' | translate }}
           </span>
 
           <span class="text-xs text-black/55">
-            Espere un momento...
+            {{ 'PRORROGA_DETALLE.ESPERE' | translate }}
           </span>
 
         </div>
@@ -118,11 +118,11 @@
       <div class="flex flex-col gap-1">
 
         <h5 class="text-sm font-semibold text-sga">
-          Documentos cargados
+          {{ 'PRORROGA_DETALLE.DOCUMENTOS_CARGADOS' | translate }}
         </h5>
 
         <span class="text-xs text-black/55">
-          Soportes adjuntos en la solicitud.
+          {{ 'PRORROGA_DETALLE.DOCUMENTOS_CARGADOS_DESC' | translate }}
         </span>
 
       </div>
@@ -139,23 +139,21 @@
             <tr>
 
               <th class="doc-th text-left text-sga font-semibold">
-                Documento
+                {{ 'PRORROGA_DETALLE.DOCUMENTO' | translate }}
               </th>
 
               <th class="doc-th text-left text-sga font-semibold">
-                Tipo
+                {{ 'PRORROGA_DETALLE.TIPO' | translate }}
               </th>
 
               <th class="doc-th text-left text-sga font-semibold">
-                Estado
+                {{ 'PRORROGA_DETALLE.ESTADO' | translate }}
               </th>
 
               <th
                 class="doc-th text-center text-sga font-semibold"
                 style="width: 120px; min-width: 120px;">
-
-                Gestión
-
+                {{ 'PRORROGA_DETALLE.GESTION' | translate }}
               </th>
 
             </tr>
@@ -201,7 +199,7 @@
                   <button
                     type="button"
                     class="sga-table-action sga-table-action--primary"
-                    matTooltip="Ver documento"
+                    matTooltip="{{ 'PRORROGA_DETALLE.VER_DOCUMENTO' | translate }}"
                     (click)="verDocumento(doc)">
 
                     <mat-icon>
@@ -231,7 +229,7 @@
       <div class="flex flex-col gap-2">
 
         <h5 class="text-sm font-semibold text-sga">
-          Observación docente
+          {{ 'PRORROGA_DETALLE.OBSERVACION_DOCENTE' | translate }}
         </h5>
 
         <div class="rounded-xl border border-sga/15 bg-white p-4 min-h-[180px] text-sm text-black/70 whitespace-pre-line shadow-sm">
@@ -246,7 +244,7 @@
       <div class="flex flex-col gap-2">
 
         <h5 class="text-sm font-semibold text-sga">
-          Observaciones de revisores
+          {{ 'PRORROGA_DETALLE.OBSERVACIONES_REVISORES' | translate }}
         </h5>
 
         <div class="rounded-xl border border-sga/15 bg-white p-4 min-h-[180px] flex flex-col gap-3 shadow-sm">
@@ -277,8 +275,8 @@
             *ngIf="!detalleSolicitud.Observaciones?.length"
             class="text-sm text-black/50">
 
-            No existen observaciones registradas.
-
+            {{ detalleSolicitud.Solicitud?.ObservacionCierre ||
+                ('PRORROGA_DETALLE.SIN_OBSERVACIONES' | translate) }}
           </div>
 
         </div>
@@ -296,7 +294,7 @@
         class="rounded-lg px-5"
         (click)="cerrar()">
 
-        Aceptar
+        {{ 'PRORROGA_DETALLE.ACEPTAR' | translate }}
 
       </button>
 

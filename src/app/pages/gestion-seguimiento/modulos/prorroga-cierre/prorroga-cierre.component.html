@@ -36,7 +36,7 @@
       <div class="w-5 h-5 border-2 border-sga/30 border-t-sga rounded-full animate-spin"></div>
 
       <span class="text-sm text-black/70">
-        Validando disponibilidad para crear solicitud de prórroga...
+        {{ 'PRORROGA_SEGUIMIENTO.VALIDANDO_DISPONIBILIDAD' | translate }}
       </span>
 
     </div>
@@ -60,7 +60,7 @@
           </h5>
 
           <p class="text-xs text-gray-500">
-            Adjunte los documentos requeridos para realizar la solicitud de prórroga.
+            {{ 'PRORROGA_SEGUIMIENTO.ADJUNTAR_DOCUMENTOS' | translate }}
           </p>
 
         </div>
@@ -88,21 +88,21 @@
 
                 <!-- Documento -->
                 <th class="doc-th text-sga font-semibold text-left">
-                  Documento
+                  {{ 'PRORROGA_SEGUIMIENTO.DOCUMENTO' | translate }}
                 </th>
 
                 <!-- Estado -->
                 <th class="doc-th text-sga font-semibold text-left"
                     style="width: 150px; min-width: 150px;">
 
-                  Estado
+                  {{ 'PRORROGA_SEGUIMIENTO.ESTADO' | translate }}
                 </th>
 
                 <!-- Gestión -->
                 <th class="doc-th text-sga font-semibold text-center"
                     style="width: 140px; min-width: 140px;">
 
-                  Gestión
+                  {{ 'PRORROGA_SEGUIMIENTO.GESTION' | translate }}
                 </th>
 
               </tr>
@@ -141,7 +141,7 @@
                     *ngIf="!tieneDocumentoProrroga(item.codigo)"
                     class="inline-flex items-center rounded-full px-3 py-1 text-xs font-medium bg-yellow-100 text-yellow-700 border border-yellow-200">
 
-                    No adjuntado
+                    {{ 'PRORROGA_SEGUIMIENTO.NO_ADJUNTADO' | translate }}
                   </span>
 
                   <!-- Con documento -->
@@ -149,7 +149,7 @@
                     *ngIf="tieneDocumentoProrroga(item.codigo)"
                     class="inline-flex items-center rounded-full px-3 py-1 text-xs font-medium bg-green-100 text-green-700 border border-green-200">
 
-                    Adjuntado
+                    {{ 'PRORROGA_SEGUIMIENTO.ADJUNTADO' | translate }}
                   </span>
 
                 </td>
@@ -191,7 +191,7 @@
                   ? 'sga-table-action--primary'
                   : 'bg-gray-200 text-gray-400 cursor-not-allowed'
               "
-              matTooltip="Ver archivo"
+              [matTooltip]="'PRORROGA_SEGUIMIENTO.VER_ARCHIVO' | translate"
               [disabled]="!tieneDocumentoProrroga(item.codigo)"
               (click)="onVerDocumentoProrroga(item)">
 
@@ -208,7 +208,7 @@
                   ? 'bg-gray-200 text-gray-400 cursor-not-allowed'
                   : 'sga-table-action--primary'
               "
-              matTooltip="Subir archivo"
+              [matTooltip]="'PRORROGA_SEGUIMIENTO.SUBIR_ARCHIVO' | translate"
               [disabled]="tieneDocumentoProrroga(item.codigo)"
               (click)="itemSubiendoDocumento = item; fileInput.click()">
 
@@ -225,7 +225,7 @@
                   ? 'sga-table-action--warn'
                   : 'bg-gray-200 text-gray-400 cursor-not-allowed'
               "
-              matTooltip="Eliminar archivo"
+              [matTooltip]="'PRORROGA_SEGUIMIENTO.ELIMINAR_ARCHIVO' | translate"
               [disabled]="!tieneDocumentoProrroga(item.codigo)"
               (click)="onEliminarDocumentoProrroga(item)">
 
@@ -241,15 +241,13 @@
         <div class="flex flex-col gap-2">
 
           <h6 class="text-sm font-medium text-sga">
-            Observaciones generales
+            {{ 'PRORROGA_SEGUIMIENTO.OBSERVACIONES_GENERALES' | translate }}
           </h6>
-
           <textarea
             class="w-full min-h-[120px] rounded-lg border border-gray-300 bg-white px-4 py-3 text-sm text-gray-700 resize-none outline-none transition-all focus:border-sga focus:ring-1 focus:ring-sga/20"
-            placeholder="Ingrese una observación"
+            [placeholder]="'PRORROGA_SEGUIMIENTO.INGRESE_OBSERVACION' | translate"
             [(ngModel)]="justificacion">
           </textarea>
-
         </div>
 
         <!-- Botón -->
@@ -279,7 +277,7 @@
             *ngIf="!documentosProrrogaCompletos"
             class="text-sm text-red-600 font-medium text-right">
 
-            Debe adjuntar todos los documentos requeridos para crear la solicitud de prórroga.
+            {{ 'PRORROGA_SEGUIMIENTO.DOCUMENTOS_REQUERIDOS' | translate }}
 
           </span>
 
@@ -300,11 +298,11 @@
       <div class="flex flex-col gap-1">
 
         <h5 class="text-sm font-semibold text-sga">
-          Seguimiento de solicitud de prórroga
+          {{ 'PRORROGA_SEGUIMIENTO.SEGUIMIENTO_SOLICITUD' | translate }}
         </h5>
 
         <p class="text-xs text-gray-500">
-          Actualmente tiene una solicitud de prórroga en gestión.
+          {{ 'PRORROGA_SEGUIMIENTO.SOLICITUD_EN_GESTION' | translate }}
         </p>
 
       </div>
@@ -319,7 +317,7 @@
           <div class="flex flex-col gap-1">
 
             <span class="text-xs text-gray-500 uppercase tracking-wide">
-              Solicitud
+              {{ 'PRORROGA_SEGUIMIENTO.SOLICITUD' | translate }}
             </span>
 
             <span class="text-sm font-semibold text-black/80">
@@ -332,7 +330,7 @@
           <div class="flex flex-col gap-1">
 
             <span class="text-xs text-gray-500 uppercase tracking-wide">
-              Fecha creación
+              {{ 'PRORROGA_SEGUIMIENTO.FECHA_CREACION' | translate }}
             </span>
 
             <span class="text-sm text-black/70">
@@ -345,7 +343,7 @@
           <div class="flex flex-col gap-1">
 
             <span class="text-xs text-gray-500 uppercase tracking-wide">
-              Estado actual
+              {{ 'PRORROGA_SEGUIMIENTO.ESTADO_ACTUAL' | translate }}
             </span>
 
             <span class="text-sm font-semibold text-sga">
@@ -371,7 +369,7 @@
             visibility
           </mat-icon>
 
-          Ver detalle
+          {{ 'PRORROGA_SEGUIMIENTO.VER_DETALLE' | translate }}
 
         </button>
 
@@ -391,11 +389,11 @@
       <div class="flex flex-col gap-1">
 
         <h5 class="text-sm font-semibold text-sga">
-          Histórico de solicitudes de prórroga
+          {{ 'PRORROGA_SEGUIMIENTO.HISTORICO' | translate }}
         </h5>
 
         <p class="text-xs text-gray-500">
-          Consulte las solicitudes de prórroga rechazadas anteriormente.
+          {{ 'PRORROGA_SEGUIMIENTO.HISTORICO_DESCRIPCION' | translate }}
         </p>
 
       </div>
@@ -416,25 +414,25 @@
               <th class="doc-th text-sga font-semibold text-left"
                   style="width: 120px; min-width: 120px;">
 
-                Solicitud
+                {{ 'PRORROGA_SEGUIMIENTO.SOLICITUD' | translate }}
 
               </th>
 
               <th class="doc-th text-sga font-semibold text-left">
-                Fecha de creación
+                {{ 'PRORROGA_SEGUIMIENTO.FECHA_CREACION' | translate }}
               </th>
 
               <th class="doc-th text-sga font-semibold text-left"
                   style="width: 180px; min-width: 180px;">
 
-                Estado
+                {{ 'PRORROGA_SEGUIMIENTO.ESTADO' | translate }}
 
               </th>
 
               <th class="doc-th text-sga font-semibold text-center"
                   style="width: 120px; min-width: 120px;">
 
-                Gestión
+                {{ 'PRORROGA_SEGUIMIENTO.GESTION' | translate }}
 
               </th>
 
@@ -479,7 +477,7 @@
                   <button
                     type="button"
                     class="sga-table-action sga-table-action--primary"
-                    matTooltip="Ver detalle"
+                    [matTooltip]="'PRORROGA_SEGUIMIENTO.VER_DETALLE' | translate"
                     (click)="abrirDetalleSolicitud(prorrogaActual.solicitud_id)">
 
                     <mat-icon>
