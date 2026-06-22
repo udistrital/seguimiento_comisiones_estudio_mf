@@ -5,6 +5,7 @@ import { PopUpManager } from '../../../../../managers/popup.manager';
 import { MatDialog } from '@angular/material/dialog';
 import { VisorDocumentosComponent } from '../../../../../shared/visor-documentos/visor-documentos.component';
 import { GestorDocumentalService } from '../../../../../services/gestor-documental.service';
+import { TranslateService } from '@ngx-translate/core';
 
 @Component({
   selector: 'app-prorroga-detalle-modal',
@@ -27,6 +28,7 @@ export class ProrrogaDetalleModalComponent {
     private popup: PopUpManager,
     private dialog: MatDialog,
     private gestorDocumental: GestorDocumentalService,
+    private translate: TranslateService,
   ) {}
 
   ngOnInit(): void {
@@ -48,7 +50,7 @@ export class ProrrogaDetalleModalComponent {
           if (!resp?.Success) {
 
             this.popup.error(
-              resp?.Message || 'No fue posible cargar el detalle.'
+              resp?.Message || this.translate.instant('PRORROGA_DETALLE.ERROR_CARGAR_DETALLE')
             );
 
             this.dialogRef.close();
@@ -64,7 +66,7 @@ export class ProrrogaDetalleModalComponent {
           this.cargando = false;
 
           this.popup.error(
-            'Ocurrió un error cargando el detalle.'
+            this.translate.instant('PRORROGA_DETALLE.ERROR_CARGAR_DETALLE_GENERAL')
           );
 
           this.dialogRef.close();
@@ -77,7 +79,9 @@ export class ProrrogaDetalleModalComponent {
     if (!doc?.Enlace) {
 
       this.popup.error(
-        'El documento no posee enlace.'
+        this.translate.instant(
+          'PRORROGA_DETALLE.DOC_SIN_ENLACE'
+        )
       );
 
       return;
@@ -88,7 +92,9 @@ export class ProrrogaDetalleModalComponent {
     // =========================
 
     this.popup.loading(
-      'Cargando documento...'
+      this.translate.instant(
+        'PRORROGA_DETALLE.CARGANDO_DOCUMENTO'
+      )
     );
 
     this.gestorDocumental
@@ -109,7 +115,9 @@ export class ProrrogaDetalleModalComponent {
           if (!base64) {
 
             this.popup.error(
-              "Documento no disponible"
+              this.translate.instant(
+                'PRORROGA_DETALLE.DOC_NO_DISPONIBLE'
+              )
             );
 
             return;
@@ -136,7 +144,9 @@ export class ProrrogaDetalleModalComponent {
           this.popup.close();
 
           this.popup.error(
-            "Error al cargar el documento"
+            this.translate.instant(
+              'PRORROGA_DETALLE.ERROR_CARGAR_DOCUMENTO'
+            )
           );
         },
       });

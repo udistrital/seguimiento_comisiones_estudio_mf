@@ -11,6 +11,8 @@ import {
 
 import { SeguimientoService } from '../../../../../services/seguimiento.service';
 import { PopUpManager } from '../../../../../managers/popup.manager';
+import { TranslateService } from '@ngx-translate/core';
+
 
 @Component({
   selector: 'app-cierre-detalle-modal',
@@ -45,6 +47,7 @@ export class CierreDetalleModalComponent implements OnInit {
     private seguimientoService: SeguimientoService,
 
     private popup: PopUpManager,
+    private translate: TranslateService,
   ) {}
 
 
@@ -72,7 +75,9 @@ export class CierreDetalleModalComponent implements OnInit {
     if (!this.data?.solicitudId) {
 
       this.popup.error(
-        'No se recibió el identificador de la solicitud.'
+        this.translate.instant(
+          'CIERRE_DETALLE.ERROR_SIN_SOLICITUD'
+        )
       );
 
       this.dialogRef.close();
@@ -108,10 +113,10 @@ export class CierreDetalleModalComponent implements OnInit {
 
           if (!resp?.Success) {
 
-            this.popup.error(
-              resp?.Message ||
-              'No fue posible cargar el detalle de la solicitud.'
-            );
+            resp?.Message ||
+            this.translate.instant(
+              'CIERRE_DETALLE.ERROR_CARGAR_DETALLE'
+            )
 
             this.dialogRef.close();
 
@@ -126,11 +131,11 @@ export class CierreDetalleModalComponent implements OnInit {
             resp?.Status !== '200' &&
             resp?.Status !== 200
           ) {
-
             this.popup.error(
-              resp?.Message ||
-              'La consulta del detalle respondió con un estado inválido.'
-            );
+            resp?.Message ||
+            this.translate.instant(
+              'CIERRE_DETALLE.ERROR_ESTADO_INVALIDO'
+            ));
 
             this.dialogRef.close();
 
@@ -144,9 +149,10 @@ export class CierreDetalleModalComponent implements OnInit {
           if (!resp?.Data) {
 
             this.popup.error(
-              'No se encontró información para la solicitud.'
+              this.translate.instant(
+                'CIERRE_DETALLE.ERROR_SIN_INFORMACION'
+              )
             );
-
             this.dialogRef.close();
 
             return;
@@ -164,7 +170,9 @@ export class CierreDetalleModalComponent implements OnInit {
         error: (errorResp: any) => {
 
           console.error(
-            'ERROR DETALLE CIERRE',
+            this.translate.instant(
+              'CIERRE_DETALLE.ERROR_DETALLE'
+            ),
             errorResp,
           );
 
@@ -173,8 +181,9 @@ export class CierreDetalleModalComponent implements OnInit {
           const mensajeError =
             errorResp?.error?.Error ||
             errorResp?.error?.Message ||
-            'Ocurrió un error cargando el detalle de la solicitud.';
-
+            this.translate.instant(
+              'CIERRE_DETALLE.ERROR_DETALLE'
+            );
           this.popup.error(
             mensajeError
           );
@@ -189,7 +198,9 @@ export class CierreDetalleModalComponent implements OnInit {
     return (
       this.detalleSolicitud?.Solicitud?.ObservacionCierre ||
       this.detalleSolicitud?.Solicitud?.Observacion ||
-      'Sin observaciones.'
+      this.translate.instant(
+        'CIERRE_DETALLE.SIN_OBSERVACIONES'
+      )
     );
   }
 
