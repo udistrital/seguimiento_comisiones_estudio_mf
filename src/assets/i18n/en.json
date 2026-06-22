@@ -42,7 +42,8 @@
     "ID_DOCENTE": "Teacher ID",
     "ESTADO_PRORROGA_CIERRE": "Extension / Closure",
     "GESTION": "Actions",
-    "FILTER_PLACEHOLDER": "Filter..."
+    "FILTER_PLACEHOLDER": "Filter...",
+    "VER": "View document"
   },
 
   "VISOR": {
@@ -65,7 +66,9 @@
     "ADJUNTAR": "Attach document",
     "CARGAR": "Upload",
     "CANCELAR": "Cancel",
-    "GUARDAR": "Save"
+    "GUARDAR": "Save",
+    "VER": "View document",
+    "ELIMINAR": "Delete"
   },
 
   "TOOLTIPS": {
@@ -95,7 +98,8 @@
     "DOCUMENTOS": "Documents",
     "DOCUMENTO_NOMBRE": "Document",
     "AUTOR_SOPORTE": "Support author",
-    "VISOR_DOCUMENTO": "Document viewer"
+    "VISOR_DOCUMENTO": "Document viewer",
+    "COMISION_CERRADA_INFO": "This commission is finalized or cancelled. You can only view the request history."
   },
 
   "MODULOS": {
