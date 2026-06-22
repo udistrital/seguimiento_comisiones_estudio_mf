@@ -42,7 +42,8 @@
     "ID_DOCENTE": "ID Docente",
     "ESTADO_PRORROGA_CIERRE": "Prórroga / Cierre",
     "GESTION": "Gestión",
-    "FILTER_PLACEHOLDER": "Filtrar..."
+    "FILTER_PLACEHOLDER": "Filtrar...",
+    "VER": "Ver documento"
   },
 
   "VISOR": {
@@ -66,7 +67,8 @@
     "CARGAR": "Cargar",
     "CANCELAR": "Cancelar",
     "GUARDAR": "Guardar",
-    "ELIMINAR": "Eliminar"
+    "ELIMINAR": "Eliminar",
+    "VER": "Ver documento"
   },
 
   "TOOLTIPS": {
@@ -96,7 +98,8 @@
     "DOCUMENTOS": "Documentos",
     "DOCUMENTO_NOMBRE": "Documento",
     "AUTOR_SOPORTE": "Autor del soporte",
-    "VISOR_DOCUMENTO": "Visor de documento"
+    "VISOR_DOCUMENTO": "Visor de documento",
+    "COMISION_CERRADA_INFO": "Esta comisión se encuentra finalizada o cancelada. Solo puedes consultar el historial de solicitudes."
   },
 
   "MODULOS": {

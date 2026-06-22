@@ -24,6 +24,7 @@ export class ProrrogaCierreComponent implements OnInit {
 
   @Input() comision!: ComisionDetalle;
   @Input() rolActual: Role | null = null;
+  @Input() readOnly = false;
 
   @Output() retornar = new EventEmitter<void>();
   @Output() rechazar = new EventEmitter<void>();
@@ -98,9 +99,10 @@ export class ProrrogaCierreComponent implements OnInit {
 
   ngOnInit(): void {
 
-    this.cargarTiposDocumentosProrroga();
-
-    this.validarPuedeCrearProrroga();
+    if (!this.readOnly) {
+      this.cargarTiposDocumentosProrroga();
+      this.validarPuedeCrearProrroga();
+    }
 
     this.cargarHistoricoProrrogas();
   }
@@ -119,7 +121,7 @@ export class ProrrogaCierreComponent implements OnInit {
   }
 
   get canSolicitarProrroga(): boolean {
-    return this.rolActual === 'DOCENTE' && this.comision?.estadoProrroga === 'NO_APLICA';
+    return !this.readOnly && this.rolActual === 'DOCENTE' && this.comision?.estadoProrroga === 'NO_APLICA';
   }
 
 

@@ -131,6 +131,10 @@ export class DetalleComisionComponent implements OnInit {
   get isDocente(): boolean { return this.rolActual === 'DOCENTE'; }
   get isDecano(): boolean { return this.rolActual === 'DECANO'; }
   get isSecretariaGeneral(): boolean { return this.rolActual === 'SECRETARIA_GENERAL'; }
+  get comisionCerrada(): boolean {
+    return this.isDocente &&
+      (this.comision?.estado === 'COM_FIN' || this.comision?.estado === 'COM_CANC');
+  }
   get canUploadDocs(): boolean { return this.isDocente && (!this.permisosListos || this.permisos['cargar_documento_desarrollo']); }
   get canDeleteDocs(): boolean { return this.isDocente && (!this.permisosListos || this.permisos['eliminar_documento_desarrollo']); }
   get puedeVerDocumentos(): boolean { return !this.permisosListos || this.permisos['ver_documentos']; }
