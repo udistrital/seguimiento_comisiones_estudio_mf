@@ -145,7 +145,7 @@ export class ProrrogaCierreComponent implements OnInit {
           if (!resp?.Success) {
 
             this.popup.error(
-              'No fue posible consultar el histórico de prórrogas.'
+              this.translate.instant('POPUPS.ERROR_HISTORICO_PRORROGA')
             );
 
             return;
@@ -155,7 +155,7 @@ export class ProrrogaCierreComponent implements OnInit {
           if (resp?.Status !== '200' && resp?.Status !== 200) {
 
             this.popup.error(
-              'El histórico de prórrogas respondió con un estado inválido.'
+              this.translate.instant('POPUPS.ERROR_HISTORICO_PRORROGA_ESTADO')
             );
 
             return;
@@ -165,7 +165,7 @@ export class ProrrogaCierreComponent implements OnInit {
           if (!Array.isArray(resp?.Data)) {
 
             this.popup.error(
-              'La respuesta del histórico de prórrogas es inválida.'
+              this.translate.instant('POPUPS.ERROR_HISTORICO_PRORROGA_RESPUESTA')
             );
 
             return;
@@ -222,7 +222,7 @@ export class ProrrogaCierreComponent implements OnInit {
         error: () => {
 
           this.popup.error(
-            'Ocurrió un error consultando el histórico de prórrogas.'
+            this.translate.instant('POPUPS.ERROR_HISTORICO_PRORROGA_CARGA')
           );
         },
       });
@@ -255,7 +255,7 @@ export class ProrrogaCierreComponent implements OnInit {
 
             this.popup.error(
               resp?.Message ||
-              'No fue posible validar la solicitud de prórroga.'
+              this.translate.instant('POPUPS.ERROR_VALIDAR_PRORROGA')
             );
 
             return;
@@ -266,7 +266,7 @@ export class ProrrogaCierreComponent implements OnInit {
 
             this.popup.error(
               resp?.Message ||
-              'La validación respondió con un estado inválido.'
+              this.translate.instant('POPUPS.ERROR_VALIDAR_PRORROGA_ESTADO')
             );
 
             return;
@@ -293,7 +293,7 @@ export class ProrrogaCierreComponent implements OnInit {
           const mensajeError =
             errorResp?.error?.Error ||
             errorResp?.error?.Message ||
-            'Ocurrió un error validando la prórroga.';
+            this.translate.instant('POPUPS.ERROR_VALIDAR_PRORROGA_CARGA');;
 
           this.popup.error(mensajeError);
         },
@@ -323,7 +323,7 @@ export class ProrrogaCierreComponent implements OnInit {
           if (!resp?.Success) {
 
             this.popup.error(
-              'Ocurrió un error consultando los documentos de prórroga.'
+              this.translate.instant('POPUPS.ERROR_DOCUMENTOS_PRORROGA')
             );
 
             return;
@@ -333,7 +333,7 @@ export class ProrrogaCierreComponent implements OnInit {
           if (resp?.Status !== '200') {
 
             this.popup.error(
-              'La consulta de documentos de prórroga respondió con un estado inválido.'
+              this.translate.instant('POPUPS.ERROR_DOCUMENTOS_PRORROGA_ESTADO')
             );
 
             return;
@@ -343,7 +343,7 @@ export class ProrrogaCierreComponent implements OnInit {
           if (!Array.isArray(resp?.Data)) {
 
             this.popup.error(
-              'La respuesta de documentos de prórroga es inválida.'
+              this.translate.instant('POPUPS.ERROR_DOCUMENTOS_PRORROGA_RESPUESTA')
             );
 
             return;
@@ -353,7 +353,7 @@ export class ProrrogaCierreComponent implements OnInit {
           if (resp.Data.length === 0) {
 
             this.popup.error(
-              'No existen documentos configurados para solicitudes de prórroga.'
+              this.translate.instant('POPUPS.ERROR_DOCUMENTOS_PRORROGA_VACIO')
             );
 
             return;
@@ -375,7 +375,7 @@ export class ProrrogaCierreComponent implements OnInit {
           this.cargandoDocumentosProrroga = false;
 
           this.popup.error(
-            'Ocurrió un error consultando los documentos de prórroga.'
+            this.translate.instant('POPUPS.ERROR_DOCUMENTOS_PRORROGA')
           );
         },
       });
@@ -521,7 +521,7 @@ export class ProrrogaCierreComponent implements OnInit {
     if (!this.documentosProrrogaCompletos) {
 
       this.popup.error(
-        'Debe adjuntar todos los documentos requeridos.'
+        this.translate.instant('POPUPS.PRORROGA_DOCS_REQUERIDOS')
       );
 
       return;
@@ -532,7 +532,7 @@ export class ProrrogaCierreComponent implements OnInit {
     // ==========================================
 
     this.popup.confirm(
-      '¿Está seguro de enviar la solicitud de prórroga?'
+      this.translate.instant('POPUPS.CONFIRMAR_CREAR_PRORROGA')
     ).then(result => {
 
       // SI CANCELA
@@ -594,7 +594,7 @@ export class ProrrogaCierreComponent implements OnInit {
               const mensajeError =
                 resp?.Error ||
                 resp?.Message ||
-                'No fue posible crear la solicitud de prórroga.';
+                this.translate.instant('POPUPS.ERROR_CREAR_PRORROGA');
 
               this.popup.alertError(mensajeError);
 
@@ -606,7 +606,7 @@ export class ProrrogaCierreComponent implements OnInit {
 
               const mensajeError =
                 resp?.Error ||
-                'La solicitud de prórroga respondió con un estado inválido.';
+                this.translate.instant('POPUPS.ERROR_CREAR_PRORROGA_ESTADO');
 
               this.popup.alertError(mensajeError);
 
@@ -626,7 +626,7 @@ export class ProrrogaCierreComponent implements OnInit {
             // ==========================================
 
             this.popup.alertSuccess(
-              'La solicitud de prórroga fue creada correctamente.'
+              this.translate.instant('POPUPS.PRORROGA_CREADA_OK')
             );
 
             // ==========================================
@@ -645,7 +645,7 @@ export class ProrrogaCierreComponent implements OnInit {
             const mensajeError =
               errorResp?.error?.Error ||
               errorResp?.error?.Message ||
-              'Ocurrió un error creando la solicitud de prórroga.';
+              this.translate.instant('POPUPS.ERROR_CREAR_PRORROGA_CARGA');
 
             this.popup.alertError(mensajeError);
           },
